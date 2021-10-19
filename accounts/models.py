@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from shop.models import Shop
 
 # Create your models here.
 class User(AbstractUser):
@@ -32,6 +33,7 @@ class Vendor(models.Model):
 			)
 	firstname = models.CharField(max_length=200, null=False)
 	lastname = models.CharField(max_length=200, null=False)
+	shopname = models.OneToOneField(Shop)
 	user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
 	date_created = models.DateTimeField(auto_now_add=True, null=True)
 	username = models.CharField(max_length=200, null=False)
