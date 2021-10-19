@@ -4,8 +4,8 @@ from accounts.models import Customer
 # Create your models here.
 
 class Cart(models.Model):
-	customer = models.OneToOneField(Customer ,on_delete=models.SET_NULL, null=False)
-	products = models.ManyToManyField(Product ,on_delete=models.CASCADE)
+	customer = models.OneToOneField(Customer ,on_delete=models.CASCADE, null=True)
+	products = models.ManyToManyField(Product)
 	totalprice = models.DecimalField(max_digits=1000000000000,decimal_places=2, default=0.00)
 	quantity = models.IntegerField(default=1)
 	ordered = models.BooleanField(default=False)
@@ -17,7 +17,7 @@ class Cart(models.Model):
 		return str(self.id)
 
 class OrderItem(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.SET_NULL, null=True)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, null=True)
     is_ordered = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now=True)
     date_ordered = models.DateTimeField(null=True)
@@ -27,11 +27,11 @@ class OrderItem(models.Model):
 
 class Order(models.Model):
 	ref_code = models.CharField(max_length=15)
-	owner = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+	owner = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
 	is_ordered = models.BooleanField(default=False)
-	items = models.ManyToManyField(OrderItem, on_delete=models.SET_NULL)
+	items = models.ManyToManyField(OrderItem)
 	quantity = models.IntegerField(default=1)
-	price = models.DecimalField(decimal_places=2, default=0.00)
+	price = models.DecimalField(max_digits=1000000000000000000,decimal_places=2, default=0.00)
 	date_ordered = models.DateTimeField(auto_now=True)
 
 	def get_cart_items(self):
