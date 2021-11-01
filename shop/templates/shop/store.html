@@ -1,5 +1,11 @@
 <h1>Store page</h1>
 <span> <a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+
+<a class="nav-link" href="{% url 'customer' id %}">Settings</a>
+
+<h2>{{ request.user }}</h2>
+<h3>{{ request.user.customer.id }}</h3>
+
 <table style="border: 2px solid red;">
 	<tr>
 		<th>Title</th>
