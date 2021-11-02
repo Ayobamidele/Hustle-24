@@ -7,7 +7,8 @@ from django.contrib.auth import get_user_model
 
 def home(request,category_slug=None):
 	category = None
-	customerId = request.user.id
+	user = request.user
+	userId = request.user.id
 	products = Product.objects.filter(available=True)
 	categories = Category.objects.all()
 	# if category_slug:
@@ -21,7 +22,8 @@ def home(request,category_slug=None):
 	print(show)
 	context = { 'products':products,
 				'show': show,
-				'id': customerId,
+				'id': userId,
+				"user": user,
 				}
 	return render(request, 'shop/store.html', context)
 

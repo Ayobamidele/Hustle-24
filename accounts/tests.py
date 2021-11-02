@@ -2,33 +2,25 @@ from django.test import TestCase
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from accounts.forms import CustomerForm
 
 # Create your tests here.
 
-# def loginPage(request):
-#     if request.method == "POST":
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request,user)
-#             return redirect('home')
-#         else:
-#             messages.info(request, 'Username OR password is incorrect')
-#     context = {}
-#     return render(request,'accounts/login.html', context)
-def loginPage(request):
-	if request.method == "POST":
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		user = authenticate(request, username=username, password=password)
-		if user is not None:
-			login(request,user)
-			for group in request.user.groups.all():
-				if 'Vendor' == str(group):
-					return redirect('vendor-page')
-				else:
-					return redirect('customer-page')
-		else:
-			messages.info(request, 'Username OR password is incorrect')
-	return render(request,'accounts/login.html')
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['Customer'])
+# def customerPage(request,customer):
+# 	customer = request.user.customer
+# 	form = CustomerForm(instance=customer)
+# 	if request.method == "POST":
+# 		form = CustomerForm(request.POST, request.FILES, instance=customer)
+# 		if form.is_valid():
+# 			form.save()
+# 	context = {	"customer": customer,"form": form,}
+# 	return render(request,'accounts/customer.html',context)
+
+# def customerPage(request,customer):
+# 	customer = request.user.customer
+# 	form = CustomerForm(instance=customer)
+# 	if request.method == "POST":
+# 		form = CustomerForm(request.POST,request.FILES,instance=customer)
+# 		if form.is

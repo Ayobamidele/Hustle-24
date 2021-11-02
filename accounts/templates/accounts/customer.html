@@ -1,2 +1,13 @@
-{{ customer }}
-{{ customer.id }}
+<h1>
+	{{ customer }}
+</h1>
+<h2>
+	{{ customer.id }}
+</h2>
+<span> <a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+<form action="" method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{form.as_p}}
+	<input class="btn btn-primary" type="submit" name="Update Information">
+</form>
+{{ form.error }}

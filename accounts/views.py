@@ -93,24 +93,19 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Customer'])
-def customerPage(request,pk):
-	customerId = Customer.objects.filter(id=pk)
-	customer = request.user.customer
-	print(pk)
-	context = {	"customer": customer,
-				"id": customerId,}
-	return render(request,'accounts/customer.html',context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Vendor'])
-def vendorPage(request,pk):
-	vendorId = Vendor.objects.get(id=pk)
-	vendor = request.user.vendor
-	context = {	"customer": vendor,
-				"id": vendorId,}
-	return render(request,'accounts/account_settings.html',context)
+@allowed_users(allowed_roles=['Customer'])
+def customerPage(request,customer):
+	customer = request.user.customer
+	form = CustomerForm(instance=customer)
+	if request.method == "POST":
+		form = CustomerForm(request.POST, request.FILES, instance=customer)
+		if form.is_valid():
+			form.save()
+	context = {	"customer": customer, "form": form,}
+	return render(request,'accounts/customer.html',context)
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Customer'])
