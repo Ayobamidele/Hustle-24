@@ -106,6 +106,19 @@ def customerPage(request,customer):
 	context = {	"customer": customer, "form": form,}
 	return render(request,'accounts/customer.html',context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Vendor'])
+def vendorPage(request,vendor):
+	vendor = request.user.vendor
+	form = VendorForm(instance=vendor)
+	if request.method == "POST":
+		form = CustomerForm(request.POST, request.FILES, instance=vendor)
+		if form.is_valid():
+			print('valid')
+			form.save()
+			# request.user.vendor.save(request.POST)
+	context = {	"vendor": vendor, "form": form,}
+	return render(request,'accounts/vendor.html',context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Customer'])
