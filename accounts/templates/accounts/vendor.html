@@ -7,6 +7,8 @@
 <span> <a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
 <form action="" method="POST" enctype="multipart/form-data">
 	{% csrf_token %}
-	{{form.as_p}}
+	{{form}}
+	{{ form.errrors }}
+ 	{{ form.help_text }}
 	<input class="btn btn-primary" type="submit" name="Update Information">
 </form>

@@ -1,6 +1,7 @@
 from django.db.models.signals import post_save
 from django.contrib.auth.models import Group
 from django.conf import settings
+from shop.models import *
 from .models import *
 
 
@@ -20,3 +21,14 @@ def profile(sender, instance, created, **kwargs):
 			print("Profile created!")
 
 post_save.connect(profile,sender=User,dispatch_uid="profile")
+
+
+
+def createShop(sender, instance, created, **kwargs):
+	if created:
+		chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
+		randomstr = ''.join((random.choice(chars)) for x in range(10))
+		Shop.objects.create(vendor=instance, shopname='vendor-{randomstring}'.format(randomstring= randomstr))
+		print("Shop created!")
+
+post_save.connect(createShop,sender=Vendor,dispatch_uid="createShop")

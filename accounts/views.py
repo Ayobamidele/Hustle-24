@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from .decorators import *
+from shop.models import *
 
 # @allowed_users(allowed_roles=['Customer'])
 @unauthenticated_user
@@ -101,7 +102,9 @@ def customerPage(request,customer):
 	form = CustomerForm(instance=customer)
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
+		print('ISvalid')
 		if form.is_valid():
+			print('valid')
 			form.save()
 	context = {	"customer": customer, "form": form,}
 	return render(request,'accounts/customer.html',context)
@@ -114,9 +117,7 @@ def vendorPage(request,vendor):
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=vendor)
 		if form.is_valid():
-			print('valid')
 			form.save()
-			# request.user.vendor.save(request.POST)
 	context = {	"vendor": vendor, "form": form,}
 	return render(request,'accounts/vendor.html',context)
 
@@ -130,4 +131,11 @@ def accountSettings(request):
         if form.is_valid():
             form.save()
     context = {"form": form}
+    return render(request,'accounts/account_settings.html',context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Customer'])
+def shop(request):
+    shop = Shop
+    context = {"shop": shop}
     return render(request,'accounts/account_settings.html',context)
