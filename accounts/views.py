@@ -116,6 +116,7 @@ def customerPage(request,customer):
 @allowed_users(allowed_roles=['Vendor'])
 def vendorPage(request,vendor):
 	vendor = request.user.vendor
+	shop = Shop.objects.get(vendor=vendor)
 	form = VendorForm(instance=vendor)
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=vendor)

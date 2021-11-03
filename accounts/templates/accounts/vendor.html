@@ -1,9 +1,15 @@
 <h1>
 	{{ vendor }}
 </h1>
+<h1>
+
+	{{ vendor.storename }}
+
+</h1>
 <h2>
 	{{ vendor.id }}
 </h2>
+<a class="nav-link" href="{% url 'shop' vendor.storename %}">Settings</a>
 <span> <a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
 <form action="" method="POST" enctype="multipart/form-data">
 	{% csrf_token %}
