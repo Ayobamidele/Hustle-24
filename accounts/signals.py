@@ -28,7 +28,10 @@ def createShop(sender, instance, created, **kwargs):
 	if created:
 		chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
 		randomstr = ''.join((random.choice(chars)) for x in range(10))
-		Shop.objects.create(vendor=instance, shopname='vendor-{randomstring}'.format(randomstring= randomstr))
+		shopname ='vendor-{randomstring}'.format(randomstring= randomstr)
+		Shop.objects.create(vendor=instance,shopname=shopname)
+		id = Shop.objects.filter(shopname=shopname).get().id
+		Vendor.objects.filter(username="Jim Powu").update(storename=id)
 		print("Shop created!")
 
 post_save.connect(createShop,sender=Vendor,dispatch_uid="createShop")
