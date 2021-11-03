@@ -132,10 +132,3 @@ def accountSettings(request):
             form.save()
     context = {"form": form}
     return render(request,'accounts/account_settings.html',context)
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Customer'])
-def shop(request):
-    shop = Shop
-    context = {"shop": shop}
-    return render(request,'accounts/account_settings.html',context)

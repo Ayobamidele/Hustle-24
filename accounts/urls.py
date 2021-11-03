@@ -15,8 +15,6 @@ urlpatterns = [
     path('customer/<customer>', views.customerPage, name='customer'),
     path('vendor/<vendor>', views.vendorPage, name='vendor'),
     path('account/', views.accountSettings, name='account'),
-
-    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
