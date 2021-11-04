@@ -86,7 +86,6 @@ class ProductReview(models.Model):
     customer = models.ForeignKey(to='accounts.Customer', related_name='reviews', on_delete=models.CASCADE)
     content = models.TextField(blank=True, null=True)
     stars = models.IntegerField()
-
     date_added = models.DateTimeField(auto_now_add=True)
 
 class Shop(models.Model):

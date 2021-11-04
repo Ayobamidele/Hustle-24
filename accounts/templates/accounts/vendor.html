@@ -9,7 +9,7 @@
 <h2>
 	{{ vendor.id }}
 </h2>
-<a class="nav-link" href="{% url 'shop' vendor.storename %}">Settings</a>
+<a class="nav-link" href="{% url 'shop' store %}">Settings</a>
 <span> <a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
 <form action="" method="POST" enctype="multipart/form-data">
 	{% csrf_token %}

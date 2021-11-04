@@ -46,9 +46,14 @@ def home(request,category_slug=None):
 @allowed_users(allowed_roles=['Vendor'])
 def shop(request,shop):
 	vendor = request.user.vendor
-	shop = vendor.storename
-	products = Shop.objects.filter(vendor=vendor).get().products
-	reviews = Shop.objects.filter(vendor=vendor).get().review
-	print(vendor.id,)
-	context = {'products':products,'shop': shop, 'reviews':reviews}
+	store = Vendor.objects.filter(id=vendor.id).get().storename
+	products = Shop.objects.filter(shopname=store).get().products.all()
+	reviews = Shop.objects.filter(shopname=store).get().review.all()
+	context = {'products':products,'store': store, 'reviews':reviews}
 	return render(request,'shop/shop.html',context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Vendor'])
+def productDetail(request,product,shop):
+	context = {}
+	return render(request,'shop/product.html',context)

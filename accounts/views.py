@@ -116,13 +116,13 @@ def customerPage(request,customer):
 @allowed_users(allowed_roles=['Vendor'])
 def vendorPage(request,vendor):
 	vendor = request.user.vendor
-	shop = Shop.objects.get(vendor=vendor)
+	shop = Shop.objects.get(vendor=vendor).shopname
 	form = VendorForm(instance=vendor)
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=vendor)
 		if form.is_valid():
 			form.save()
-	context = {	"vendor": vendor, "form": form,}
+	context = {	"vendor": vendor, "form": form,'store': shop}
 	return render(request,'accounts/vendor.html',context)
 
 @login_required(login_url='login')

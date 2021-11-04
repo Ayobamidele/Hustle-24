@@ -1,19 +1,63 @@
+<style>
+	table {
+	  font-family: arial, sans-serif;
+	  border-collapse: collapse;
+	  width: 100%;
+	}
+	
+	td, th {
+	  border: 1px solid #dddddd;
+	  text-align: left;
+	  padding: 8px;
+	}
+	
+	tr:nth-child(even) {
+	  background-color: #dddddd;
+	}
+	</style>
 <h1>Shop Page</h1>
 <h2>{{ request.user }}</h2>
 
 <h3>Products</h3>
-<table style="border: 2px solid red;">
+<table>
 	<tr>
 		<th>Title</th>
 		<th>Price</th>
 		<th>Discount Price</th>
 		<th>stock</th>
 	</tr>
+
+	{% for product in products %}
 		<tr>
-			<td>{{ products.title }}</td>
+			<td>{{ product.title }}</td>
+			<td>{{ product.price }}</td>
+			<td>{{ product.discount_price }}</td>
+			<td>{{ product.stock }}</td>
 		</tr>
+	{% endfor %}
 </table>
 
 <h3>Product Reviews</h3>
 
-<td>{{ reviews }}</td>
+<table>
+	<tr>
+		<th>Title</th>
+		<th>Price</th>
+		<th>Discount Price</th>
+		<th>stock</th>
+	</tr>
+
+	{% for review in reviews %}
+		<tr>
+			<td>{{ review.product }}</td>
+			<td>{{ review.customer }}</td>
+			<td>{{ review.content }}</td>
+			<td>{{ review.stars }}</td>
+			<td>{{ review.date_added }}</td>
+		</tr>
+	{% empty %}
+		<tr>
+			<td colspan="4" style="text-align: center;" bgcolor="#009966" height="5">&nbsp; Sorry, no reviews on this list.</td>
+		</tr>
+	{% endfor %}
+</table>
