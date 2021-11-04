@@ -19,8 +19,8 @@ from shop.models import *
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-# @allowed_users(allowed_roles=['Customer'])
 @unauthenticated_user
+@with_usertype(allowed_roles=['Vendor'])
 def registerPageCustomer(request):
 	form = CreateUserForm()
 	if request.method == "POST":
