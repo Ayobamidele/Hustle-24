@@ -3117,7 +3117,7 @@ input[type="button"].btn-block {
     margin-left: 0; }
 
 .card-body {
-  flex: 1 1 auto;
+  flex: 0;
   /* padding: 1.875rem;  */
 }
 
