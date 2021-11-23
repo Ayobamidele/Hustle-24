@@ -51,6 +51,7 @@ class Product(models.Model):
 	price = models.DecimalField(max_digits=10, decimal_places=2)
 	discount_price = models.FloatField(blank=True, null=True)
 	image = models.FileField()
+	vendor = models.OneToOneField(to='accounts.Vendor', on_delete=models.CASCADE, null=True,related_name='+')
 	productimages = models.ManyToManyField(ProductImage,)
 	thumbnail = models.ImageField(upload_to='photo_path', blank=True, null=True)
 	description = models.TextField(max_length=1000)

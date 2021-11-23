@@ -35,6 +35,7 @@ def home(request,category_slug=None):
 		if 'Vendor' == str(group):
 			show = False
 	# print(products.productimages)
+	print(request.POST,request.GET)
 	context = { 'products':products,
 				'show': show,
 				'id': userId,
@@ -53,5 +54,6 @@ def shop(request,shop):
 	return render(request,'shop/shop.html',context)
 
 def productDetail(request,product,shop):
+
 	context = {}
 	return render(request,'shop/product.html',context)
