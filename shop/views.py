@@ -40,7 +40,7 @@ def home(request,category_slug=None):
 				'id': userId,
 				"user": user,
 				}
-	return render(request, 'shop/store.html', context)
+	return render(request, 'shop/index.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Vendor'])

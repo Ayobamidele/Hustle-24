@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>H24</title>
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-grid.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-grid.min.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-reboot.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-reboot.min.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">	
+	<link rel="stylesheet" href="{% static '/css/vendor.css' %}">
+	<link rel="stylesheet" href="{% static '/css/style.css' %}">
+	<link rel="stylesheet" href="{% static '/icomoon/style.css' %}">
+	<link rel="stylesheet" href="{% static '/icomoon/demo-files/demo.css' %}">
+	<link rel="stylesheet" href="{% static '/css/h24.css' %}">
+</head>
+<body>
+	{% include 'shop/navbar.html' %}
+	<div class="container-fluid mb-5 pt-5 mb-auto">
+		{% block content %}	
+
+
+		{% endblock %}
+	</div>
+
+	<hr>
+<footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
+	
+	<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>
+	<script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+	<script src="{% static '/bootstrap/js/bootstrap.js' %}"></script>
+	<script src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static '/js/vendor.min.js' %}"></script>
+	<script src="{% static '/js/app.js' %}"></script>
+</body>
