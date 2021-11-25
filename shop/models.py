@@ -36,6 +36,9 @@ class ProductImage(models.Model):
 	images = models.FileField()
 	is_main = models.BooleanField(default=False)
 
+	def __str__(self):
+		return str(self.images)
+
 	def make_thumbnail(self, image, size=(300, 200)):
 		img = Image.open(image)
 		img.convert('RGB')
@@ -51,7 +54,6 @@ class Product(models.Model):
 	price = models.DecimalField(max_digits=10, decimal_places=2)
 	discount_price = models.FloatField(blank=True, null=True)
 	image = models.FileField()
-	vendor = models.ManyToManyField(to='accounts.Vendor',related_name='+')
 	productimages = models.ManyToManyField(ProductImage,)
 	thumbnail = models.ImageField(upload_to='photo_path', blank=True, null=True)
 	description = models.TextField(max_length=1000)

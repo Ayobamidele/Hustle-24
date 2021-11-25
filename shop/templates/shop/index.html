@@ -3,11 +3,11 @@
 {% block content %}	
 	<div class="products">
 
-		{% for product in products %}
+		{% for product in productsdict %}
 			<div class="product-card card" >
-			<img class="card-img-top" src=static{{product.image.url}} alt="Card image cap">
+			<img class="card-img-top" src=static{{product.image}} alt="Card image cap">
 			<div class="card-body">
-				<a href="{% url 'product' user %}" class="">
+				<a href="{% url 'product' product.link %}" class="">
 					<h5 class="card-title py-2 my-2">
 							{{ product.title }}
 						</h5>

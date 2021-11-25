@@ -1,153 +1,76 @@
+{% extends 'shop/main.html' %}
 
-  <style>
-    .product-imgs{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-  }
-  .product-content{
-      padding-top: 0;
-  }
-  </style>
+{% block content %}	
+	<section class="mb-5 ">
+		<div class="container">
+			<div class="row gutter-2 gutter-md-4 justify-content-between my-5">
+				<div class="col-lg-5 order-2">
+					<div class="sticky-top">					
+						<div class="row">
+							<div class="col-12">
+								<span class="item-brand">{{ store }}</span>
+								<h1 class="item-title">{{ product.title }}</h1>
+								<span class="item-price">${{ price }}</span>
+							</div>
+						</div>
 
+						<div class="row mb-4">
+							<div class="col-12">
+								<div class="product-price">
+									<p class="last-price py">Old Price: <span>$257.00</span></p>
+									<p class="new-price py">New Price: <span>$249.00 (5%)</span></p>
+								</div>							  
+							</div>
+						</div>
 
-
-
-  <nav class=" navbar-expand-lg fixed-top p-0 ">
-    <div class="navbar  d-flex" style="padding: 0;">
-        <div class="navbar-header py-2">
-            <a href="#" class="navbar-brand px-lg-2 px-1" ><img src="images/h24.png"></a>
-        </div>
-        <div class="navbar-brand ml-lg-5 order-lg-last order-0 py-lg-2 px-1 d-flex" href="#">
-			<a href="javascript:void(0);" style="padding: 0 8px;" class="" onclick="showsearch()">
-				<div class="order-lg-last order-0 d-flex align-items-start account ">
-					<span class="icon icon-search" aria-hidden="true"></span>
+						<div class="row">
+							<div class="col-md-8">
+								<a href="#!" class="btn btn-outline-dark my-2 my-sm-0 btn-block btn-lg">Add to Cart</a>
+							</div>
+						</div>
+					</div>
 				</div>
-			</a>
 
-			<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
-				<span class=" icon icon-shopping-cart"></span>
-	   		</div>
-     <div class=" order-lg-last order-0 d-flex align-items-start account dropdown px-lg-2 px-1">
-          <a href="#" class="d-flex " data-toggle="dropdown">
-            <img class="img-responsive" src="images/shoe_1.jpg" class="dropdown-toggle" data-toggle="dropdown" style="width: 42px;border-radius: 100%;">
-            <span class="icon icon-chevron-down dropbtn px-lg-2 px-1" onclick="myFunction()" style="font-size: 12px;padding: 0;margin: auto 0;"></span>
-          </a>
-          <div class="dropdown-content" id="myDropdown">
-            <a href="#">Link 1</a>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
-          </div>
-      </div>
-       
+				<div class="col-lg-6 order-1">
+					<div class="row gutter-3">
+						<div class="col-12">
+							<figure class="zoom" style="position: relative; overflow: hidden;">
+								<img class="zoom-img" src="{{ STATIC_URL }}{{mainimage}}" alt="Product">
+								<img role="presentation" alt="" src="{{ STATIC_URL }}/{{mainimage}}" class="zoomImg" style="position: absolute; top: -0.892727px; left: -167.6px; opacity: 0; width: 770px; height: 1041px; border: medium none; max-width: none; max-height: none;">
+							</figure>
+						</div>
+						{% for image in productsdict %}
+							<div class="col-12">
+								<figure class="zoom" style="position: relative; overflow: hidden;">
 
-        </div>
-        <div class="collapse navbar-collapse mx-auto py-2" id="mymenu">
-          
+									<img class="zoom-img" src="{{ STATIC_URL }}/{{image.image}}" alt="Product">
+									<img role="presentation" alt="" src="{{ STATIC_URL }}/{{image.image}}" class="zoomImg" style="position: absolute; top: -0.892727px; left: -167.6px; opacity: 0; width: 770px; height: 1041px; border: medium none; max-width: none; max-height: none;">
 
-            <form class="form-inline my-2 my-lg-0 nav navbar-nav mr-auto mx-auto">
-                <input class="form-control mr-sm-2 " style="width: 400px; border-radius: 0px;" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
 
-		
-    </div>
-
-	<div class="shortsearch">
-		<div id="myLinks" class="mx-auto">
-			<form class="form-inline my-2 my-lg-0 nav mr-auto mx-auto d-flex">
-          		<input class="form-control mr-sm-2 "  type="search" placeholder="Search" aria-label="Search">
-          		<button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-      		</form> 
+								</figure>
+							</div>
+						{% endfor %}			
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
-</nav>
+	
+		<div class="tab">
+			<button class="btn tablinks active" onclick="openCity(event, 'London')">Description</button>
+			<button class="btn  tablinks" onclick="openCity(event, 'Paris')">Reviews</button>
+		</div>
 
+		<div id="London" class="tabcontent p-5" style="display: block">
+		<h3>Description</h3>
+		<p>London is the capital city of England.</p>
+		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo eveniet veniam tempora fuga tenetur placeat sapiente architecto illum soluta consequuntur, aspernatur quidem at sequi ipsa!</p>
+		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, perferendis eius. Dignissimos, labore suscipit. Unde.</p>
+		</div>
 
+		<div id="Paris" class="tabcontent p-5">
+		<h3>Reviews</h3>
+		<p>Paris is the capital of France.</p> 
+		</div>
+	</section>
 
-<main>
-
-	<!--Section: Block Content-->
-<section class="mb-5 pt-5">
-  <div class="container">
-    <div class="row gutter-2 gutter-md-4 justify-content-between my-5">
-
-      <div class="col-lg-5 order-2">
-        <div class="sticky-top">
-
-          <div class="row">
-            <div class="col-12">
-              <span class="item-brand">Unre</span>
-              <h1 class="item-title">Red Shoes</h1>
-              <span class="item-price">$82</span>
-            </div>
-          </div>
-
-          <div class="row mb-4">
-            <div class="col-12">
-              <div class = "product-price">
-                <p class = "last-price py">Old Price: <span>$257.00</span></p>
-                <p class = "new-price py">New Price: <span>$249.00 (5%)</span></p>
-              </div>
-              
-            </div>
-           
-          </div>
-
-          <div class="row">
-            <div class="col-md-8">
-              <a href="#!" class="btn btn-outline-dark my-2 my-sm-0 btn-block btn-lg">Add to Cart</a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="col-lg-6 order-1">
-        <div class="row gutter-3">
-          <div class="col-12">
-            <figure class="equal zoom" style="position: relative; overflow: hidden;">
-              <img class="zoom-img" src="images/levi-stute-mFF39sOZSgM-unsplash (copy).jpg" alt="Product">
-            <img role="presentation" alt="" src="images/levi-stute-mFF39sOZSgM-unsplash (copy).jpg" class="zoomImg" style="position: absolute; top: -0.892727px; left: -167.6px; opacity: 0; width: 770px; height: 1041px; border: medium none; max-width: none; max-height: none;"></figure>
-          </div>
-          <div class="col-12">
-            <figure class="equal zoom" style="position: relative; overflow: hidden;">
-              <img class="zoom-img" src="images/casey-horner-RmoWqDCqN2E-unsplash.jpg" alt="Product">
-            <img role="presentation" alt="" src="images/casey-horner-RmoWqDCqN2E-unsplash.jpg" class="zoomImg" style="position: absolute; top: -273.175px; left: -218.8px; opacity: 0; width: 770px; height: 1041px; border: medium none; max-width: none; max-height: none;"></figure>
-          </div>
-          <div class="col-12">
-            <figure class="equal zoom" style="position: relative; overflow: hidden;">
-              <img class="zoom-img" src="images/daniele-colucci--_5dCixJ6FI-unsplash (copy).jpg" alt="Product">
-            <img role="presentation" alt="" src="images/daniele-colucci--_5dCixJ6FI-unsplash (copy).jpg"  class="zoomImg" style="position: absolute; top: 0px; left: 0px; opacity: 0; width: 770px; height: 1041px; border: medium none; max-width: none; max-height: none;"></figure>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-
-
-  
-<div class="tab">
-  <button class="btn tablinks active" onclick="openCity(event, 'London')">Description</button>
-  <button class="btn  tablinks" onclick="openCity(event, 'Paris')">Reviews</button>
-</div>
-
-<div id="London" class="tabcontent p-5" style="display: block">
-  <h3>Description</h3>
-  <p>London is the capital city of England.</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo eveniet veniam tempora fuga tenetur placeat sapiente architecto illum soluta consequuntur, aspernatur quidem at sequi ipsa!</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, perferendis eius. Dignissimos, labore suscipit. Unde.</p>
-</div>
-
-<div id="Paris" class="tabcontent p-5">
-  <h3>Reviews</h3>
-  <p>Paris is the capital of France.</p> 
-</div>
-
-
-
-</main>
-
+{% endblock %}
