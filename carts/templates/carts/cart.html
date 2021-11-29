@@ -10,124 +10,69 @@
 			<div class="row">
 				<div class="col text-center">
 					<h1>Your Cart</h1>
+					<h4 class="h2">Items - {{order.get_cart_items}}</h4>
 			  	</div>
 			</div>
 			</div>
 		</section>
 		
 		
-		<section class=" pt-0">
+		<section class=" pt-3">
 			<div class="container">
-				<div class="row mb-0 d-none d-lg-flex">
-					<div class="col">
-						<div class="row pr-6">
-							<div class="col-lg-6"><span class="eyebrow">Product</span></div>
-							<div class="col-lg-2 text-center"><span class="eyebrow">Price</span></div>
-							<div class="col-lg-2 text-center"><span class="eyebrow">Quantity</span></div>
-							<div class="col-lg-2 text-center"><span class="eyebrow">Total</span></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col cart-item-list cart-item-list-minimal">
-						<!-- cart item -->
-						<div class="cart-item">
-							<div class="row align-items-center">
-								<div class="col-12 col-lg-6">
-									<div class="media media-product">
-										<a href="#!"><img src="images/shoe_1.jpg" alt="Image"></a>
-										<div class="media-body">
-											<h5 class="media-title">nike shoes</h5>
-											<span class="small">Red</span>
-										</div>
-									</div>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<span class="cart-item-price">$120</span>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<div class="counter">
-										<span class="counter-minus icon-minus" field="qty-1"></span>
-										<input type="text" name="qty-1" class="counter-value" value="2" min="1" max="10">
-										<span class="counter-plus icon-plus" field="qty-1"></span>
-									</div>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<span class="cart-item-price">$240</span>
-								</div>
-								<a href="#!" class="cart-item-close"><i class="icon icon-remove"></i></a>
-							</div>
-						</div>
-		
-						<!-- cart item -->
-						<div class="cart-item">
-							<div class="row align-items-center">
-								<div class="col-12 col-lg-6">
-									<div class="media media-product">
-										<a href="#!"><img src="images/shoe_2.jpg" alt="Image"></a>
-										<div class="media-body">
-											<h5 class="media-title">nike shoes</h5>
-											<span class="small">Red</span>
-										</div>
-									</div>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<span class="cart-item-price">$120</span>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<div class="counter">
-										<span class="counter-minus icon-minus" field="qty-1"></span>
-										<input type="text" name="qty-1" class="counter-value" value="2" min="1" max="10">
-										<span class="counter-plus icon-plus" field="qty-1"></span>
-									</div>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<span class="cart-item-price">$240</span>
-								</div>
-								<a href="#!" class="cart-item-close"><i class="icon icon-remove"></i></a>
-							</div>
-						</div>
-
-						<!-- cart item -->
-						<div class="cart-item">
-							<div class="row align-items-center">
-								<div class="col-12 col-lg-6">
-									<div class="media media-product">
-										<a href="#!"><img src="images/shoe_4.jpg" alt="Image"></a>
-										<div class="media-body">
-											<h5 class="media-title">nike shoes</h5>
-											<span class="small">Red</span>
-										</div>
-									</div>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<span class="cart-item-price">$120</span>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<div class="counter">
-										<span class="counter-minus icon-minus" field="qty-1"></span>
-										<input type="text" name="qty-1" class="counter-value" value="2" min="1" max="10">
-										<span class="counter-plus icon-plus" field="qty-1"></span>
-									</div>
-								</div>
-								<div class="col-4 col-lg-2 text-center">
-									<span class="cart-item-price">$240</span>
-								</div>
-								<a href="#!" class="cart-item-close"><i class="icon icon-remove"></i></a>
+				<div class=" py-3">
+					<div class="row mb-0 d-none d-lg-flex">
+						<div class="col">
+							<div class="row pr-6">
+								<div class="col-lg-6"><span class="eyebrow">Product</span></div>
+								<div class="col-lg-2 text-center"><span class="eyebrow">Price</span></div>
+								<div class="col-lg-2 text-center"><span class="eyebrow">Quantity</span></div>
+								<div class="col-lg-2 text-center"><span class="eyebrow">Total</span></div>
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col cart-item-list cart-item-list-minimal">
+							{% for item in items %}
+								<!-- cart item -->
+								<div class="cart-item">
+									<div class="row align-items-center">
+										<div class="col-12 col-lg-6">
+											<div class="media media-product">
+												<a href="#!"><img src=static/images/{{item.product.image}} alt="Image"></a>
+												<div class="media-body">
+													<h5 class="media-title">{{ item.product.title }}</h5>
+												</div>
+											</div>
+										</div>
+										<div class="col-4 col-lg-2 text-center">
+											<span class="cart-item-price">${{ item.product.price }}</span>
+										</div>
+										<div class="col-4 col-lg-2 text-center">
+											<div class="counter">
+												<span data-action="remove" data-product={{item.product.id}} class="counter-minus icon-minus update-cart" field="qty-1"></span>
+												<input type="text" name="qty-1" class="counter-value" value='{{ item.quantity }}' min="1" max="10">
+												<span data-action="add" data-product={{item.product.id}} class="counter-plus icon-plus update-cart" field="qty-1"></span>
+											</div>
+										</div>
+										<div class="col-4 col-lg-2 text-center">
+											<span class="cart-item-price">${{ item.get_total }}</span>
+										</div>
+										<a href="#!" class="cart-item-close"><i class="icon icon-remove"></i></a>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
 				</div>
-
 				<div class="row justify-content-between">
 					<div class="col-md-6 col-lg-4">
 						<div class="inline-block">
 							<span class="eyebrow">Total</span>
-							<h4 class="h2">$360</h4>
+							<h4 class="h2">${{order.get_cart_total}}</h4>
 						</div>
 					</div>
 					<div class="col-md-6 col-lg-4">
-						<a href="checkout.html" class="btn btn-outline-dark my-2 my-sm-0 btn-block mt-1">Checkout</a>
+						<a href="{% url 'checkout' %}" class="btn btn-outline-dark my-2 my-sm-0 btn-block mt-1">Checkout</a>
 					</div>
 				</div>
 			  </div>

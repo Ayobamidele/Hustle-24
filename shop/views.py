@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import *
 from accounts.models import *
 from django.shortcuts import get_object_or_404
-
+from carts.utils import *
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
-
+from carts.models import *
 import locale
 
 # Create your views here.
@@ -22,15 +22,23 @@ from .decorators import *
 
 locale.setlocale(locale.LC_ALL, '')
 
+def generateRefCode():	
+	chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
+	randomstr = ''.join((random.choice(chars)) for x in range(10))
+	return randomstr
+
+
 def home(request,category_slug=None):
-	category = None
 	user = request.user
 	userId = request.user.id
+	ref_code = generateRefCode
+	r=ref_code
+	print(ref_code, r)
 	products = Product.objects.filter(available=True)
-	categories = Category.objects.all()
-	# if category_slug:
-	# 	category = get_object_or_404(Category, slug=category_slug)
-	# 	products = products.fiter(category=category)
+	data = cartData(request)
+	cartItems = data['cartItems']
+	order = data['order']
+	items = data['items']
 	show = True
 	for group in request.user.groups.all():
 		print(group)
@@ -42,18 +50,19 @@ def home(request,category_slug=None):
 	for product in products:
 		title = product.title
 		price = product.price
+		pid = product.id
 		description = product.description
 		link = str(title)
 		image = product.image.url
-		productsdict.append({'title': title,'price': price,'description': description,'link': link, 'image': image})
-	print(productsdict)
+		productsdict.append({'title': title,'price': price,'description': description,'link': link, 'image': image, 'id': pid})
+	print(productsdict,cartItems)
 	# for product in productsdict:
 	context = { 'productsdict':productsdict,
 				'show': show,
 				'id': userId,
-				"user": user,
+				'user': user,
+				'cartItems':cartItems,
 				}
-	
 	return render(request, 'shop/index.html', context)
 
 @login_required(login_url='login')
@@ -74,7 +83,11 @@ def productDetail(request,product):
 	mainimage = product.image.url
 	productsdict = []
 	print(product.description)
+	data = cartData(request)
+	cartItems = data['cartItems']
+	order = data['order']
+	items = data['items']
 	for image in images.all():
 		productsdict.append({'image': str('images/' + str(image))})
-	context = {'product': product,'price': price, 'store': store, 'productsdict': productsdict, 'mainimage': mainimage}
+	context = {'product': product,'price': price, 'store': store, 'productsdict': productsdict, 'mainimage': mainimage, 'cartItems':cartItems,}
 	return render(request,'shop/product.html',context)

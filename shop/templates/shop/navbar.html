@@ -3,7 +3,7 @@
 	
     <div class="navbar  d-flex" style="padding: 0;">
         <div class="navbar-header py-2">
-            <a href="#" class="navbar-brand px-lg-2 px-1" ><img src="{% static '/images/h24.png' %}"></a>
+            <a href="{% url 'home' %}" class="navbar-brand px-lg-2 px-1" ><img src="{% static '/images/h24.png' %}"></a>
         </div>
         <div class="navbar-brand ml-lg-5 order-lg-last order-0 py-lg-2 px-1 d-flex" href="#">
 
@@ -13,9 +13,14 @@
 				</div>
 			</a>
 
+			<a href="{% url 'cart' %}">
 			<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
-				<span class=" icon icon-shopping-cart"></span>
-	   		</div>
+					<span class=" icon icon-shopping-cart"></span>
+					<div>
+						<p id="cart-total">{{ cartItems }}</p>
+					</div>
+				</div>
+			</a>
 			<div class=" order-lg-last order-0 d-flex align-items-start account dropdown px-lg-2 px-1">
 				<a href="#" class="d-flex " data-toggle="dropdown">
 					<img class="img-responsive" src="{% static '/images/shoe_1.jpg' %}" class="dropdown-toggle" data-toggle="dropdown" style="width: 42px;border-radius: 100%;">

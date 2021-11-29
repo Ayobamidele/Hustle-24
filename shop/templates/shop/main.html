@@ -30,7 +30,103 @@
 
 	<hr>
 <footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
-	
+	<script>
+		var user = '{{request.user}}'
+		var regForm = document.getElementById("reg")
+		
+		function display_register() {
+			if (user !== 'AnonymousUser') {
+				regForm.style.display = "none"
+			}
+		}
+		
+		const disp = display_register();
+
+		function getToken(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== '') {
+				const cookies = document.cookie.split(';');
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+		const csrftoken = getToken('csrftoken');
+
+		function getCookie(name) {
+			// Split cookie string and get all individual name=value pairs in an array
+			var cookieArr = document.cookie.split(";");
+			
+			for(var i = 0; i < cookieArr.length; i++) {
+				var cookiePair = cookieArr[i].split("=");
+			
+				/* Removing whitespace at the beginning of the cookie name
+				and compare it with the given string */
+				if(name == cookiePair[0].trim()) {
+					// Decode the cookie value and return
+					return decodeURIComponent (cookiePair[1]);
+				}
+			}
+			return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+		
+		if(cart == undefined) {
+			cart = {}
+			console.log('Cart was created')
+			document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+		}
+		
+
+		console.log('Cart:', cart)
+		
+		
+		function submitFormData(){
+			var form = document.getElementById('regform')
+			
+			var shippingInfo = {
+				'address':null,
+				'city':null,
+				'state':null,
+				'zipcode':null,
+			}
+			var userFormData = {
+				"first_name":null,
+				"last_name":null,
+				"email":null,
+				"password":null,
+			}
+			if(user == 'AnonymousUser'){
+				userFormData.first_name = 'user'
+				userFormData.last_name = 'test'
+				userFormData.email = "user@test.com"
+				userFormData.password = "23eje89e393ioiojd"
+			}
+			var url = "process-order";
+			fetch(url, {
+				method :'POST',
+				headers:{
+					"Content-Type":"application/json",
+					"X-CSRFToken":csrftoken,
+				},
+				body: JSON.stringify({"form": userFormData})
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log('Success:', data);
+				alert('Transaction completed');
+				cart = {}
+				document.cookie ="cart=" + JSON.stringify(cart) + ";domain=; path=/"
+				window.location.href = "{% url 'home' %}"
+			})
+		}
+	</script>	
 	<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>
 	<script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 	<script src="{% static '/bootstrap/js/bootstrap.js' %}"></script>
