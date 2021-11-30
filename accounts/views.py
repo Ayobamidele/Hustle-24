@@ -80,6 +80,7 @@ def loginPage(request):
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			login(request,user)
+			print("sup")
 			for group in request.user.groups.all():
 				if 'Vendor' == str(group):
 					return redirect('home')

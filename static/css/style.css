@@ -9729,7 +9729,7 @@ ul, ol {
   .accordion-portal .card button {
     font-size: 1.125rem; }
     .accordion-portal .card button::before {
-      content: "\eb83";
+      content: "\f067";
       font-size: 1.375rem; }
     .accordion-portal .card button[aria-expanded="true"]::before {
       -webkit-transform: rotate(45deg);

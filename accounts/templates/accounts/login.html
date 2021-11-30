@@ -1,3 +1,84 @@
+{% extends 'shop/main.html' %}
+{% load static %}
+{% block content %}	
+
+<div class="image image-overlay" style="background-image:url({% static '/images/pexels-allan-so-2622170.jpg' %})">
+</div>
+<div class="container">
+	<div class="row justify-content-center align-items-center vh-md-100">
+		<div class="col-md-10 col-lg-5">
+			<div class="accordion accordion-portal" id="accordionExample">
+				<div class="card">
+					<div class="card-header" id="headingOne">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+								Sign In As Customer
+							</button>
+						</h2>
+					</div>
+
+					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+						<div class="card-body">
+							<div class="row mt-2">
+								<div class="form-group col-12">
+									<label for="email1">Email address</label>
+									<input type="email" class="form-control" id="email1">
+								</div>
+								<div class="form-group col-12 mt-1">
+									<label for="password1">Password</label>
+									<input type="password" class="form-control" id="password1">
+								</div>
+								<div class="col-12 mt-1">
+									<div class="custom-control custom-switch mb-2">
+										<input type="checkbox" class="custom-control-input" id="customSwitch1">
+										<label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
+									</div>
+								</div>
+								<div class="col-12 mt-2">
+									<a href="#!" class="btn btn-block btn-primary">Log In</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header" id="headingTwo">
+						<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+								Sign In As Vendor
+							</button>
+						</h2>
+					</div>
+					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+						<form action="" method="POST">
+							<div class="card-body">
+								<div class="row mt-2">
+									{% csrf_token %}
+									<div class="form-group col-12">
+										<label for="username2">Username</label>
+										<input type="text" name="username" class="form-control" id="username2">
+									</div>
+									<div class="form-group col-12 mt-1">
+										<label for="password2">Password</label>
+										<input type="password"  name="password" class="form-control" id="password2">
+									</div>
+									
+								
+									<div class="col-12 mt-2">
+										{% comment %} <a href="#!" type="submit" class="btn btn-block btn-primary">Log In</a> {% endcomment %}
+										<input class="btn login_btn btn btn-block btn-primary" type="submit" value="Log In">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+    
+{% comment %} 
 <form action="" method="POST">
 	{% csrf_token %}
 	<div class=" input-group mb-3">
@@ -25,4 +106,5 @@
 	<div class=" d-flex justify-content-center links">
 		Don't have an account? <a href="{% url 'customer_signup' %}" class=" ml-2">Sign Up</a>
 	</div>
-</div>
+</div> {% endcomment %}
+{% endblock %}

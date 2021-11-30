@@ -32,8 +32,7 @@ def home(request,category_slug=None):
 	user = request.user
 	userId = request.user.id
 	ref_code = generateRefCode
-	r=ref_code
-	print(ref_code, r)
+	# print(ref_code, r)
 	products = Product.objects.filter(available=True)
 	data = cartData(request)
 	cartItems = data['cartItems']
@@ -55,7 +54,7 @@ def home(request,category_slug=None):
 		link = str(title)
 		image = product.image.url
 		productsdict.append({'title': title,'price': price,'description': description,'link': link, 'image': image, 'id': pid})
-	print(productsdict,cartItems)
+	# print(productsdict,cartItems)
 	# for product in productsdict:
 	context = { 'productsdict':productsdict,
 				'show': show,

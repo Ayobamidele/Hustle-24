@@ -40,7 +40,7 @@ def cartData(request):
 		# the mess is here
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		items = order.orderitem_set.all()
-		cartItems = order.get_cart_total
+		cartItems = order.quantity
 	else:
 		cookieData = cookieCart(request)
 		cartItems = cookieData['cartItems']
