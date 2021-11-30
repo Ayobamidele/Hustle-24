@@ -77,19 +77,27 @@ def loginPage(request):
 	if request.method == "POST":
 		username = request.POST.get('username')
 		password = request.POST.get('password')
+		customer = request.POST.get('customer')
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
-			login(request,user)
-			print("sup")
-			for group in request.user.groups.all():
-				if 'Vendor' == str(group):
-					return redirect('home')
-					# return redirect('vendor')
+			print('here1')
+			if customer == "True":
+				print('here2')
+				if user.is_customer:
+					login(request,user)
+					return redirect('customer')
 				else:
-					return redirect('home')
-					# return redirect('customer')
+					messages.info(request, 'Username OR password is incorrect')
+			else:
+				print('here2')
+				if user.is_vendor:
+					login(request,user)
+					print('here3')
+					return redirect(f'/vendor/{username}',)
+				else:
+					messages.info(request, 'Username OR password is incorrect')
 		else:
-			messages.info(request, 'Username OR password is incorrect')
+			messages.info(request, 'Username OR password is incorrect')					
 	return render(request,'accounts/login.html')
 
 
