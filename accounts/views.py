@@ -85,7 +85,7 @@ def loginPage(request):
 				print('here2')
 				if user.is_customer:
 					login(request,user)
-					return redirect('customer')
+					return redirect(f'/customer/{username}',)
 				else:
 					messages.info(request, 'Username OR password is incorrect')
 			else:
@@ -112,6 +112,7 @@ def logoutUser(request):
 def customerPage(request,customer):
 	customer = request.user.customer
 	form = CustomerForm(instance=customer)
+	print(request.user.is_vendor)
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
 		print('ISvalid')

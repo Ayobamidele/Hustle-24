@@ -18,27 +18,25 @@
 					</div>
 
 					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-						<div class="card-body">
-							<div class="row mt-2">
-								<div class="form-group col-12">
-									<label for="email1">Email address</label>
-									<input type="email" class="form-control" id="email1">
-								</div>
-								<div class="form-group col-12 mt-1">
-									<label for="password1">Password</label>
-									<input type="password" class="form-control" id="password1">
-								</div>
-								<div class="col-12 mt-1">
-									<div class="custom-control custom-switch mb-2">
-										<input type="checkbox" class="custom-control-input" id="customSwitch1">
-										<label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
+						<form action="" method="POST">
+							<div class="card-body">
+								<div class="row mt-2">
+									{% csrf_token %}
+									<div class="form-group col-12">
+										<label for="username1">Username</label>
+										<input type="text" name="username" class="form-control" id="username1">
+									</div>
+									<div class="form-group col-12 mt-1">
+										<label for="password1">Password</label>
+										<input type="password"  name="password" class="form-control" id="password1">
+									</div>
+									<input type="hidden" name="customer" value="True" />
+									<div class="col-12 mt-2" style="">
+										<input class="btn btn-block btn-primary" type="submit" value="Log In" style="box-shadow: none;" >
 									</div>
 								</div>
-								<div class="col-12 mt-2">
-									<a href="#!" class="btn btn-block btn-primary">Log In</a>
-								</div>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 				<div class="card">
