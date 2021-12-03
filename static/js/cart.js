@@ -15,6 +15,28 @@ for (i = 0; i < updateBtns.length; i++){
 	})
 }
 
+function updateUserOrder(productId, action) {
+	console.log('User is authenticated, sending data ...')
+	
+	var url = '/cart/update-item'	
+
+	fetch(url, {
+		method:"POST",
+		headers:{
+			"Content-Type":"appication/json",
+			"X-CSRFToken":csrftoken
+		},
+		body:JSON.stringify({"productId":productId, "action":action})
+	})
+	.then((response) => {
+		return response.json();
+	})
+	.then((data) => {
+		console.log('Data:', data)
+		location.reload()
+	})
+}
+
 function addCookieItem(productId, action) {
 	console.log('User is not authenticated')	
 	if (action == 'add'){
@@ -36,26 +58,4 @@ function addCookieItem(productId, action) {
 	console.log('Cart:', cart)
 	document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
 	location.reload()
-}
-
-function updateUserOrder(productId, action) {
-	console.log('User is authenticated, sending data ...')
-	
-	var url = 'cart/update-item'	
-
-	fetch(url, {
-		method:'POST',
-		headers:{
-			'Content-Type':'appication/json',
-			'X-CSRFToken':csrftoken,
-		},
-		body:JSON.stringify({'productId':productId, 'action':action})
-	})
-	.then((response) => {
-		return response.json();
-	})
-	.then((data) => {
-		console.log('Data:', data)
-		location.reload()
-	})
 }

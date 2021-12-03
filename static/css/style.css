@@ -12793,3 +12793,10 @@ div.code-toolbar > .toolbar {
 .pt-2, .py-2 {
     padding-top: 0 !important;
 }
+.invert {
+  mix-blend-mode: difference;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* text-shadow:1px 1px #333; */
+}

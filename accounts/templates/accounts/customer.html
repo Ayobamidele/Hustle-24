@@ -5,11 +5,11 @@
 	<div class="container">
 	  <div class="row gutter-2 gutter-md-4 align-items-end">
 		<div class="col-md-6 text-center text-md-left">
-		  <h1 class="mb-0">Michael Campbell</h1>
-		  <span class="text-muted">Michael.Campbell@qwerty.com</span>
+		  <h1 class="mb-0 invert">{{username}}</h1>
+		  <span class="text-muted invert">{{form.email.value}}</span>
 		</div>
 		<div class="col-md-6 text-center text-md-right">
-		  <a href="#!" class="btn btn-sm btn-outline-white">Sign out</a>
+		  <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-white invert">Sign out</a>
 		</div>
 	  </div>
 	</div>
@@ -49,19 +49,22 @@
 					<div class="col-md-6">
 					  <div class="form-group">
 						<label for="exampleInput1">First Name</label>
-						<input id="exampleInput1" type="text" class="form-control" placeholder="First name">
+							{{form.firstname}}
+						{% comment %} <input id="exampleInput1" type="text" class="form-control" placeholder="First name"> {% endcomment %}
 					  </div>
 					</div>
 					<div class="col-md-6">
 					  <div class="form-group">
 						<label for="exampleInput2">Last Name</label>
-						<input id="exampleInput2" type="text" class="form-control" placeholder="Last name">
+							{{form.lastname}}
+						{% comment %} <input id="exampleInput2" type="text" class="form-control" placeholder="Last name"> {% endcomment %}
 					  </div>
 					</div>
 					<div class="col-md-6">
 					  <div class="form-group">
 						<label for="exampleInput3">Username</label>
-						<input id="exampleInput3" type="text" class="form-control" placeholder="Email">
+							{{form.username}}
+						{% comment %} <input id="exampleInput3" type="text" class="form-control" placeholder="Email"> {% endcomment %}
 					  </div>
 					</div>
 
@@ -69,23 +72,27 @@
 					<div class="col-md-6">
 					  <div class="form-group">
 						<label for="exampleInput-6">Gender</label>
-						<select id="exampleInput-6" class="custom-select custom-select-lg">
+						{{form.gender}}
+
+						{% comment %} <select id="exampleInput-6" class="custom-select custom-select-lg">
 						  <option selected="">Open this select menu</option>
 						  <option value="1">Male</option>
 						  <option value="2">Female</option>
-						</select>
+						</select> {% endcomment %}
 					  </div>
 					</div>
 					<div class="col-md-6">
 					  <div class="form-group">
 						<label for="exampleInput6">Telephone</label>
-						<input id="exampleInput6" type="text" class="form-control" placeholder="Telephone">
+						{{form.phone_number}}
+						{% comment %} <input id="exampleInput6" type="text" class="form-control" placeholder="Telephone"> {% endcomment %}
 					  </div>
 					</div>
 					<div class="col-md-6">
 					  <div class="form-group">
 						<label for="exampleInput7">Email</label>
-						<input id="exampleInput7" type="text" class="form-control" placeholder="Email">
+						{{form.email}}
+						{% comment %} <input id="exampleInput7" type="text" class="form-control" placeholder="Email"> {% endcomment %}
 					  </div>
 					</div>
 				  </div>
@@ -100,8 +107,15 @@
 					<div class="col-12">
 					  <div class="form-group">
 						<label for="exampleInput8">Old Password</label>
-						<input id="exampleInput8" type="password" class="form-control" placeholder="Password">
-					  </div>
+						<input id="oldpassword" type="password" class="form-control" placeholder="Password">
+						
+						<div class="col-12 mt-1">
+							<div class="custom-control custom-switch mb-2">
+								<input type="checkbox" onclick="showPassword()" class="custom-control-input" id="customSwitch1">
+								<label class="custom-control-label" for="customSwitch1">Show Password</label>
+							</div>
+						</div>						
+					</div>
 					</div>
 					<div class="col-md-6">
 					  <div class="form-group">
@@ -311,4 +325,10 @@
 	<input class="btn btn-primary" type="submit" name="Update Information">
 </form>
 {{ form.error }}
+{% if form.instance.some_field %}
+      {{form.instance.some_field}}
+{% else %}
+      {{form.data.some_field}}
+{% endif %}
+
 {% endblock %}

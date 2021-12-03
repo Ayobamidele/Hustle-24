@@ -62,3 +62,11 @@ var myDropdown = document.getElementById("myDropdown");
   }
 }
 }
+function showPassword() {
+	var x = document.getElementById("oldpassword");
+	if (x.type === "password") {
+	  x.type = "text";
+	} else {
+	  x.type = "password";
+	}
+  } 

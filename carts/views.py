@@ -8,7 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from .decorators import *
 from .models import *
-from .utils import cookieCart, cartData
+from .utils import cookieCart, cartData, guestOrder
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -39,14 +39,21 @@ def generateRefCode():
 
 
 def cart(request):
+	userPicture = request.user
+	if request.user.is_authenticated:
+		if request.user.is_customer:
+			userPicture = request.user.customer
+		elif request.user.is_vendor:
+			userPicture = request.user.vendor
 	data = cartData(request)
 	cartItems = data['cartItems']
 	order = data['order']
 	items = data['items']
-	context = {'items':items, 'order':order, 'cartItems':cartItems}
+	context = {'items':items, 'order':order, 'cartItems':cartItems, 'userPicture':userPicture}
 	return render(request, 'carts/cart.html', context)
 
 def updateItem(request):
+	print(request.body,22222)
 	data = json.loads(request.body)
 	productId = data['productId']
 	action = data['action']
@@ -73,6 +80,12 @@ def updateItem(request):
 	return JsonResponse('Item was added', safe=False)
 
 def checkout(request):
+	userPicture = request.user
+	if request.user.is_authenticated:
+		if request.user.is_customer:
+			userPicture = request.user.customer
+		elif request.user.is_vendor:
+			userPicture = request.user.vendor
 	data = cartData(request)
 	cartItems = data['cartItems']
 	order = data['order']
@@ -86,7 +99,8 @@ def checkout(request):
 	context = {'items':items, 'order':order,
 				'cartItems':cartItems,
 				'display_register':display_register,
-				'regform': form
+				'regform': form,
+				'userPicture': userPicture
 			}
 	return render(request, 'carts/checkout.html', context)
 
@@ -94,7 +108,15 @@ def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer=customer,complete=True)
+		order, created = Order.objects.get_or_create(complete=False,customer=customer)
+		order.complete=True
+		order.is_ordered=True
+		order.ref_code=generateRefCode()
+		order.save()
+		orderItems = order.orderitem_set.all()
+		for orderItem in orderItems:
+			orderItem.is_ordered=True
+			orderItem.save()
 	else:
 		cookieData = cookieCart(request)
 		cartItems = cookieData['cartItems']
@@ -151,4 +173,4 @@ def processOrder(request):
 		# if total == float(order.get_cart_total):
 		# 	order.complete = True
 		# 	order.save()
-	return JsonResponse ('Payment complete!', safe=False)
+	return JsonResponse('Payment complete!', safe=False)

@@ -15,7 +15,9 @@ from .models import *
 from .forms import *
 from .decorators import *
 from shop.models import *
-
+import json
+from carts.models import *
+from carts.utils import cookieCart, cartData, guestOrder
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -84,6 +86,32 @@ def loginPage(request):
 			if customer == "True":
 				print('here2')
 				if user.is_customer:
+					try:
+						cart = json.loads(request.COOKIES['cart'])
+						customer = Customer.objects.get(user=user)
+						order, created = Order.objects.get_or_create(customer=customer, complete=False)
+						print(order)
+						print(cart)
+						cookieData = cookieCart(request)
+						items = cookieData['items']
+						for item in items:
+							productitem = Product.objects.get(id=item['product']['id'])
+							print('here3')
+							print(productitem,item['quantity'])
+							# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
+							orderI=OrderItem.objects.create(
+															order=order, 
+															product=productitem, 
+															quantity=item['quantity'], 
+														)
+							order.quantity += 1
+							order.save()
+							print('here4')
+							orderI.save()
+						request.COOKIES['cart'].clear()
+						print(cart, "cccccccc")
+					except:
+						cart = {}
 					login(request,user)
 					return redirect(f'/customer/{username}',)
 				else:
@@ -111,28 +139,42 @@ def logoutUser(request):
 @allowed_users(allowed_roles=['Customer'])
 def customerPage(request,customer):
 	customer = request.user.customer
+	userPicture = request.user
+	if request.user.is_authenticated:
+		if request.user.is_customer:
+			userPicture = request.user.customer
+		elif request.user.is_vendor:
+			userPicture = request.user.vendor
 	form = CustomerForm(instance=customer)
+	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
 	print(request.user.is_vendor)
+	print('errr eeeee'.title(), form.instance.firstname, username)
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
 		print('ISvalid')
 		if form.is_valid():
 			print('valid')
 			form.save()
-	context = {	"customer": customer, "form": form,}
+	context = {	"customer": customer, "form": form,"username": username, "userPicture": userPicture}
 	return render(request,'accounts/customer.html',context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Vendor'])
 def vendorPage(request,vendor):
 	vendor = request.user.vendor
+	userPicture = request.user
+	if request.user.is_authenticated:
+		if request.user.is_customer:
+			userPicture = request.user.customer
+		elif request.user.is_vendor:
+			userPicture = request.user.vendor
 	shop = Shop.objects.get(vendor=vendor).shopname
 	form = VendorForm(instance=vendor)
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=vendor)
 		if form.is_valid():
 			form.save()
-	context = {	"vendor": vendor, "form": form,'store': shop}
+	context = {	"vendor": vendor, "form": form,'store': shop,"userPicture": userPicture}
 	return render(request,'accounts/vendor.html',context)
 
 @login_required(login_url='login')

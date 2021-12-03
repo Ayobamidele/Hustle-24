@@ -18,29 +18,10 @@
 	<link rel="stylesheet" href="{% static '/icomoon/style.css' %}">
 	<link rel="stylesheet" href="{% static '/icomoon/demo-files/demo.css' %}">
 	<link rel="stylesheet" href="{% static '/css/h24.css' %}">
-</head>
-<body>
-	{% include 'shop/navbar.html' %}
-	<div class="container-fluid mb-5 pt-5 mb-auto">
-		{% block content %}	
 
-
-		{% endblock %}
-	</div>
-
-	<hr>
-<footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
 	<script>
 		var user = '{{request.user}}'
-		var regForm = document.getElementById("reg")
 		
-		function display_register() {
-			if (user !== 'AnonymousUser') {
-				regForm.style.display = "none"
-			}
-		}
-		
-		const disp = display_register();
 
 		function getToken(name) {
 			let cookieValue = null;
@@ -50,6 +31,7 @@
 					const cookie = cookies[i].trim();
 					// Does this cookie string begin with the name we want?
 					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						console.log("heres 1233")
 						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
 						break;
 					}
@@ -87,46 +69,19 @@
 		console.log('Cart:', cart)
 		
 		
-		function submitFormData(){
-			var form = document.getElementById('regform')
-			
-			var shippingInfo = {
-				'address':null,
-				'city':null,
-				'state':null,
-				'zipcode':null,
-			}
-			var userFormData = {
-				"first_name":null,
-				"last_name":null,
-				"email":null,
-				"password":null,
-			}
-			if(user == 'AnonymousUser'){
-				userFormData.first_name = 'user'
-				userFormData.last_name = 'test'
-				userFormData.email = "user@test.com"
-				userFormData.password = "23eje89e393ioiojd"
-			}
-			var url = "process-order";
-			fetch(url, {
-				method :'POST',
-				headers:{
-					"Content-Type":"application/json",
-					"X-CSRFToken":csrftoken,
-				},
-				body: JSON.stringify({"form": userFormData})
-			})
-			.then((response) => response.json())
-			.then((data) => {
-				console.log('Success:', data);
-				alert('Transaction completed');
-				cart = {}
-				document.cookie ="cart=" + JSON.stringify(cart) + ";domain=; path=/"
-				window.location.href = "{% url 'home' %}"
-			})
-		}
 	</script>	
+</head>
+<body>
+	{% include 'shop/navbar.html' %}
+	<div class="container-fluid mb-5 pt-5 mb-auto">
+		{% block content %}	
+
+
+		{% endblock %}
+	</div>
+
+	<hr>
+<footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
 	<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>
 	<script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 	<script src="{% static '/bootstrap/js/bootstrap.js' %}"></script>
