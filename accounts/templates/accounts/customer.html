@@ -3,203 +3,196 @@
 {% block content %}	
 <section class="hero hero-small bg-blac text-white parallax" style="background-image: url({% static  customer.profile_pic.url %});background-position: center;background-repeat: no-repeat;background-size: cover;position: relative;">
 	<div class="container">
-	  <div class="row gutter-2 gutter-md-4 align-items-end">
-		<div class="col-md-6 text-center text-md-left">
-		  <h1 class="mb-0 invert">{{username}}</h1>
-		  <span class="text-muted invert">{{form.email.value}}</span>
+		<div class="row gutter-2 gutter-md-4 align-items-end">
+			<div class="col-md-6 text-center text-md-left">
+				<h1 class="mb-0 invert">{{username}}</h1>
+				<span class="text-muted invert">{{form.email.value}}</span>
+			</div>
+			<div class="col-md-6 text-center text-md-right">
+				<a href="{% url 'logout' %}" class="btn btn-sm btn-outline-white invert">Sign out</a>
+			</div>
 		</div>
-		<div class="col-md-6 text-center text-md-right">
-		  <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-white invert">Sign out</a>
-		</div>
-	  </div>
 	</div>
-  </section>
+</section>
 
 
 <div class=" my-10">
-
   <!-- listing -->
-  <section class="pt-5">
-	<div class="container">
-	  <div class="row gutter-4 justify-content-between">
-
-
-		<!-- sidebar -->
-		<aside class="col-lg-3">
-		  <div class="nav nav-pills flex-column lavalamp" id="sidebar-1" role="tablist">
-			<a class="nav-link dash active" data-toggle="tab" href="#sidebar-1-1" role="tab"  aria-controls="sidebar-1" aria-selected="true">Profile</a>
-			<a class="nav-link dash" data-toggle="tab" href="#sidebar-1-2" role="tab" aria-controls="sidebar-1-2" aria-selected="false">Orders</a>
-		  </div>
-		</aside>
-		<!-- / sidebar -->
-
-		<!-- content -->
-		<div class="col-lg-9">
-		  <div class="row">
-			<div class="col">
-			  <div class="tab-content" id="myTabContent">
-
-				<div class="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
-					<form action="" method="POST" enctype="multipart/form-data">
-						{% csrf_token %}
-						<div class="row mb-2">
-							<div class="col-12">
-								<h3>Personal Data</h3>
-							</div>
-						</div>
-						<div class="row gutter-1">
-							<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleInput1">First Name</label>
-									{{form.firstname}}
-								{% comment %} <input id="exampleInput1" type="text" class="form-control" placeholder="First name"> {% endcomment %}
-							</div>
-							</div>
-							<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleInput2">Last Name</label>
-									{{form.lastname}}
-								{% comment %} <input id="exampleInput2" type="text" class="form-control" placeholder="Last name"> {% endcomment %}
-							</div>
-							</div>
-							<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleInput3">Username</label>
-									{{form.username}}
-								{% comment %} <input id="exampleInput3" type="text" class="form-control" placeholder="Email"> {% endcomment %}
-							</div>
-							</div>
-							<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleInput-6">Gender</label>
-								{{form.gender}}
-
-								{% comment %} <select id="exampleInput-6" class="custom-select custom-select-lg">
-								<option selected="">Open this select menu</option>
-								<option value="1">Male</option>
-								<option value="2">Female</option>
-								</select> {% endcomment %}
-							</div>
-							</div>
-							<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleInput6">Telephone</label>
-								{{form.phone_number}}
-								{% comment %} <input id="exampleInput6" type="text" class="form-control" placeholder="Telephone"> {% endcomment %}
-							</div>
-							</div>
-							<div class="col-md-6">
-							<div class="form-group">
-								<label for="exampleInput7">Email</label>
-								{{form.email}}
-								{% comment %} <input id="exampleInput7" type="text" class="form-control" placeholder="Email"> {% endcomment %}
-							</div>
-							</div>
-						</div>
-							<div class="row mb-2 mt-6">
-								<div class="col-12">
-								<h3>Password</h3>
-								</div>
-							</div>
-							<div class="row gutter-1">
-								<div class="col-12">
-									<div class="form-group">
-										<label for="exampleInput8">Old Password</label>
-										<input id="oldpassword" type="password" class="form-control" placeholder="Password">
-										
-										<div class="col-12 mt-1">
-											<div class="custom-control custom-switch mb-2">
-												<input type="checkbox" onclick="showPassword()" class="custom-control-input" id="customSwitch1">
-												<label class="custom-control-label" for="customSwitch1">Show Password</label>
-											</div>
-										</div>						
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="exampleInput9">New Password</label>
-										<input id="exampleInput9" type="password" class="form-control" placeholder="Password">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="exampleInput10">Retype New Password</label>
-										<input id="exampleInput10" type="password" class="form-control" placeholder="Password">
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col">
-									<input class="btn btn-primary" type="submit" value="Save Changes" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
-								</div>
-							</div>
-					</form>
-				</div>
-
-				<!-- orders -->
-				<div class="tab-pane fade" id="sidebar-1-2" role="tabpanel" aria-labelledby="sidebar-1-2">
-				  <div class="row">
-					<div class="col-12">
-					  <h3 class="mb-0">Orders</h3>
-					  <span class="eyebrow">{{totalOrders}} Items  23eje89e393ioiojd</span>
+	<section class="pt-5">
+		<div class="container">
+			<div class="row gutter-4 justify-content-between">
+				<!-- sidebar -->
+				<aside class="col-lg-3">
+					<div class="nav nav-pills flex-column lavalamp" id="sidebar-1" role="tablist">
+						<a class="nav-link dash active" data-toggle="tab" href="#sidebar-1-1" role="tab"  aria-controls="sidebar-1" aria-selected="true">Profile</a>
+						<a class="nav-link dash" data-toggle="tab" href="#sidebar-1-2" role="tab" aria-controls="sidebar-1-2" aria-selected="false">Orders</a>
+						<a class="nav-link dash" data-toggle="tab" href="#sidebar-1-3" role="tab" aria-controls="sidebar-1-3" aria-selected="false">Orders</a>
 					</div>
-				  </div>
-				  <div class="row gutter-2">
-						{% for order in orders %}
-							{% if order.order.quantity < 1 %}
-									<div class="col-12" style="display: none;">
+				</aside>
+				<!-- / sidebar -->
+
+				<!-- content -->
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col">
+							<div class="tab-content" id="myTabContent">
+								<div class="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
+									<form action="" method="POST" enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="row mb-2">
+											<div class="col-12">
+												<h3>Personal Data</h3>
+											</div>
+										</div>
+										<div class="row gutter-1">
+											<div class="col-md-6">
+											<div class="form-group">
+												<label for="exampleInput1">First Name</label>
+													{{form.firstname}}
+												{% comment %} <input id="exampleInput1" type="text" class="form-control" placeholder="First name"> {% endcomment %}
+											</div>
+											</div>
+											<div class="col-md-6">
+											<div class="form-group">
+												<label for="exampleInput2">Last Name</label>
+													{{form.lastname}}
+												{% comment %} <input id="exampleInput2" type="text" class="form-control" placeholder="Last name"> {% endcomment %}
+											</div>
+											</div>
+											<div class="col-md-6">
+											<div class="form-group">
+												<label for="exampleInput3">Username</label>
+													{{form.username}}
+												{% comment %} <input id="exampleInput3" type="text" class="form-control" placeholder="Email"> {% endcomment %}
+											</div>
+											</div>
+											<div class="col-md-6">
+											<div class="form-group">
+												<label for="exampleInput-6">Gender</label>
+												{{form.gender}}
+
+												{% comment %} <select id="exampleInput-6" class="custom-select custom-select-lg">
+												<option selected="">Open this select menu</option>
+												<option value="1">Male</option>
+												<option value="2">Female</option>
+												</select> {% endcomment %}
+											</div>
+											</div>
+											<div class="col-md-6">
+											<div class="form-group">
+												<label for="exampleInput6">Telephone</label>
+												{{form.phone_number}}
+												{% comment %} <input id="exampleInput6" type="text" class="form-control" placeholder="Telephone"> {% endcomment %}
+											</div>
+											</div>
+											<div class="col-md-6">
+											<div class="form-group">
+												<label for="exampleInput7">Email</label>
+												{{form.email}}
+												{% comment %} <input id="exampleInput7" type="text" class="form-control" placeholder="Email"> {% endcomment %}
+											</div>
+											</div>
+										</div>
+										<div class="row mb-2 mt-6">
+											<div class="col-12">
+											<h3>Password</h3>
+											</div>
+										</div>
+										<div class="row gutter-1">
+											<div class="col-12">
+												<div class="form-group">
+													<label for="exampleInput8">Old Password</label>
+													<input id="oldpassword" type="password" class="form-control" placeholder="Password">
+													
+													<div class="col-12 mt-1">
+														<div class="custom-control custom-switch mb-2">
+															<input type="checkbox" onclick="showPassword()" class="custom-control-input" id="customSwitch1">
+															<label class="custom-control-label" for="customSwitch1">Show Password</label>
+														</div>
+													</div>						
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="exampleInput9">New Password</label>
+													<input id="exampleInput9" type="password" class="form-control" placeholder="Password">
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="exampleInput10">Retype New Password</label>
+													<input id="exampleInput10" type="password" class="form-control" placeholder="Password">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col">
+												<input class="btn btn-primary" type="submit" value="Save Changes" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+											</div>
+										</div>
+									</form>
+								</div>
+								<!-- orders -->
+								<div class="tab-pane fade" id="sidebar-1-2" role="tabpanel" aria-labelledby="sidebar-1-2">
+									<div class="row">
+										<div class="col-12">
+											<h3 class="mb-0">Orders</h3>
+											<span class="eyebrow">{{totalOrders}} Items  23eje89e393ioiojd</span>
+										</div>
 									</div>
-							{% else %}
-									<div class="col-12">
-										<div class="order">
-										<div class="row align-items-center">
-											<div class="col-lg-4">
-												{% if order.order.id %}
-													<h3 class="order-number">Order {{order.order.id}}</h3>
-													<a href="#!" class="action eyebrow ">View Order</a>
+									<div class="row gutter-2">
+											{% for order in orders %}
+												{% if order.order.quantity < 1 %}
+														<div class="col-12" style="display: none;">
+														</div>
 												{% else %}
-													<h3 class="order-number">Order (current)</h3>
-													<a href="#!" class="action eyebrow ">View Order</a>
+														<div class="col-12">
+															<div class="order">
+															<div class="row align-items-center">
+																<div class="col-lg-4">
+																	{% if order.order.id %}
+																		<h3 class="order-number">Order {{order.order.id}}</h3>
+																		<a href="#!" class="action eyebrow ">View Order</a>
+																	{% else %}
+																		<h3 class="order-number">Order (current)</h3>
+																		<a href="#!" class="action eyebrow ">View Order</a>
+																	{% endif %}
+																</div>
+																{% if order.order.is_ordered %}
+																	<div class="col-lg-4">
+																		<span class="order-status sent">Sent</span>
+																	</div>
+																{% else %}
+																	<div class="col-lg-4">
+																		<span class="order-status canceled">Active</span>
+																	</div>
+																{% endif %}
+																<div class="col-lg-4">
+																	<ul class="order-preview justify-content-end">
+																		{% for image in order.order.orderItems %}
+																			<li>
+																				<a href={% url 'product'  image.product.title %} title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top">
+																					<img src={% static  image.product.image.url %} alt="Red Analog Magazine Rack">
+																				</a>
+																			</li>
+																		{% endfor %}	
+																	</ul>
+																</div>
+															</div>
+															</div>
+														</div>
 												{% endif %}
-											</div>
-											{% if order.order.is_ordered %}
-												<div class="col-lg-4">
-													<span class="order-status sent">Sent</span>
-												</div>
-											{% else %}
-												<div class="col-lg-4">
-													<span class="order-status canceled">Active</span>
-												</div>
-											{% endif %}
-											<div class="col-lg-4">
-												<ul class="order-preview justify-content-end">
-													{% for image in order.order.orderItems %}
-														<li>
-															<a href={% url 'product'  image.product.title %} title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top">
-																<img src={% static  image.product.image.url %} alt="Red Analog Magazine Rack">
-															</a>
-														</li>
-													{% endfor %}	
-												</ul>
-											</div>
-										</div>
-										</div>
+											{% endfor %}
 									</div>
-							{% endif %}
-						{% endfor %}
-				  </div>
-				</div>
-				</div>
-			  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>				
+				<!-- / content -->
 			</div>
 		</div>
-		<!-- / content -->
-
-	  </div>
-	</div>
-  </section>
-
-
+	</section>
 </div>
 
 
