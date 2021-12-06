@@ -50,7 +50,7 @@ class OrderItem(models.Model):
 		return self.quantity * self.product.price
 
 class ShippingAddressCustomer(models.Model):
-	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
 	address = models.CharField(max_length=200, null=False)
 	city = models.CharField(max_length=200, null=False)
 	state = models.CharField(max_length=200, null=False)
@@ -59,9 +59,42 @@ class ShippingAddressCustomer(models.Model):
 
 	def __str__(self):
 		return f'{self.address} - {self.customer}'
+
+
+class ShippingPaymentCustomer(models.Model):
+	MONTH_CHOICES = [(i, i) for i in range(1, 12)]
+	YEAR_CHOICES = [(i, i) for i in range(2019, 2036)]
+	
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+	card_number= models.PositiveBigIntegerField( null=False)
+	name_on_card = models.CharField(max_length=200, null=False)
+	expiry_month = models.CharField(max_length=2,choices=MONTH_CHOICES, null=False)
+	expiry_year = models.CharField(max_length=4, choices=YEAR_CHOICES, null=False)
+	security_code = models.CharField(max_length=4, null=False)
+	date_added = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f'{self.card_number} - {self.customer}'
+
+class ShippingPaymentOrder(models.Model):
+	MONTH_CHOICES = [(i, i) for i in range(1, 12)]
+	YEAR_CHOICES = [(i, i) for i in range(2019, 2036)]
+	
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
+	card_number= models.PositiveBigIntegerField( null=False)
+	name_on_card = models.CharField(max_length=200, null=False)
+	expiry_month = models.CharField(max_length=2, choices=MONTH_CHOICES, null=False)
+	expiry_year = models.CharField(max_length=4, choices=YEAR_CHOICES, null=False)
+	security_code = models.CharField(max_length=4, null=False)
+	date_added = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f'{self.card_number} - {self.customer}'
+
 class ShippingAddressOrder(models.Model):
-	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
-	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
 	address = models.CharField(max_length=200, null=False)
 	city = models.CharField(max_length=200, null=False)
 	state = models.CharField(max_length=200, null=False)

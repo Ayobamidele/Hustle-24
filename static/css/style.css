@@ -3111,7 +3111,7 @@ input[type="button"].btn-block {
   word-wrap: break-word;
   background-color: transparent;
   background-clip: border-box;
-  border: 1px solid #dddddd; }
+  border: none; }
   .card > hr {
     margin-right: 0;
     margin-left: 0; }
