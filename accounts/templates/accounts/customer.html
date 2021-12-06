@@ -40,102 +40,100 @@
 			  <div class="tab-content" id="myTabContent">
 
 				<div class="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
-				  <div class="row mb-2">
-					<div class="col-12">
-					  <h3>Personal Data</h3>
-					</div>
-				  </div>
-				  <div class="row gutter-1">
-					<div class="col-md-6">
-					  <div class="form-group">
-						<label for="exampleInput1">First Name</label>
-							{{form.firstname}}
-						{% comment %} <input id="exampleInput1" type="text" class="form-control" placeholder="First name"> {% endcomment %}
-					  </div>
-					</div>
-					<div class="col-md-6">
-					  <div class="form-group">
-						<label for="exampleInput2">Last Name</label>
-							{{form.lastname}}
-						{% comment %} <input id="exampleInput2" type="text" class="form-control" placeholder="Last name"> {% endcomment %}
-					  </div>
-					</div>
-					<div class="col-md-6">
-					  <div class="form-group">
-						<label for="exampleInput3">Username</label>
-							{{form.username}}
-						{% comment %} <input id="exampleInput3" type="text" class="form-control" placeholder="Email"> {% endcomment %}
-					  </div>
-					</div>
-
-
-					<div class="col-md-6">
-					  <div class="form-group">
-						<label for="exampleInput-6">Gender</label>
-						{{form.gender}}
-
-						{% comment %} <select id="exampleInput-6" class="custom-select custom-select-lg">
-						  <option selected="">Open this select menu</option>
-						  <option value="1">Male</option>
-						  <option value="2">Female</option>
-						</select> {% endcomment %}
-					  </div>
-					</div>
-					<div class="col-md-6">
-					  <div class="form-group">
-						<label for="exampleInput6">Telephone</label>
-						{{form.phone_number}}
-						{% comment %} <input id="exampleInput6" type="text" class="form-control" placeholder="Telephone"> {% endcomment %}
-					  </div>
-					</div>
-					<div class="col-md-6">
-					  <div class="form-group">
-						<label for="exampleInput7">Email</label>
-						{{form.email}}
-						{% comment %} <input id="exampleInput7" type="text" class="form-control" placeholder="Email"> {% endcomment %}
-					  </div>
-					</div>
-				  </div>
-
-
-				  <div class="row mb-2 mt-6">
-					<div class="col-12">
-					  <h3>Password</h3>
-					</div>
-				  </div>
-				  <div class="row gutter-1">
-					<div class="col-12">
-					  <div class="form-group">
-						<label for="exampleInput8">Old Password</label>
-						<input id="oldpassword" type="password" class="form-control" placeholder="Password">
-						
-						<div class="col-12 mt-1">
-							<div class="custom-control custom-switch mb-2">
-								<input type="checkbox" onclick="showPassword()" class="custom-control-input" id="customSwitch1">
-								<label class="custom-control-label" for="customSwitch1">Show Password</label>
+					<form action="" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="row mb-2">
+							<div class="col-12">
+								<h3>Personal Data</h3>
 							</div>
-						</div>						
-					</div>
-					</div>
-					<div class="col-md-6">
-					  <div class="form-group">
-						<label for="exampleInput9">New Password</label>
-						<input id="exampleInput9" type="password" class="form-control" placeholder="Password">
-					  </div>
-					</div>
-					<div class="col-md-6">
-					  <div class="form-group">
-						<label for="exampleInput10">Retype New Password</label>
-						<input id="exampleInput10" type="password" class="form-control" placeholder="Password">
-					  </div>
-					</div>
-				  </div>
+						</div>
+						<div class="row gutter-1">
+							<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInput1">First Name</label>
+									{{form.firstname}}
+								{% comment %} <input id="exampleInput1" type="text" class="form-control" placeholder="First name"> {% endcomment %}
+							</div>
+							</div>
+							<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInput2">Last Name</label>
+									{{form.lastname}}
+								{% comment %} <input id="exampleInput2" type="text" class="form-control" placeholder="Last name"> {% endcomment %}
+							</div>
+							</div>
+							<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInput3">Username</label>
+									{{form.username}}
+								{% comment %} <input id="exampleInput3" type="text" class="form-control" placeholder="Email"> {% endcomment %}
+							</div>
+							</div>
+							<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInput-6">Gender</label>
+								{{form.gender}}
 
-				  <div class="row">
-					<div class="col">
-					  <a href="#!" class="btn btn-primary">Save Changes</a>
-					</div>
-				  </div>
+								{% comment %} <select id="exampleInput-6" class="custom-select custom-select-lg">
+								<option selected="">Open this select menu</option>
+								<option value="1">Male</option>
+								<option value="2">Female</option>
+								</select> {% endcomment %}
+							</div>
+							</div>
+							<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInput6">Telephone</label>
+								{{form.phone_number}}
+								{% comment %} <input id="exampleInput6" type="text" class="form-control" placeholder="Telephone"> {% endcomment %}
+							</div>
+							</div>
+							<div class="col-md-6">
+							<div class="form-group">
+								<label for="exampleInput7">Email</label>
+								{{form.email}}
+								{% comment %} <input id="exampleInput7" type="text" class="form-control" placeholder="Email"> {% endcomment %}
+							</div>
+							</div>
+						</div>
+							<div class="row mb-2 mt-6">
+								<div class="col-12">
+								<h3>Password</h3>
+								</div>
+							</div>
+							<div class="row gutter-1">
+								<div class="col-12">
+									<div class="form-group">
+										<label for="exampleInput8">Old Password</label>
+										<input id="oldpassword" type="password" class="form-control" placeholder="Password">
+										
+										<div class="col-12 mt-1">
+											<div class="custom-control custom-switch mb-2">
+												<input type="checkbox" onclick="showPassword()" class="custom-control-input" id="customSwitch1">
+												<label class="custom-control-label" for="customSwitch1">Show Password</label>
+											</div>
+										</div>						
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="exampleInput9">New Password</label>
+										<input id="exampleInput9" type="password" class="form-control" placeholder="Password">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="exampleInput10">Retype New Password</label>
+										<input id="exampleInput10" type="password" class="form-control" placeholder="Password">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input class="btn btn-primary" type="submit" value="Save Changes" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+								</div>
+							</div>
+					</form>
 				</div>
 
 				<!-- orders -->
@@ -143,48 +141,54 @@
 				  <div class="row">
 					<div class="col-12">
 					  <h3 class="mb-0">Orders</h3>
-					  <span class="eyebrow">1 Items</span>
+					  <span class="eyebrow">{{totalOrders}} Items  23eje89e393ioiojd</span>
 					</div>
 				  </div>
 				  <div class="row gutter-2">
-					
-					<div class="col-12">
-					  <div class="order">
-						<div class="row align-items-center">
-						  <div class="col-lg-4">
-							<h3 class="order-number">Order 165342</h3>
-							<a href="#!" class="action eyebrow ">View Order</a>
-						  </div>
-						  <div class="col-lg-4">
-							<span class="order-status canceled">Canceled</span>
-						  </div>
-						  <div class="col-lg-4">
-							<ul class="order-preview justify-content-end">
-							  <li><a href="product-1.html" title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top"><img src="images/shoe_4.jpg" alt="Red Analog Magazine Rack"></a></li>
-							  <li><a href="product-1.html" title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top"><img src="images/shoe_4.jpg" alt="Red Analog Magazine Rack"></a></li>
-
-							  <li><a href="product-1.html" title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top"><img src="images/shoe_4.jpg" alt="Red Analog Magazine Rack"></a></li>
-							  <li><a href="product-1.html" title="Black Piani Table Lamp" data-toggle="tooltip" data-placement="top"><img src="images/shoe_1.jpg" alt="Black Piani Table Lamp"></a></li>
-							  <li><a href="product-1.html" title="Grey Pendant Bell Lamp" data-toggle="tooltip" data-placement="top"><img src="images/shoe_2.jpg" alt="Grey Pendant Bell Lamp"></a></li>
-							</ul>
-						  </div>
-						</div>
-					  </div>
-					</div>
-					
+						{% for order in orders %}
+							{% if order.order.quantity < 1 %}
+									<div class="col-12" style="display: none;">
+									</div>
+							{% else %}
+									<div class="col-12">
+										<div class="order">
+										<div class="row align-items-center">
+											<div class="col-lg-4">
+												{% if order.order.id %}
+													<h3 class="order-number">Order {{order.order.id}}</h3>
+													<a href="#!" class="action eyebrow ">View Order</a>
+												{% else %}
+													<h3 class="order-number">Order (current)</h3>
+													<a href="#!" class="action eyebrow ">View Order</a>
+												{% endif %}
+											</div>
+											{% if order.order.is_ordered %}
+												<div class="col-lg-4">
+													<span class="order-status sent">Sent</span>
+												</div>
+											{% else %}
+												<div class="col-lg-4">
+													<span class="order-status canceled">Active</span>
+												</div>
+											{% endif %}
+											<div class="col-lg-4">
+												<ul class="order-preview justify-content-end">
+													{% for image in order.order.orderItems %}
+														<li>
+															<a href={% url 'product'  image.product.title %} title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top">
+																<img src={% static  image.product.image.url %} alt="Red Analog Magazine Rack">
+															</a>
+														</li>
+													{% endfor %}	
+												</ul>
+											</div>
+										</div>
+										</div>
+									</div>
+							{% endif %}
+						{% endfor %}
 				  </div>
-				  <!-- <div class="row">
-					<div class="col">
-					  <ul class="pagination">
-						<li class="page-item active"><a class="page-link" href="#!">1 <span class="sr-only">(current)</span></a></li>
-						<li class="page-item" aria-current="page"><a class="page-link" href="#!">2</a></li>
-						<li class="page-item"><a class="page-link" href="#!">3</a></li>
-						<li class="page-item"><a class="page-link" href="#!">4</a></li>
-					  </ul>
-					</div>
-				  </div> -->
 				</div>
-
 				</div>
 			  </div>
 			</div>
@@ -194,121 +198,9 @@
 	  </div>
 	</div>
   </section>
-  <!-- listing -->
-
-
-
-  <!-- footer -->
-
-
-
-  <!-- cart -->
-  <div class="modal fade sidebar" id="cart" tabindex="-1" role="dialog" aria-labelledby="cartLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h5 class="modal-title" id="cartLabel">Cart</h5>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-		<div class="modal-body">
-
-		  <div class="row gutter-3">
-			<div class="col-12">
-			  <div class="cart-item cart-item-sm">
-				<div class="row align-items-center">
-				  <div class="col-lg-9">
-					<div class="media media-product">
-					  <a href="#!"><img src="assets/images/demo/product-3.jpg" alt="Image"></a>
-					  <div class="media-body">
-						<h5 class="media-title">Black IC Pendant Light</h5>
-						<span class="media-subtitle">Black, Steel</span>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-lg-3 text-center text-lg-right">
-					<span class="cart-item-price">$90</span>
-				  </div>
-				  <a href="#!" class="cart-item-close"><i class="icon-x"></i></a>
-				</div>
-			  </div>
-			</div>
-			<div class="col-12">
-			  <div class="cart-item cart-item-sm">
-				<div class="row align-items-center">
-				  <div class="col-lg-9">
-					<div class="media media-product">
-					  <a href="#!"><img src="assets/images/demo/product-4.jpg" alt="Image"></a>
-					  <div class="media-body">
-						<h5 class="media-title">Red Analog Magazine Rack</h5>
-						<span class="media-subtitle">Red</span>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-lg-3 text-center text-lg-right">
-					<span class="cart-item-price">$120</span>
-				  </div>
-				  <a href="#!" class="cart-item-close"><i class="icon-x"></i></a>
-				</div>
-			  </div>
-			</div>
-			<div class="col-12">
-			  <div class="cart-item cart-item-sm">
-				<div class="row align-items-center">
-				  <div class="col-lg-9">
-					<div class="media media-product">
-					  <a href="#!"><img src="assets/images/demo/product-24.jpg" alt="Image"></a>
-					  <div class="media-body">
-						<h5 class="media-title">Closca Helmet</h5>
-						<span class="media-subtitle">Black</span>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col-lg-3 text-center text-lg-right">
-					<span class="cart-item-price">$132</span>
-				  </div>
-				  <a href="#!" class="cart-item-close"><i class="icon-x"></i></a>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		  
-		</div>
-		<div class="modal-footer">
-		  <div class="container-fluid">
-			<div class="row gutter-0">
-			  <div class="col d-none d-md-block">
-				<a href="cart.html" class="btn btn-lg btn-block btn-secondary">View Cart</a>
-			  </div>
-			  <div class="col">
-				<a href="checkout.html" class="btn btn-lg btn-block btn-primary">Checkout</a>
-			  </div>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	</div>
-  </div>
-
-
-  <!-- search -->
-  <div class="modal fade search" id="search" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <input type="text" class="form-control" placeholder="Type your search here" aria-label="Type your search here" aria-describedby="button-addon2">
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-	  </div>
-	</div>
-  </div>
 
 
 </div>
-
 
 
 
@@ -322,7 +214,7 @@
 <form action="" method="POST" enctype="multipart/form-data">
 	{% csrf_token %}
 	{{form.as_p}}
-	<input class="btn btn-primary" type="submit" name="Update Information">
+	<input class="btn btn-primary" type="submit" value="sign In" name="Update Information">
 </form>
 {{ form.error }}
 {% if form.instance.some_field %}

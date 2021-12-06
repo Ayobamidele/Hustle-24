@@ -109,7 +109,6 @@ def loginPage(request):
 							print('here4')
 							orderI.save()
 						request.COOKIES['cart'].clear()
-						print(cart, "cccccccc")
 					except:
 						cart = {}
 					login(request,user)
@@ -140,6 +139,26 @@ def logoutUser(request):
 def customerPage(request,customer):
 	customer = request.user.customer
 	userPicture = request.user
+	orders = []
+	orders1 = Order.objects.filter(customer=customer)
+	for order in orders1:
+		orderItems1 = order.orderitem_set.all()
+		# print(orderItems1)
+		order1 = { 'order':  
+								{
+									'id' : order.ref_code,
+									'orderItems' : [] ,
+									'is_ordered' : order.is_ordered,
+									'quantity' : order.quantity,
+								}
+				}
+		for items in orderItems1:
+			# print(items)
+			order1.get('order').get('orderItems').append(items)
+			# print(order1.get('order').get('orderItems'))
+		orders.append(order1)
+	orders.reverse()
+	print(orders)
 	if request.user.is_authenticated:
 		if request.user.is_customer:
 			userPicture = request.user.customer
@@ -147,15 +166,13 @@ def customerPage(request,customer):
 			userPicture = request.user.vendor
 	form = CustomerForm(instance=customer)
 	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
-	print(request.user.is_vendor)
-	print('errr eeeee'.title(), form.instance.firstname, username)
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
 		print('ISvalid')
 		if form.is_valid():
 			print('valid')
 			form.save()
-	context = {	"customer": customer, "form": form,"username": username, "userPicture": userPicture}
+	context = {	"customer": customer, "form": form,"username": username, "userPicture": userPicture,"orders": orders, 'totalOrders': len(orders) }
 	return render(request,'accounts/customer.html',context)
 
 @login_required(login_url='login')
