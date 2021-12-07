@@ -17,6 +17,7 @@ from .decorators import *
 from shop.models import *
 import json
 from carts.models import *
+from carts.forms import *
 from carts.utils import cookieCart, cartData, guestOrder
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -143,7 +144,6 @@ def customerPage(request,customer):
 	orders1 = Order.objects.filter(customer=customer)
 	for order in orders1:
 		orderItems1 = order.orderitem_set.all()
-		# print(orderItems1)
 		order1 = { 'order':  
 								{
 									'id' : order.ref_code,
@@ -153,26 +153,50 @@ def customerPage(request,customer):
 								}
 				}
 		for items in orderItems1:
-			# print(items)
 			order1.get('order').get('orderItems').append(items)
-			# print(order1.get('order').get('orderItems'))
 		orders.append(order1)
 	orders.reverse()
-	print(orders)
 	if request.user.is_authenticated:
 		if request.user.is_customer:
 			userPicture = request.user.customer
 		elif request.user.is_vendor:
 			userPicture = request.user.vendor
 	form = CustomerForm(instance=customer)
+	passwordChangeForm = ChangeUserPasswordForm(instance=request.user)
+	ShippingAddressForm = ShippingAddressCustomerForm(instance=request.user)
+	ShippingPaymentForm = ShippingPaymentCustomerForm(instance=request.user)
 	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
 	if request.method == "POST":
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
-		print('ISvalid')
-		if form.is_valid():
-			print('valid')
-			form.save()
-	context = {	"customer": customer, "form": form,"username": username, "userPicture": userPicture,"orders": orders, 'totalOrders': len(orders) }
+		print("Got here")
+
+		if request.POST.get("form_type") == 'accountSetting':
+            #Handle Elements from first Form
+			if form.is_valid():
+				print('valid')
+				print(request.POST.get('form_type'))
+				form.save()
+		elif request.POST.get("form_type") == 'passwordChange':
+			print(request.POST)
+			# u = User.objects.get(username=form.instance.username)
+			# if passwordChangeForm.is_valid():
+				# passwordChangeForm.save()
+				# print("password",request.POST,u)
+	else:
+		form = CustomerForm(instance=request.user.customer)
+		passwordChangeForm = ChangeUserPasswordForm(instance=request.user)
+		ShippingAddressForm = ShippingAddressCustomerForm(instance=request.user)
+		ShippingPaymentForm = ShippingPaymentCustomerForm(instance=request.user)
+	context = {	"customer": customer,
+				"form": form,
+				"passwordChangeForm": passwordChangeForm,
+				"username": username,
+				"userPicture": userPicture,
+				"orders": orders,
+				"totalOrders": len(orders),
+				"ShippingPaymentForm": ShippingPaymentForm,
+				"ShippingAddressForm": ShippingAddressForm,
+			  }
 	return render(request,'accounts/customer.html',context)
 
 @login_required(login_url='login')

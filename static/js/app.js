@@ -1,3 +1,6 @@
+var newPassword = document.getElementById("id_password1");
+var newPasswordRetype = document.getElementById("id_password2");
+
 function showsearch() {
 	var x = document.getElementById("myLinks");
 	if (x.style.display === "block") {
@@ -63,10 +66,21 @@ var myDropdown = document.getElementById("myDropdown");
 }
 }
 function showPassword() {
-	var x = document.getElementById("oldpassword");
-	if (x.type === "password") {
-	  x.type = "text";
+	if (newPassword.type === "password") {
+		newPassword.type = "text";
 	} else {
-	  x.type = "password";
+		newPassword.type = "password";
 	}
-  } 
+}
+
+function generatePassword() {
+    var length = 24,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+}
+
+newPassword.value = generatePassword()

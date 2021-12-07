@@ -40,7 +40,7 @@
 						<div class="col">
 							<div class="tab-content" id="myTabContent">
 								<div class="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
-									<form action="" method="POST" enctype="multipart/form-data">
+									<form id="accountSetting" method="POST" enctype="multipart/form-data">
 										{% csrf_token %}
 										<div class="row mb-2">
 											<div class="col-12">
@@ -96,41 +96,45 @@
 											</div>
 											</div>
 										</div>
+										<div class="row">
+											<div class="col">
+												<input type="hidden" name="form_type" value="accountSetting">
+												<input class="btn btn-primary" type="submit" value="Save Changes" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+											</div>
+										</div>
+									</form>
+									<form id="passwordChange" method="POST" enctype="multipart/form-data">
+										{% csrf_token %}
+										
 										<div class="row mb-2 mt-6">
 											<div class="col-12">
-											<h3>Password</h3>
+												<h3>Password</h3>
 											</div>
 										</div>
 										<div class="row gutter-1">
-											<div class="col-12">
+											<div class="col-md-6">
 												<div class="form-group">
-													<label for="exampleInput8">Old Password</label>
-													<input id="oldpassword" type="password" class="form-control" placeholder="Password">
-													
+													<label for="newPassword">New Password</label>
+													<input name="newPassword" id="newPassword" autocomplete="new-password" type="password" class="form-control" placeholder="Password">
 													<div class="col-12 mt-1">
 														<div class="custom-control custom-switch mb-2">
 															<input type="checkbox" onclick="showPassword()" class="custom-control-input" id="customSwitch1">
-															<label class="custom-control-label" for="customSwitch1">Show Password</label>
+															<label class="custom-control-label" for="customSwitch1">Show Suggested Password</label>
 														</div>
-													</div>						
+													</div>	
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="exampleInput9">New Password</label>
-													<input id="exampleInput9" type="password" class="form-control" placeholder="Password">
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group">
-													<label for="exampleInput10">Retype New Password</label>
-													<input id="exampleInput10" type="password" class="form-control" placeholder="Password">
+													<label for="newPasswordRetype">Retype New Password</label>
+													<input name="newPasswordRetype" id="newPasswordRetype" autocomplete="new-password" type="password" class="form-control" placeholder="Password">
 												</div>
 											</div>
 										</div>
 										<div class="row">
 											<div class="col">
-												<input class="btn btn-primary" type="submit" value="Save Changes" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+												<input type="hidden" name="form_type" value="passwordChange">
+												<input class="btn btn-primary" type="button" value="Change Password" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
 											</div>
 										</div>
 									</form>
@@ -189,121 +193,133 @@
 									</div>
 								</div>
 								<div class="tab-pane fade" id="sidebar-1-3" role="tabpanel" aria-labelledby="sidebar-1-3">
-									<div class="row">
-									  <div class="col">
-										<h3 class="mb-0">Payments</h3>
-										<span class="eyebrow">1 Entry</span>
-									  </div>
-									</div>
-									<div class="row gutter-2 mb-6">
-									  <div class="col-md-6">
-										<div class="card card-data">
-										  <div class="card-header card-header-options">
-											<div class="row align-items-center">
-											  <div class="col">
-												<h3 class="card-title">Visa</h3>
-											  </div>
-											  <div class="col text-right">
-												<div class="dropdown">
-												  <button id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-lg btn-secondary btn-ico"><i class="icon-more-vertical"></i></button>
-												  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-													<li>
-													  <a class="dropdown-item" href="#!">Edit</a>
-													</li>
-													<li>
-													  <a class="dropdown-item" href="#!">Delete</a>
-													</li>
-												  </ul>
-												</div>
-											  </div>
+									<form action="" method="POST" enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col">
+												<h3 class="mb-0">Payments</h3>
+												<span class="eyebrow">1 Entry</span>
 											</div>
-										  </div>
-										  <div class="card-body w-75">
-											<h5 class="eyebrow text-muted">Paymeny Method</h5>
-											<p class="card-text"><b>Visa</b> ends in 1537 Exp: 8/2022</p>
-											<h5 class="eyebrow text-muted">Last Payment</h5>
-											<p class="card-text"><b>$7.00</b> successful on 04/14/2019</p>
-										  </div>
 										</div>
-									  </div>
-									  <div class="col-md-6">
-										<div class="card card-data">
-										  <div class="card-header card-header-options">
-											<div class="row align-items-center">
-											  <div class="col">
-												<h3 class="card-title">Paypal</h3>
-											  </div>
-											  <div class="col text-right">
-												<div class="dropdown">
-												  <button id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-lg btn-secondary btn-ico"><i class="icon-more-vertical"></i></button>
-												  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-													<li>
-													  <a class="dropdown-item" href="#!">Edit</a>
-													</li>
-													<li>
-													  <a class="dropdown-item" href="#!">Delete</a>
-													</li>
-												  </ul>
+										<div class="row gutter-2 mb-6">
+											<div class="col-md-6">
+												<div class="card card-data">
+													<div class="card-header card-header-options">
+														<div class="row align-items-center">
+															<div class="col">
+																<h3 class="card-title">Visa</h3>
+															</div>
+															<div class="col text-right">
+																<div class="dropdown">
+																	<button id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-lg btn-secondary btn-ico"><i class="icon-more-vertical"></i></button>
+																	<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+																		<li>
+																		<a class="dropdown-item" href="#!">Edit</a>
+																		</li>
+																		<li>
+																		<a class="dropdown-item" href="#!">Delete</a>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="card-body w-75">
+														<h5 class="eyebrow text-muted">Paymeny Method</h5>
+														<p class="card-text"><b>Visa</b> ends in 1537 Exp: 8/2022</p>
+														<h5 class="eyebrow text-muted">Last Payment</h5>
+														<p class="card-text"><b>$7.00</b> successful on 04/14/2019</p>
+													</div>
 												</div>
-											  </div>
 											</div>
-										  </div>
-										  <div class="card-body w-75">
-											<h5 class="eyebrow text-muted">Mail</h5>
-											<p class="card-text">payment@webuildthemes.com</p>
-											<h5 class="eyebrow text-muted">Last Payment</h5>
-											<p class="card-text"><b>$19.00</b> successful on 05/15/2019</p>
-										  </div>
+											<div class="col-md-6">
+												<div class="card card-data">
+												<div class="card-header card-header-options">
+													<div class="row align-items-center">
+													<div class="col">
+														<h3 class="card-title">Paypal</h3>
+													</div>
+													<div class="col text-right">
+														<div class="dropdown">
+														<button id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-lg btn-secondary btn-ico"><i class="icon-more-vertical"></i></button>
+														<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+															<li>
+															<a class="dropdown-item" href="#!">Edit</a>
+															</li>
+															<li>
+															<a class="dropdown-item" href="#!">Delete</a>
+															</li>
+														</ul>
+														</div>
+													</div>
+													</div>
+												</div>
+												<div class="card-body w-75">
+													<h5 class="eyebrow text-muted">Mail</h5>
+													<p class="card-text">payment@webuildthemes.com</p>
+													<h5 class="eyebrow text-muted">Last Payment</h5>
+													<p class="card-text"><b>$19.00</b> successful on 05/15/2019</p>
+												</div>
+												</div>
+											</div>
 										</div>
-									  </div>
-									</div>
+										<div class="row">
+											<div class="col">
+												<h3 class="mb-0">New Payment Method</h3>
+											</div>
+										</div>
+										<div class="row gutter-1">
+										<div class="col-12">
+											<div class="form-group">
+											<label for="cardNumber">Card Number</label>
+												{{ShippingPaymentForm.card_number}}
 
-									<div class="row">
-										<div class="col">
-											<h3 class="mb-0">New Payment Method</h3>
+											{% comment %} <input type="text" class="form-control" placeholder=""> {% endcomment %}
+											</div>
 										</div>
-									</div>
-									<div class="row gutter-1">
-									  <div class="col-12">
-										<div class="form-group">
-										  <label for="cardNumber">Card Number</label>
-										  <input type="text" class="form-control" placeholder="">
+										<div class="col-md-6">
+											<div class="form-group">
+											<label for="cardNumber">Name on Card</label>
+											{{ShippingPaymentForm.name_on_card}}
+											{% comment %} <input type="text" class="form-control" placeholder=""> {% endcomment %}
+											</div>
 										</div>
-									  </div>
-									  <div class="col-md-6">
-										<div class="form-group">
-										  <label for="cardNumber">Name on Card</label>
-										  <input type="text" class="form-control" placeholder="">
+										<div class="col-6 col-md-3">
+											<div class="form-group">
+											<label for="cardNumber">Month</label>
+											{{ShippingPaymentForm.expiry_month}}
+											
+											{% comment %} <select class="custom-select">
+												<option selected="">Open this select menu</option>
+												<option value="1">One</option>
+												<option value="2">Two</option>
+												<option value="3">Three</option>
+											</select> {% endcomment %}
+											</div>
 										</div>
-									  </div>
-									  <div class="col-6 col-md-3">
-										<div class="form-group">
-										  <label for="cardNumber">Month</label>
-										  <select class="custom-select">
-											<option selected="">Open this select menu</option>
-											<option value="1">One</option>
-											<option value="2">Two</option>
-											<option value="3">Three</option>
-										  </select>
+										<div class="col-6 col-md-3">
+											<div class="form-group">
+											<label for="cardNumber">Year</label>
+											{{ShippingPaymentForm.expiry_year}}
+
+											{% comment %} <select class="custom-select">
+												<option selected="">Open this select menu</option>
+												<option value="1">One</option>
+												<option value="2">Two</option>
+												<option value="3">Three</option>
+											</select> {% endcomment %}
+											</div>
 										</div>
-									  </div>
-									  <div class="col-6 col-md-3">
-										<div class="form-group">
-										  <label for="cardNumber">Year</label>
-										  <select class="custom-select">
-											<option selected="">Open this select menu</option>
-											<option value="1">One</option>
-											<option value="2">Two</option>
-											<option value="3">Three</option>
-										  </select>
+											
+											<div class="col-12">
+												{% comment %} <a href="#!" class="btn btn-primary">Add</a> {% endcomment %}
+												<input class="btn btn-primary" type="submit" value="Add" name="Add Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+											</div>
+										
+										
 										</div>
-									  </div>
-									  <div class="col-12">
-										<a href="#!" class="btn btn-primary">Add</a>
-									  </div>
-									</div>
+									</form>
 								</div>
-
 								<div class="tab-pane fade" id="sidebar-1-4" role="tabpanel" aria-labelledby="sidebar-1-4">
 									<div class="row">
 									  <div class="col">

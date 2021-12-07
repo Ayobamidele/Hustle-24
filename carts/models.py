@@ -1,6 +1,10 @@
 from django.db import models
 from shop.models import Product
 from accounts.models import Customer
+from datetime import datetime
+now = datetime.now() # current date and time
+year = int(now.strftime("%Y"))+1
+
 # Create your models here.
 
 class Cart(models.Model):
@@ -56,6 +60,7 @@ class ShippingAddressCustomer(models.Model):
 	state = models.CharField(max_length=200, null=False)
 	zipcode = models.CharField(max_length=200, null=False)
 	date_added = models.DateTimeField(auto_now_add=True)
+	is_active = models.BooleanField(default=False)
 
 	def __str__(self):
 		return f'{self.address} - {self.customer}'
@@ -63,26 +68,29 @@ class ShippingAddressCustomer(models.Model):
 
 class ShippingPaymentCustomer(models.Model):
 	MONTH_CHOICES = [(i, i) for i in range(1, 12)]
-	YEAR_CHOICES = [(i, i) for i in range(2019, 2036)]
-	
+	YEAR_CHOICES = [(i, i) for i in range(1919, year)]
+	YEAR_CHOICES.reverse()
+
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
-	card_number= models.PositiveBigIntegerField( null=False)
+	card_number= models.CharField(max_length=16, null=False)
 	name_on_card = models.CharField(max_length=200, null=False)
 	expiry_month = models.CharField(max_length=2,choices=MONTH_CHOICES, null=False)
 	expiry_year = models.CharField(max_length=4, choices=YEAR_CHOICES, null=False)
 	security_code = models.CharField(max_length=4, null=False)
 	date_added = models.DateTimeField(auto_now_add=True)
+	is_active = models.BooleanField(default=False)
 
 	def __str__(self):
 		return f'{self.card_number} - {self.customer}'
 
 class ShippingPaymentOrder(models.Model):
 	MONTH_CHOICES = [(i, i) for i in range(1, 12)]
-	YEAR_CHOICES = [(i, i) for i in range(2019, 2036)]
+	YEAR_CHOICES = [(i, i) for i in range(1919, year)]
+	YEAR_CHOICES.reverse()
 	
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
 	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
-	card_number= models.PositiveBigIntegerField( null=False)
+	card_number= models.CharField(max_length=16, null=False)
 	name_on_card = models.CharField(max_length=200, null=False)
 	expiry_month = models.CharField(max_length=2, choices=MONTH_CHOICES, null=False)
 	expiry_year = models.CharField(max_length=4, choices=YEAR_CHOICES, null=False)

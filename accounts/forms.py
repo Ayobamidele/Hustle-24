@@ -10,24 +10,46 @@ GENDER = (
 			('Female', 'female')
 			)
 class CustomerForm(ModelForm):
-	firstname = forms.CharField(label='First Name',widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
-	lastname = forms.CharField(label='Last Name',widget=forms.TextInput(attrs={'class': 'form-control'}),required=False)
-	username = forms.CharField(label='User Name',widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
-	email = forms.CharField(label='Email',widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
-	phone_number = forms.CharField(label='Phone Number',widget=forms.TextInput(attrs={'class': 'form-control'}),required=True)
-	gender = forms.ChoiceField(label='Gender', choices=GENDER,widget=forms.Select(attrs={'class': 'form-control'}),required=True)
 	class Meta:
 		model = Customer
 		fields = '__all__'
 		exclude = [ 'user' ]
+	
+	def __init__(self, *args, **kwargs):
+		super(CustomerForm, self).__init__(*args, **kwargs)
+		for field in self.fields.keys():
+			self.fields[field].widget.attrs.update({'class': 'form-control'})
 
 class VendorForm(ModelForm):
 	class Meta:
 		model = Vendor
 		fields = '__all__'
 		exclude = [ 'user' ]
+	
+	def __init__(self, *args, **kwargs):
+		super(VendorForm, self).__init__(*args, **kwargs)
+		for field in self.fields.keys():
+			self.fields[field].widget.attrs.update({'class': 'form-control'})
 
 class CreateUserForm(UserCreationForm):
 	class Meta:
 		model = User
 		fields = ['first_name', 'last_name', 'email' , 'password1' , 'password2']
+	
+	def __init__(self, *args, **kwargs):
+		super(CreateUserForm, self).__init__(*args, **kwargs)
+		for field in self.fields.keys():
+			self.fields[field].widget.attrs.update({'class': 'form-control'})
+
+
+class ChangeUserPasswordForm(UserCreationForm):
+	class Meta:
+		model = User
+		fields = ['password1' , 'password2']
+	
+	def __init__(self, *args, **kwargs):
+		super(ChangeUserPasswordForm, self).__init__(*args, **kwargs)
+		self.fields['password1'].widget.attrs.update({'placeholder': 'New Password'})
+		self.fields['password2'].widget.attrs.update({'placeholder': 'Re-type New Password'})
+		for field in self.fields.keys():
+			self.fields[field].widget.attrs.update({'class': 'form-control'})
