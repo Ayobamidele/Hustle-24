@@ -1,5 +1,7 @@
 var newPassword = document.getElementById("id_password1");
 var newPasswordRetype = document.getElementById("id_password2");
+var copyPassword = document.getElementById("copy");
+var suggestedPassword = document.getElementById("suggestedPassword");
 
 function showsearch() {
 	var x = document.getElementById("myLinks");
@@ -83,4 +85,19 @@ function generatePassword() {
     return retVal;
 }
 
-newPassword.value = generatePassword()
+suggestedPassword.textContent = generatePassword()
+
+copyPassword.onclick = function() {
+  copyPasswordToClipboard()
+  showCopiedText()
+};
+
+function copyPasswordToClipboard() {
+  var copyText = suggestedPassword.textContent
+  /* Copy the text inside the text field */
+  navigator.clipboard.writeText(copyText);  
+}
+function showCopiedText() {
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show");
+}

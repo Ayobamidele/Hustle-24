@@ -45,11 +45,12 @@ class CreateUserForm(UserCreationForm):
 class ChangeUserPasswordForm(UserCreationForm):
 	class Meta:
 		model = User
+		# fields = '__all__'
 		fields = ['password1' , 'password2']
 	
 	def __init__(self, *args, **kwargs):
 		super(ChangeUserPasswordForm, self).__init__(*args, **kwargs)
-		self.fields['password1'].widget.attrs.update({'placeholder': 'New Password'})
-		self.fields['password2'].widget.attrs.update({'placeholder': 'Re-type New Password'})
+		# self.fields['password1'].widget.attrs.update({'placeholder': 'New Password'})
+		# self.fields['password2'].widget.attrs.update({'placeholder': 'Re-type New Password'})
 		for field in self.fields.keys():
 			self.fields[field].widget.attrs.update({'class': 'form-control'})

@@ -104,37 +104,26 @@
 										</div>
 									</form>
 									<form id="passwordChange" method="POST" enctype="multipart/form-data">
-										{% csrf_token %}
-										
 										<div class="row mb-2 mt-6">
 											<div class="col-12">
 												<h3>Password</h3>
 											</div>
 										</div>
-										<div class="row gutter-1">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label for="newPassword">New Password</label>
-													<input name="newPassword" id="newPassword" autocomplete="new-password" type="password" class="form-control" placeholder="Password">
-													<div class="col-12 mt-1">
-														<div class="custom-control custom-switch mb-2">
-															<input type="checkbox" onclick="showPassword()" class="custom-control-input" id="customSwitch1">
-															<label class="custom-control-label" for="customSwitch1">Show Suggested Password</label>
-														</div>
-													</div>	
-												</div>
-											</div>
-											<div class="col-md-6">
-												<div class="form-group">
-													<label for="newPasswordRetype">Retype New Password</label>
-													<input name="newPasswordRetype" id="newPasswordRetype" autocomplete="new-password" type="password" class="form-control" placeholder="Password">
-												</div>
+										<div class="col-md-auto py-3">
+											<h5>Try out the suggested Password.</h5>
+											<div class="d-flex">
+												<p class="my-auto" id="suggestedPassword"></p>
+												<span id="copy" class="icon-content_copy my-auto px-2 popup">
+													<span class="popuptext" id="myPopup">Text Copied!</span>
+												</span>
 											</div>
 										</div>
+										{% csrf_token %}
+										{{passwordChangeForm.as_p}}
 										<div class="row">
 											<div class="col">
 												<input type="hidden" name="form_type" value="passwordChange">
-												<input class="btn btn-primary" type="button" value="Change Password" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+												<input class="btn btn-primary" type="submit" value="Change Password" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
 											</div>
 										</div>
 									</form>
@@ -324,112 +313,95 @@
 									<div class="row">
 									  <div class="col">
 										<h3 class="mb-0">Addresses</h3>
-										<span class="eyebrow">2 Entry</span>
+										<span class="eyebrow">{{totalAddress}} Entry</span>
 									  </div>
 									</div>
 									<div class="row gutter-2">
-									  <div class="col-md-6">
-										<div class="card card-data">
-										  <div class="card-header card-header-options">
-											<div class="row align-items-center">
-											  <div class="col">
-												<h3 class="card-title">Address 1</h3>
-											  </div>
-											  <div class="col text-right">
-												<div class="dropdown">
-												  <button id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-lg btn-secondary btn-ico"><i class="icon-more-vertical"></i></button>
-												  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-													<li>
-													  <a class="dropdown-item" href="#!">Edit</a>
-													</li>
-													<li>
-													  <a class="dropdown-item" href="#!">Delete</a>
-													</li>
-												  </ul>
+										{% for address in customerAddress %}
+											<div class="col-md-6">
+												<div class="card card-data">
+													<div class="card-header card-header-options">
+														<div class="row align-items-center">
+															
+															<div class="col text-right">
+																<div class="dropdown">
+																	<button id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-lg btn-secondary btn-ico"><i class="icon icon-more_vert"></i></button>
+																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																		<li>
+																			<a class="dropdown-item" href="#!">Edit</a>
+																		</li>
+																		<li>
+																			<a class="dropdown-item" href="#!">Delete</a>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="card-body w-75">
+														<h5 class="eyebrow text-muted">Where</h5>
+														<p class="card-text">
+															{{ address.address }} {{ address.city }}, {{ address.state }} {{ address.zipcode }},{{ address.country }}
+														</p>
+														<h5 class="eyebrow text-muted">To</h5>
+														<p class="card-text">{{ address.customer }}</p>
+														<small>
+														{{ address.date_added }}
+														</small>
+													</div>
 												</div>
-											  </div>
 											</div>
-										  </div>
-										  <div class="card-body w-75">
-											<h5 class="eyebrow text-muted">Where</h5>
-											<p class="card-text">1620 East Ayre Str
-											Suite M3115662
-											Wilmington, DE 19804
-											United States</p>
-											<h5 class="eyebrow text-muted">To</h5>
-											<p class="card-text">Michael Doe</p>
+										{% endfor %}
+									</div>
+									<form id="AddressAdded" method="POST" enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="row">
+										  <div class="col">
+											<h3>Create New Address</h3>
 										  </div>
 										</div>
-									  </div>
-									  <div class="col-md-6">
-										<div class="card card-data">
-										  <div class="card-header card-header-options">
-											<div class="row align-items-center">
-											  <div class="col">
-												<h3 class="card-title">Address 2</h3>
-											  </div>
-											  <div class="col text-right">
-												<div class="dropdown">
-												  <button id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-lg btn-secondary btn-ico"><i class="icon-more-vertical"></i></button>
-												  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-													<li>
-													  <a class="dropdown-item" href="#!">Edit</a>
-													</li>
-													<li>
-													  <a class="dropdown-item" href="#!">Delete</a>
-													</li>
-												  </ul>
+										<div class="row gutter-1">
+											<div class="col-12">
+												<div class="form-group">
+													<label for="cardNumber">Address</label>
+													{{ShippingAddressForm.address}}
+													<!-- <input id="city" type="text" class="form-control" placeholder=""> -->
 												</div>
-											  </div>
 											</div>
-										  </div>
-										  <div class="card-body w-75">
-											<h5 class="eyebrow text-muted">Where</h5>
-											<p class="card-text">1620 East Ayre Str
-											Suite M3115662
-											Wilmington, DE 19804
-											United States</p>
-											<h5 class="eyebrow text-muted">To</h5>
-											<p class="card-text">Michael Doe</p>
-										  </div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="city">City</label>
+													{{ShippingAddressForm.city}}
+												<!-- <input id="cardNumber" type="text" class="form-control" placeholder=""> -->
+												</div>
+											</div>
+											<div class="col-6 col-md-3">
+												<div class="form-group">
+												<label for="cardNumber2">State</label>
+												{{ShippingAddressForm.state}}
+												<!-- <input id="cardNumber2" type="text" class="form-control" placeholder=""> -->
+												</div>
+											</div>
+											<div class="col-6 col-md-3">
+												<div class="form-group">
+												<label for="cardNumber3">Zipcode</label>
+												{{ShippingAddressForm.zipcode}}
+												<!-- <input id="cardNumber3" type="text" class="form-control" placeholder=""> -->
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="form-group">
+													<label for="cardNumber">Country</label>
+													{{ShippingAddressForm.country}}
+													<!-- <input id="city" type="text" class="form-control" placeholder=""> -->
+												</div>
+											</div>
 										</div>
-									  </div>
-									</div>
-				
-									<div class="row">
-									  <div class="col">
-										<h3>New Address</h3>
-									  </div>
-									</div>
-									<div class="row gutter-1">
 									  <div class="col-12">
-										<div class="form-group">
-										  <label for="city">City</label>
-										  <input id="city" type="text" class="form-control" placeholder="">
-										</div>
+										<input type="hidden" name="form_type" value="AddressAdded">
+											<input class="btn btn-primary" type="submit" value="Add New Address" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
 									  </div>
-									  <div class="col-md-6">
-										<div class="form-group">
-										  <label for="cardNumber">Address</label>
-										  <input id="cardNumber" type="text" class="form-control" placeholder="">
-										</div>
-									  </div>
-									  <div class="col-6 col-md-3">
-										<div class="form-group">
-										  <label for="cardNumber2">Nr</label>
-										  <input id="cardNumber2" type="text" class="form-control" placeholder="">
-										</div>
-									  </div>
-									  <div class="col-6 col-md-3">
-										<div class="form-group">
-										  <label for="cardNumber3">Ap</label>
-										  <input id="cardNumber3" type="text" class="form-control" placeholder="">
-										</div>
-									  </div>
-									  <div class="col-12">
-										<a href="#!" class="btn btn-primary">Add</a>
-									  </div>
-									</div>
+									</form>
 								</div>
 							</div>
 						</div>
@@ -441,4 +413,44 @@
 	</section>
 </div>
 
+<script type="text/javascript">
+	// var all  = document.querySelectorAll('input[type="submit"]');
+	// for (var i = all.length - 1; i >= 0; i--) {
+	// 	console.log(all[i])
+	// }
+	('#accountSetting').addEventListener("submit", (e)=>{
+	  e.preventDefault();
+
+	  // use the same URL in form's action <form action="{{url}}"></form>
+	  url = '/customer/'+ user
+	  fetch(url, {
+	    method: "POST",
+	    data: new FormData(form),
+	  })
+	  .then((response)=>{
+	    return response.json()
+	  })
+	  .then((json)=>{
+	    return console.log(json);
+	  })
+	  .catch((err)=>{
+	    console.err(err); // an error occured
+	  });
+	});
+
+
+
+
+
+	a.addEventListener("submit", (e)=>{
+	  e.preventDefault();
+
+	  // use the same URL in form's action <form action="{{url}}"></form>
+
+	});
+
+
+
+
+</script>
 {% endblock %}

@@ -60,7 +60,8 @@ class ShippingAddressCustomer(models.Model):
 	state = models.CharField(max_length=200, null=False)
 	zipcode = models.CharField(max_length=200, null=False)
 	date_added = models.DateTimeField(auto_now_add=True)
-	is_active = models.BooleanField(default=False)
+	active = models.BooleanField(default=False)
+	country = models.CharField(max_length=200, null=False,default="")
 
 	def __str__(self):
 		return f'{self.address} - {self.customer}'
@@ -108,6 +109,7 @@ class ShippingAddressOrder(models.Model):
 	state = models.CharField(max_length=200, null=False)
 	zipcode = models.CharField(max_length=200, null=False)
 	date_added = models.DateTimeField(auto_now_add=True)
+	country = models.CharField(max_length=200, null=False,default="")
 
 	def __str__(self):
 		return f'{self.address} - {self.order.ref_code}'

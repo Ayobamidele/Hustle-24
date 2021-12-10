@@ -141,6 +141,7 @@ def customerPage(request,customer):
 	customer = request.user.customer
 	userPicture = request.user
 	orders = []
+	customerAddresses = ShippingAddressCustomer.objects.filter(customer=customer)
 	orders1 = Order.objects.filter(customer=customer)
 	for order in orders1:
 		orderItems1 = order.orderitem_set.all()
@@ -163,30 +164,35 @@ def customerPage(request,customer):
 			userPicture = request.user.vendor
 	form = CustomerForm(instance=customer)
 	passwordChangeForm = ChangeUserPasswordForm(instance=request.user)
-	ShippingAddressForm = ShippingAddressCustomerForm(instance=request.user)
-	ShippingPaymentForm = ShippingPaymentCustomerForm(instance=request.user)
+	ShippingAddressForm = ShippingAddressCustomerForm(instance=customer)
+	ShippingPaymentForm = ShippingPaymentCustomerForm()
 	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
-	if request.method == "POST":
+	if request.method == "POST" and request.POST.get("form_type") == 'accountSetting':
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
-		print("Got here")
-
-		if request.POST.get("form_type") == 'accountSetting':
-            #Handle Elements from first Form
-			if form.is_valid():
-				print('valid')
-				print(request.POST.get('form_type'))
-				form.save()
-		elif request.POST.get("form_type") == 'passwordChange':
-			print(request.POST)
-			# u = User.objects.get(username=form.instance.username)
-			# if passwordChangeForm.is_valid():
-				# passwordChangeForm.save()
-				# print("password",request.POST,u)
-	else:
-		form = CustomerForm(instance=request.user.customer)
-		passwordChangeForm = ChangeUserPasswordForm(instance=request.user)
-		ShippingAddressForm = ShippingAddressCustomerForm(instance=request.user)
-		ShippingPaymentForm = ShippingPaymentCustomerForm(instance=request.user)
+		#Handle Elements from first Form
+		if form.is_valid():
+			form.save()
+	elif request.method == "POST" and request.POST.get("form_type") == 'passwordChange':
+		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
+		if passwordChangeForm.is_valid():
+			passwordChangeForm.save()
+	elif request.method == "POST" and request.POST.get("form_type") == 'AddressAdded':
+		ShippingAddressForm = ShippingAddressCustomerForm(request.POST, request.FILES,instance=customer)
+		print(ShippingAddressForm,request.POST)
+		if ShippingAddressForm.is_valid():
+			print("erere")
+			for address in customerAddresses:
+				address.active = False
+				address.save()
+			new_address = ShippingAddressCustomer()
+			new_address.customer = customer
+			new_address.address = ShippingAddressForm.cleaned_data['address']
+			new_address.city = ShippingAddressForm.cleaned_data['city']
+			new_address.state = ShippingAddressForm.cleaned_data['state']
+			new_address.zipcode = ShippingAddressForm.cleaned_data['zipcode']
+			new_address.active = True
+			new_address.save()
+			print(new_address)
 	context = {	"customer": customer,
 				"form": form,
 				"passwordChangeForm": passwordChangeForm,
@@ -194,9 +200,13 @@ def customerPage(request,customer):
 				"userPicture": userPicture,
 				"orders": orders,
 				"totalOrders": len(orders),
+				"totalAddress": len(customerAddresses),
 				"ShippingPaymentForm": ShippingPaymentForm,
 				"ShippingAddressForm": ShippingAddressForm,
+				"customerAddress" : customerAddresses,
 			  }
+	if request.method == 'GET':
+		return render(request,'accounts/customer.html',context)
 	return render(request,'accounts/customer.html',context)
 
 @login_required(login_url='login')
