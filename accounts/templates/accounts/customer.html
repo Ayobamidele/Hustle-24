@@ -260,10 +260,11 @@
 										<div class="row gutter-1">
 										<div class="col-12">
 											<div class="form-group">
-											<label for="cardNumber">Card Number</label>
-												{{ShippingPaymentForm.card_number}}
-
-											{% comment %} <input type="text" class="form-control" placeholder=""> {% endcomment %}
+												<label for="cardNumber">Card Number</label>
+												<div class="d-flex">
+													<i class="fa fa-key icon icon-credit-card credit-card pr-2"> </i>
+													{{ShippingPaymentForm.card_number}}
+												</div>
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -418,36 +419,36 @@
 	// for (var i = all.length - 1; i >= 0; i--) {
 	// 	console.log(all[i])
 	// }
-	('#accountSetting').addEventListener("submit", (e)=>{
-	  e.preventDefault();
+	// ('#accountSetting').addEventListener("submit", (e)=>{
+	//   e.preventDefault();
 
-	  // use the same URL in form's action <form action="{{url}}"></form>
-	  url = '/customer/'+ user
-	  fetch(url, {
-	    method: "POST",
-	    data: new FormData(form),
-	  })
-	  .then((response)=>{
-	    return response.json()
-	  })
-	  .then((json)=>{
-	    return console.log(json);
-	  })
-	  .catch((err)=>{
-	    console.err(err); // an error occured
-	  });
-	});
-
-
+	//   // use the same URL in form's action <form action="{{url}}"></form>
+	//   url = '/customer/'+ user
+	//   fetch(url, {
+	//     method: "POST",
+	//     data: new FormData(form),
+	//   })
+	//   .then((response)=>{
+	//     return response.json()
+	//   })
+	//   .then((json)=>{
+	//     return console.log(json);
+	//   })
+	//   .catch((err)=>{
+	//     console.err(err); // an error occured
+	//   });
+	// });
 
 
 
-	a.addEventListener("submit", (e)=>{
-	  e.preventDefault();
 
-	  // use the same URL in form's action <form action="{{url}}"></form>
 
-	});
+	// a.addEventListener("submit", (e)=>{
+	//   e.preventDefault();
+
+	//   // use the same URL in form's action <form action="{{url}}"></form>
+
+	// });
 
 
 

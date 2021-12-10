@@ -73,7 +73,7 @@ class ShippingPaymentCustomer(models.Model):
 	YEAR_CHOICES.reverse()
 
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
-	card_number= models.CharField(max_length=16, null=False)
+	card_number= models.CharField(max_length=19, null=False)
 	name_on_card = models.CharField(max_length=200, null=False)
 	expiry_month = models.CharField(max_length=2,choices=MONTH_CHOICES, null=False)
 	expiry_year = models.CharField(max_length=4, choices=YEAR_CHOICES, null=False)
@@ -91,7 +91,7 @@ class ShippingPaymentOrder(models.Model):
 	
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
 	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
-	card_number= models.CharField(max_length=16, null=False)
+	card_number= models.CharField(max_length=19, null=False)
 	name_on_card = models.CharField(max_length=200, null=False)
 	expiry_month = models.CharField(max_length=2, choices=MONTH_CHOICES, null=False)
 	expiry_year = models.CharField(max_length=4, choices=YEAR_CHOICES, null=False)
