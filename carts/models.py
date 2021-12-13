@@ -3,7 +3,7 @@ from shop.models import Product
 from accounts.models import Customer
 from datetime import datetime
 now = datetime.now() # current date and time
-year = int(now.strftime("%Y"))+1
+year = int(now.strftime("%Y"))+24
 
 # Create your models here.
 
@@ -79,7 +79,7 @@ class ShippingPaymentCustomer(models.Model):
 	expiry_year = models.CharField(max_length=4, choices=YEAR_CHOICES, null=False)
 	security_code = models.CharField(max_length=4, null=False)
 	date_added = models.DateTimeField(auto_now_add=True)
-	is_active = models.BooleanField(default=False)
+	active = models.BooleanField(default=False)
 
 	def __str__(self):
 		return f'{self.card_number} - {self.customer}'

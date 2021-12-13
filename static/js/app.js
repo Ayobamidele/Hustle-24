@@ -131,4 +131,3 @@ creditCardInput.onkeydown = function(e) {
     this.value = formatted;
     this.selectionEnd = cursor;
 };
-

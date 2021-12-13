@@ -142,6 +142,10 @@ def customerPage(request,customer):
 	userPicture = request.user
 	orders = []
 	customerAddresses = ShippingAddressCustomer.objects.filter(customer=customer)
+	customerPayments = ShippingPaymentCustomer.objects.filter(customer=customer)
+	print(customerPayments)
+	for payments in customerPayments:
+		print(payments.name_on_card)
 	orders1 = Order.objects.filter(customer=customer)
 	for order in orders1:
 		orderItems1 = order.orderitem_set.all()
@@ -167,6 +171,7 @@ def customerPage(request,customer):
 	ShippingAddressForm = ShippingAddressCustomerForm(instance=customer)
 	ShippingPaymentForm = ShippingPaymentCustomerForm()
 	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
+	print(request.POST)
 	if request.method == "POST" and request.POST.get("form_type") == 'accountSetting':
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
 		#Handle Elements from first Form
@@ -193,6 +198,32 @@ def customerPage(request,customer):
 			new_address.active = True
 			new_address.save()
 			print(new_address)
+	elif request.method == "POST" and request.POST.get("form_type") == 'PaymentAdded':
+		ShippingPaymentForm = ShippingPaymentCustomerForm(request.POST, request.FILES,instance=customer)
+		if ShippingPaymentForm.is_valid():
+			print("ererepayment")
+			if customerPayments.exists():
+				for payment in customerPayments:
+					payment.active = False
+					payment.save()
+			new_payment = ShippingPaymentCustomer()
+			new_payment.customer = customer
+			new_payment.card_number = ShippingPaymentForm.cleaned_data['card_number']
+			new_payment.name_on_card = ShippingPaymentForm.cleaned_data['name_on_card']
+			new_payment.expiry_month = ShippingPaymentForm.cleaned_data['expiry_month']
+			new_payment.expiry_year = ShippingPaymentForm.cleaned_data['expiry_year']
+			new_payment.security_code = ShippingPaymentForm.cleaned_data['security_code']
+			new_payment.active = True
+			new_payment.save()
+			print(new_payment)
+	elif request.method == "POST" and request.POST.get("form_type") == 'ActivatePayment':
+		for payment in customerPayments:
+			payment.active = False
+			payment.save()
+		deactivePayment = ShippingPaymentCustomer.objects.get(id=int(request.POST.get("paymentId")))
+		deactivePayment.active = True
+		deactivePayment.save()
+		print("Payment Activated!!!")
 	context = {	"customer": customer,
 				"form": form,
 				"passwordChangeForm": passwordChangeForm,
@@ -201,9 +232,11 @@ def customerPage(request,customer):
 				"orders": orders,
 				"totalOrders": len(orders),
 				"totalAddress": len(customerAddresses),
+				"totalPayments": len(customerPayments),
 				"ShippingPaymentForm": ShippingPaymentForm,
 				"ShippingAddressForm": ShippingAddressForm,
 				"customerAddress" : customerAddresses,
+				"customerPayments": customerPayments,
 			  }
 	if request.method == 'GET':
 		return render(request,'accounts/customer.html',context)
