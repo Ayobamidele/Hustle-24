@@ -69,11 +69,6 @@ var myDropdown = document.getElementById("myDropdown");
 }
 }
 function showPassword() {
-	if (newPassword.type === "password") {
-		newPassword.type = "text";
-	} else {
-		newPassword.type = "password";
-	}
 }
 
 function generatePassword() {
@@ -122,7 +117,7 @@ creditCardInput.onkeydown = function(e) {
     var matches = value.substring(0, cursor).match(/[^0-9]/g);
   
     if (matches) cursor -= matches.length;
-    value = value.replace(/[^0-9]/g, "").substring(0, 16);
+    value = value.replace(/[^0-9]/g, "").substring(0, 24);
     var formatted = "";
     for (var i=0, n=value.length; i<n; i++) {
         if (i && i % 4 == 0) {
