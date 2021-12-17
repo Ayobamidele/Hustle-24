@@ -224,6 +224,14 @@ def customerPage(request,customer):
 		deactivePayment.active = True
 		deactivePayment.save()
 		print("Payment Activated!!!")
+	elif request.method == "POST" and request.POST.get("form_type") == 'ActivateAddress':
+		for address in customerAddresses:
+			address.active = False
+			address.save()
+		deactiveAddress = ShippingAddressCustomer.objects.get(id=int(request.POST.get("addressId")))
+		deactiveAddress.active = True
+		deactiveAddress.save()
+		print("Address Activated!!!")
 	context = {	"customer": customer,
 				"form": form,
 				"passwordChangeForm": passwordChangeForm,
@@ -238,8 +246,6 @@ def customerPage(request,customer):
 				"customerAddress" : customerAddresses,
 				"customerPayments": customerPayments,
 			  }
-	if request.method == 'GET':
-		return render(request,'accounts/customer.html',context)
 	return render(request,'accounts/customer.html',context)
 
 @login_required(login_url='login')

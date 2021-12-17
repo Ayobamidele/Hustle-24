@@ -318,7 +318,15 @@
 												<div class="card card-data">
 													<div class="card-header card-header-options">
 														<div class="row align-items-center">
-															
+															{% if address.active %}
+																<div class="col-lg-4">
+																	<span class="order-status sent">Active</span>
+																</div>
+															{% else %}
+																<div class="col-lg-4">
+																	<span class="order-status canceled">Deactived</span>
+																</div>
+															{% endif %}
 															<div class="col text-right">
 																<div class="dropdown">
 																	<button id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" class="btn btn-lg btn-secondary btn-ico"><i class="icon icon-more_vert"></i></button>
@@ -329,6 +337,18 @@
 																		<li>
 																			<a class="dropdown-item" href="#!">Delete</a>
 																		</li>
+																		{% if address.active %}
+																		{% else %}
+																			<li>
+																				<!-- <a class="dropdown-item" href="#!">Active</a> -->
+																				<form id="ActivateAddress" action="" method="POST" enctype="multipart/form-data">
+																				{% csrf_token %}
+																					<input type="hidden" name="form_type" value="ActivateAddress">
+																					<input type="hidden" name="addressId" value={{ address.id }}>
+																					<input class="dropdown-item" type="submit" value="Activate" name="Add Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" />
+																				</form>
+																			</li>
+																		{% endif %}
 																	</ul>
 																</div>
 															</div>
