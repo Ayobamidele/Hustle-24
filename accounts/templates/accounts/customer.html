@@ -133,7 +133,7 @@
 									<div class="row">
 										<div class="col-12">
 											<h3 class="mb-0">Orders</h3>
-											<span class="eyebrow">{{totalOrders}} Items  23eje89e393ioiojd</span>
+											<span class="eyebrow">{{totalOrders}} Items</span>
 										</div>
 									</div>
 									<div class="row gutter-2">
@@ -148,10 +148,10 @@
 																<div class="col-lg-4">
 																	{% if order.order.id %}
 																		<h3 class="order-number">Order {{order.order.id}}</h3>
-																		<a href="#!" class="action eyebrow ">View Order</a>
+																		<a href="#!" class="action viewOrders eyebrow " dataID="order{{order.order.id}}" onclick="openCty('order{{order.order.id}}')">View Order</a>
 																	{% else %}
 																		<h3 class="order-number">Order (current)</h3>
-																		<a href="#!" class="action eyebrow ">View Order</a>
+																		<a href="{% url 'cart' %}" class="action eyebrow ">View Order</a>
 																	{% endif %}
 																</div>
 																{% if order.order.is_ordered %}
@@ -178,6 +178,63 @@
 															</div>
 														</div>
 												{% endif %}
+												<section id="order{{order.order.id}}" class="orderlist pt-3 col-12">
+													<div class="col text-center">
+														<h4 class="h2">Items - {{order.order.get_cart_items}}</h4>
+												  	</div>
+			<div class="container">
+				<div class=" py-3">
+					<div class="row mb-0 d-none d-lg-flex">
+						<div class="col">
+							<div class="row pr-6">
+								<div class="col-lg-6"><span class="eyebrow">Product</span></div>
+								<div class="col-lg-2 text-center"><span class="eyebrow">Price</span></div>
+								<div class="col-lg-2 text-center"><span class="eyebrow">Quantity</span></div>
+								<div class="col-lg-2 text-center"><span class="eyebrow">Total</span></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col cart-item-list cart-item-list-minimal">
+							{% for item in order.order.orderItems %}
+								<!-- cart item -->
+								<div class="cart-item">
+									<div class="row align-items-center">
+										<div class="col-12 col-lg-6">
+											<div class="media media-product">
+												<a href="#!"><img src={% static  item.product.image.url %} alt="Image"></a>
+												<div class="media-body">
+													<h5 class="media-title">{{ item.product.title }}</h5>
+												</div>
+											</div>
+										</div>
+										<div class="col-4 col-lg-2 text-center">
+											<span class="cart-item-price">${{ item.product.price }}</span>
+										</div>
+										<div class="col-4 col-lg-2 text-center">
+											<div class="counter">
+												<h5>{{ item.quantity }}</h5>
+											</div>
+										</div>
+										<div class="col-4 col-lg-2 text-center">
+											<span class="cart-item-price">${{ item.get_total }}</span>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-between">
+					<div class="col-md-6 col-lg-4">
+						<div class="inline-block">
+							<span class="eyebrow">Total</span>
+							<h4 class="h2">${{order.order.get_cart_total}}</h4>
+						</div>
+					</div>
+				</div>
+			  </div>
+		</section>
 											{% endfor %}
 									</div>
 								</div>
@@ -429,44 +486,5 @@
 	</section>
 </div>
 
-<script type="text/javascript">
-	// var all  = document.querySelectorAll('input[type="submit"]');
-	// for (var i = all.length - 1; i >= 0; i--) {
-	// 	console.log(all[i])
-	// }
-	// ('#accountSetting').addEventListener("submit", (e)=>{
-	//   e.preventDefault();
-
-	//   // use the same URL in form's action <form action="{{url}}"></form>
-	//   url = '/customer/'+ user
-	//   fetch(url, {
-	//     method: "POST",
-	//     data: new FormData(form),
-	//   })
-	//   .then((response)=>{
-	//     return response.json()
-	//   })
-	//   .then((json)=>{
-	//     return console.log(json);
-	//   })
-	//   .catch((err)=>{
-	//     console.err(err); // an error occured
-	//   });
-	// });
-
-
-
-
-
-	// a.addEventListener("submit", (e)=>{
-	//   e.preventDefault();
-
-	//   // use the same URL in form's action <form action="{{url}}"></form>
-
-	// });
-
-
-
-
-</script>
+<script src="{% static '/js/profile.js' %}"></script>
 {% endblock %}

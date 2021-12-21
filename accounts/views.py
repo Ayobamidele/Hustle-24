@@ -155,8 +155,11 @@ def customerPage(request,customer):
 									'orderItems' : [] ,
 									'is_ordered' : order.is_ordered,
 									'quantity' : order.quantity,
+									'get_cart_items' : order.quantity,
+									'get_cart_total' : order.get_cart_total(),
 								}
 				}
+		print(order1)
 		for items in orderItems1:
 			order1.get('order').get('orderItems').append(items)
 		orders.append(order1)
@@ -174,7 +177,6 @@ def customerPage(request,customer):
 	print(request.POST)
 	if request.method == "POST" and request.POST.get("form_type") == 'accountSetting':
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
-		#Handle Elements from first Form
 		if form.is_valid():
 			form.save()
 	elif request.method == "POST" and request.POST.get("form_type") == 'passwordChange':
