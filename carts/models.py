@@ -44,7 +44,7 @@ class OrderItem(models.Model):
 	quantity = models.IntegerField(default=0)
 	order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
 	is_ordered = models.BooleanField(default=False)
-	date_added = models.DateTimeField(auto_now=True)
+	date_added = models.DateTimeField(auto_now_add=True)
 	date_ordered = models.DateTimeField(null=True)
 
 	def __str__(self):

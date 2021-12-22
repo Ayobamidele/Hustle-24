@@ -84,46 +84,40 @@ def loginPage(request):
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			print('here1')
-			if customer == "True":
-				print('here2')
-				if user.is_customer:
-					try:
-						cart = json.loads(request.COOKIES['cart'])
-						customer = Customer.objects.get(user=user)
-						order, created = Order.objects.get_or_create(customer=customer, complete=False)
-						print(order)
-						print(cart)
-						cookieData = cookieCart(request)
-						items = cookieData['items']
-						for item in items:
-							productitem = Product.objects.get(id=item['product']['id'])
-							print('here3')
-							print(productitem,item['quantity'])
-							# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
-							orderI=OrderItem.objects.create(
-															order=order, 
-															product=productitem, 
-															quantity=item['quantity'], 
-														)
-							order.quantity += 1
-							order.save()
-							print('here4')
-							orderI.save()
-						request.COOKIES['cart'].clear()
-					except:
-						cart = {}
-					login(request,user)
-					return redirect(f'/customer/{username}',)
-				else:
-					messages.info(request, 'Username OR password is incorrect')
+			if user.is_customer:
+				try:
+					cart = json.loads(request.COOKIES['cart'])
+					customer = Customer.objects.get(user=user)
+					order, created = Order.objects.get_or_create(customer=customer, complete=False)
+					print(order)
+					print(cart)
+					cookieData = cookieCart(request)
+					items = cookieData['items']
+					for item in items:
+						productitem = Product.objects.get(id=item['product']['id'])
+						print('here3')
+						print(productitem,item['quantity'])
+						# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
+						orderI=OrderItem.objects.create(
+														order=order, 
+														product=productitem, 
+														quantity=item['quantity'], 
+													)
+						order.quantity += 1
+						order.save()
+						print('here4')
+						orderI.save()
+					request.COOKIES['cart'].clear()
+				except:
+					cart = {}
+				login(request,user)
+				return redirect(f'/customer/{username}',)
+			elif user.is_vendor:
+				login(request,user)
+				print('here3')
+				return redirect(f'/vendor/{username}',)
 			else:
-				print('here2')
-				if user.is_vendor:
-					login(request,user)
-					print('here3')
-					return redirect(f'/vendor/{username}',)
-				else:
-					messages.info(request, 'Username OR password is incorrect')
+				messages.info(request, 'Username OR password is incorrect')
 		else:
 			messages.info(request, 'Username OR password is incorrect')					
 	return render(request,'accounts/login.html')
