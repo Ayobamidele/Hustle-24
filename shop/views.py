@@ -79,6 +79,7 @@ def shop(request,shop):
 			userPicture = request.user.customer
 		elif request.user.is_vendor:
 			userPicture = request.user.vendor
+			print(userPicture.profile_pic.url)
 	vendor = request.user.vendor
 	store = Vendor.objects.filter(id=vendor.id).get().storename
 	products = Shop.objects.filter(shopname=store).get().products.all()

@@ -47,9 +47,8 @@ class Vendor(models.Model):
 	username = models.CharField(max_length=200, null=False)
 	phone_number = models.CharField(max_length=20)
 	email = models.CharField(max_length=200, null=False)
-	profile_pic = models.ImageField(null=True, blank=True,upload_to=photo_path)
+	profile_pic = models.ImageField(null=True, blank=True,upload_to=photo_path,default='levi-stute-mFF39sOZSgM-unsplash.jpg')
 	gender = models.CharField(max_length=200, null=True, choices=GENDER)
-	is_vendor = models.BooleanField(default=True)
 	
 	def __str__(self):
 		return str(self.firstname + " " + self.lastname)

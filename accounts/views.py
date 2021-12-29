@@ -249,6 +249,62 @@ def customerPage(request,customer):
 def vendorPage(request,vendor):
 	vendor = request.user.vendor
 	userPicture = request.user
+	orders = OrderItem.objects.all()
+	products = Shop.objects.get(vendor=vendor.id).products.all()
+	products = [ product.id for product in products]
+	order_list = set([])
+	"""
+	Get a order
+	Get all vendors involved
+	Arrange the order by vendor Id
+	"""
+	order = Order.objects.get(ref_code="dRDn25iAwk")
+	orderItems = order.get_cart_items()
+	allVendors = []
+	allVendorsId = set([])
+	sortedAllVendors = {}
+	for orderItem in orderItems:
+		vendorId = orderItem.product.shop_set.first().vendor_id
+		allVendorsId.add(vendorId)
+		allVendors.append({vendorId : [orderItem] })
+		allVendorsId.add(vendorId)
+	for id in allVendorsId:
+		sortedAllVendors[id] = []
+	
+
+	def addOrder(orderId):
+		for order in allVendors:
+			if orderId in order.keys():
+				for x in order[orderId]:
+					sortedAllVendors[orderId].append(x)
+	# addOrder(14)
+	for order in allVendorsId:
+		addOrder(order)
+
+	print(sortedAllVendors)
+	# for order in orders:
+	# 	if order.product.id in products:
+	# 		orderId = order.order.id
+	# 		order2 = Order.objects.get(id=orderId)
+	# 		if order2.is_ordered :
+	# 			order_list.add(order2)
+	# 			order_details = {
+	# 				"order": order2,
+	# 				"quantity": order.quantity,
+	# 				"get_total": order.get_total(),
+	# 				"address": order2.address.address,
+	# 				"city": order2.address.city,
+	# 				"state": order2.address.state,
+	# 				"zipcode": order2.address.zipcode,
+	# 				"country": order2.address.country,
+	# 				"card_number": order2.payment.card_number,
+	# 				"email": order2.customer.email,
+	# 				"phone_number": order2.customer.phone_number,
+	# 				"name_on_card": order2.payment.name_on_card,
+	# 			}
+	# 			print(order_details)
+	# print(order_list)
+	# print(products)
 	if request.user.is_authenticated:
 		if request.user.is_customer:
 			userPicture = request.user.customer
@@ -256,11 +312,20 @@ def vendorPage(request,vendor):
 			userPicture = request.user.vendor
 	shop = Shop.objects.get(vendor=vendor).shopname
 	form = VendorForm(instance=vendor)
-	if request.method == "POST":
-		form = CustomerForm(request.POST, request.FILES, instance=vendor)
+	passwordChangeForm = ChangeUserPasswordForm(instance=request.user)
+	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
+	if request.method == "POST" and request.POST.get("form_type") == 'accountSetting':
+		form = VendorForm(request.POST, request.FILES, instance=vendor)
 		if form.is_valid():
 			form.save()
-	context = {	"vendor": vendor, "form": form,'store': shop,"userPicture": userPicture}
+	elif request.method == "POST" and request.POST.get("form_type") == 'passwordChange':
+		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
+		if passwordChangeForm.is_valid():
+			passwordChangeForm.save()
+	context = {	"vendor": vendor, "form": form,'store': shop,"userPicture": userPicture,
+				"username": username,
+				"passwordChangeForm": passwordChangeForm,
+	}
 	return render(request,'accounts/vendor.html',context)
 
 @login_required(login_url='login')

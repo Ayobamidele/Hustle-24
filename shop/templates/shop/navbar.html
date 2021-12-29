@@ -24,16 +24,25 @@
 			<div class=" order-lg-last order-0 d-flex align-items-start account dropdown px-lg-2 px-1">
 				<a href="#" class="d-flex " data-toggle="dropdown">
 					{% if request.user.is_customer %}
-						<img class="img-responsive" src="{% static userPicture.profile_pic.url %}" class="dropdown-toggle" data-toggle="dropdown" style="width: 42px;border-radius: 100%;">
+					<div class="image-cropper">
+						<img class="profile-pic" src="{% static userPicture.profile_pic.url %}">
+					</div>
 					{% elif request.user.is_vendor %}
-						<img class="img-responsive" src="{% static userPicture.profile_pic.url %}" class="dropdown-toggle" data-toggle="dropdown" style="width: 42px;border-radius: 100%;">
+					<div class="image-cropper">
+						<img class="profile-pic" src="{% static userPicture.profile_pic.url %}">
+					</div>
 					{% else %}
-						<img class="img-responsive" src="{% static '/images/shoe_1.jpg' %}" class="dropdown-toggle" data-toggle="dropdown" style="width: 42px;border-radius: 100%;">	
+					<div class="image-cropper">
+						<img class="profile-pic" src="{% static '/images/shoe_1.jpg' %}">
+					</div>
 					{% endif %}
 					<span class="icon icon-chevron-down dropbtn px-lg-2 px-1" onclick="myFunction()" style="font-size: 12px;padding: 0;margin: auto 0;"></span>
 				</a>
 				<div class="dropdown-content" id="myDropdown">
-					{% if request.user.is_authenticated %}
+					{% if request.user.is_vendor %}
+						<a href="{% url 'logout' %}">Log Out</a>
+						<a href="{% url 'vendor' request.user.username %}">View Profile</a>
+					{% elif request.user.is_customer %}
 						<a href="{% url 'logout' %}">Log Out</a>
 						<a href="{% url 'customer' request.user.username %}">View Profile</a>
 					{% else %}

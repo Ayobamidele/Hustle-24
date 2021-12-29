@@ -40,7 +40,7 @@ def cookieCart(request):
 	return {'items': items , 'order': order, 'cartItems':cartItems}
 
 def cartData(request):
-	if request.user.is_authenticated:
+	if request.user.is_authenticated and request.user.is_customer == True:
 		customer = request.user.customer
 		print("was here")
 		# the mess is here
