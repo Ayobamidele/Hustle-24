@@ -112,6 +112,7 @@ def processOrder(request):
 		order.complete=True
 		order.is_ordered=True
 		order.ref_code=generateRefCode()
+		orderIdv = order.ref_code
 		order.save()
 		orderItems = order.orderitem_set.all()
 		for orderItem in orderItems:
@@ -150,6 +151,7 @@ def processOrder(request):
 											)
 		print('here2')
 		cusorder.save()
+		orderIdv = cusorder.ref_code
 		print(cusorder)
 		for item in items:
 			productitem = Product.objects.get(id=item['product']['id'])
@@ -165,12 +167,30 @@ def processOrder(request):
 			print('here4')
 			orderI.save()
 		# pass in order
+		"""
+	Get a order
+	Get all vendors involved
+	Arrange the order by vendor Id
+	"""
+	order = orderIdv
+	orderItems = order.get_cart_items()
+	allVendors = []
+	allVendorsId = set([])
+	sortedAllVendors = {}
+	for orderItem in orderItems:
+		vendorId = orderItem.product.shop_set.first().vendor_id
+		allVendorsId.add(vendorId)
+		allVendors.append({vendorId : [orderItem] })
+	for id in allVendorsId:
+		sortedAllVendors[id] = []
+	def addOrder(orderId):
+		for order in allVendors:
+			if orderId in order.keys():
+				for x in order[orderId]:
+					sortedAllVendors[orderId].append(x)
+	# addOrder(14)
+	for order in allVendorsId:
+		addOrder(order)
 
-
-		# customer, order = guestOrder (request, data)
-		# total = float(data['form']['total'])
-		# order, transaction_id - transaction_id
-		# if total == float(order.get_cart_total):
-		# 	order.complete = True
-		# 	order.save()
+	print(sortedAllVendors)
 	return JsonResponse('Payment complete!', safe=False)

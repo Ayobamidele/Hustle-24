@@ -1,6 +1,6 @@
 from django.db import models
 from shop.models import Product
-from accounts.models import Customer
+from accounts.models import Customer, Vendor
 from datetime import datetime
 now = datetime.now() # current date and time
 year = int(now.strftime("%Y"))+24
@@ -36,17 +36,37 @@ class ShippingPaymentOrder(models.Model):
 
 
 class Cart(models.Model):
-	customer = models.OneToOneField(Customer ,on_delete=models.CASCADE, null=True)
+	vendor = models.OneToOneField(Vendor ,on_delete=models.CASCADE, null=True)
 	products = models.ManyToManyField(Product)
 	totalprice = models.DecimalField(max_digits=1000000000000,decimal_places=2, default=0.00)
 	quantity = models.IntegerField(default=0)
-	ordered = models.BooleanField(default=False)
+	delivered = models.BooleanField(default=False)
 	timestamp = models.DateTimeField(auto_now_add=True,auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False,auto_now=True)
 	active = models.BooleanField(default=True)
 
 	def __str__(self):
 		return str(self.id)
+
+	def get_cart_items(self):
+		return self.cartitem_set.all()
+
+	def get_cart_total(self):
+		return sum([item.product.price * item.quantity for item in self.cartitem_set.all()])
+
+class cartItem(models.Model):
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	quantity = models.IntegerField(default=0)
+	cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True, blank=True)
+	is_ordered = models.BooleanField(default=False)
+	date_added = models.DateTimeField(auto_now_add=True)
+	date_ordered = models.DateTimeField(null=True)
+
+	def __str__(self):
+		return f'{self.product.title} - {self.order}'
+	
+	def get_total(self):
+		return self.quantity * self.product.price
 
 
 class Order(models.Model):
