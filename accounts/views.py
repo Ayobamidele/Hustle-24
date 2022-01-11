@@ -253,6 +253,11 @@ def vendorPage(request,vendor):
 	products = Shop.objects.get(vendor=vendor.id).products.all()
 	products = [ product.id for product in products]
 	order_list = set([])
+	orderedcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=False)
+	#Show cart that are yet to deliver
+	for a in orderedcarts:
+		for x in a.get_cart_items():
+			print(x.product.title)
 	if request.user.is_authenticated:
 		if request.user.is_customer:
 			userPicture = request.user.customer
@@ -270,9 +275,10 @@ def vendorPage(request,vendor):
 		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
 		if passwordChangeForm.is_valid():
 			passwordChangeForm.save()
-	context = {	"vendor": vendor, "form": form,'store': shop,"userPicture": userPicture,
-				"username": username,
-				"passwordChangeForm": passwordChangeForm,
+	context = {	"vendor": vendor, "form": form,
+				'store': shop,"userPicture": userPicture,
+				"username": username,"passwordChangeForm": passwordChangeForm,
+				"carts" : orderedcarts, "cart_total" : len(orderedcarts),
 	}
 	return render(request,'accounts/vendor.html',context)
 

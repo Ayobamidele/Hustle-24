@@ -72,7 +72,7 @@ class Cart(models.Model):
 	products = models.ManyToManyField(Product)
 	totalprice = models.DecimalField(max_digits=10,decimal_places=2, default=0)
 	quantity = models.IntegerField(default=0)
-	complete = models.BooleanField(default=False)
+	completely_delivered = models.BooleanField(default=False)
 	timestamp = models.DateTimeField(auto_now_add=True,auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False,auto_now=True)
 	active = models.BooleanField(default=True)
@@ -83,6 +83,9 @@ class Cart(models.Model):
 
 	def get_cart_items(self):
 		return self.cartitem_set.all()
+
+	def get_cart_items_length(self):
+		return len(self.get_cart_items())
 
 	def get_cart_total(self):
 		return sum([item.product.price * item.quantity for item in self.cartitem_set.all()])
