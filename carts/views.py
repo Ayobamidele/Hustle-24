@@ -108,13 +108,13 @@ def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		order, created = Order.objects.get_or_create(complete=False,customer=customer)
-		order.complete=True
-		order.is_ordered=True
-		order.ref_code=generateRefCode()
-		orderIdv = order.ref_code
-		order.save()
-		orderItems = order.orderitem_set.all()
+		cusorder, created = Order.objects.get_or_create(complete=False,customer=customer)
+		cusorder.complete=True
+		cusorder.is_ordered=True
+		cusorder.ref_code=generateRefCode()
+		orderIdv = cusorder.ref_code
+		cusorder.save()
+		orderItems = cusorder.orderitem_set.all()
 		for orderItem in orderItems:
 			orderItem.is_ordered=True
 			orderItem.save()
@@ -135,14 +135,14 @@ def processOrder(request):
 											email=userData['email'],
 											password=password,
 											first_name=userData['first_name'],
-											last_name = userData['last_name']
+											last_name=userData['last_name']
 											)
 		new_user.save()
 		messages.success(request, 'Account was created for ' + username)
 		print(new_user.id)
 		customer = Customer.objects.get(user=new_user.id)
 		print("here")
-		cusorder= Order.objects.create(
+		cusorder = Order.objects.create(
 											customer=customer,
 											complete=True,
 											is_ordered=True,
@@ -177,10 +177,12 @@ def processOrder(request):
 	allVendors = []
 	allVendorsId = set([])
 	sortedAllVendors = {}
+
 	for orderItem in orderItems:
 		vendorId = orderItem.product.shop_set.first().vendor_id
 		allVendorsId.add(vendorId)
-		allVendors.append({vendorId : [orderItem] })
+		allVendors.append({ vendorId : [orderItem] })
+
 	for id in allVendorsId:
 		sortedAllVendors[id] = []
 	def addOrder(orderId):
@@ -188,9 +190,25 @@ def processOrder(request):
 			if orderId in order.keys():
 				for x in order[orderId]:
 					sortedAllVendors[orderId].append(x)
-	# addOrder(14)
+
 	for order in allVendorsId:
 		addOrder(order)
 
-	print(sortedAllVendors)
+	for cartkey in sortedAllVendors:
+		vendorUser = Vendor.objects.get(id=cartkey)
+		vendorsCart = Cart.objects.create()
+		vendorsCart.vendor = vendorUser
+		vendorsCart.order = cusorder
+		for orderedProducts in sortedAllVendors[cartkey]:
+			vendorsCart.totalprice += orderedProducts.get_total()
+			productitem = Product.objects.get(id=orderedProducts.product.id)
+			orderedProduct = CartItem.objects.create(
+											cart=vendorsCart, 
+											product=productitem, 
+											quantity=orderedProducts.quantity, 
+											is_ordered=True,
+										)
+			orderedProduct.save()
+			vendorsCart.quantity += orderedProducts.quantity
+		vendorsCart.save()
 	return JsonResponse('Payment complete!', safe=False)

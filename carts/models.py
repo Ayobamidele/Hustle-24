@@ -34,41 +34,6 @@ class ShippingPaymentOrder(models.Model):
 	def __str__(self):
 		return f'{self.card_number} - {self.customer}'
 
-
-class Cart(models.Model):
-	vendor = models.OneToOneField(Vendor ,on_delete=models.CASCADE, null=True)
-	products = models.ManyToManyField(Product)
-	totalprice = models.DecimalField(max_digits=1000000000000,decimal_places=2, default=0.00)
-	quantity = models.IntegerField(default=0)
-	delivered = models.BooleanField(default=False)
-	timestamp = models.DateTimeField(auto_now_add=True,auto_now=False)
-	updated = models.DateTimeField(auto_now_add=False,auto_now=True)
-	active = models.BooleanField(default=True)
-
-	def __str__(self):
-		return str(self.id)
-
-	def get_cart_items(self):
-		return self.cartitem_set.all()
-
-	def get_cart_total(self):
-		return sum([item.product.price * item.quantity for item in self.cartitem_set.all()])
-
-class cartItem(models.Model):
-	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
-	quantity = models.IntegerField(default=0)
-	cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True, blank=True)
-	is_ordered = models.BooleanField(default=False)
-	date_added = models.DateTimeField(auto_now_add=True)
-	date_ordered = models.DateTimeField(null=True)
-
-	def __str__(self):
-		return f'{self.product.title} - {self.order}'
-	
-	def get_total(self):
-		return self.quantity * self.product.price
-
-
 class Order(models.Model):
 	ref_code = models.CharField(max_length=200, null=True)
 	address = models.ForeignKey(ShippingAddressOrder, on_delete=models.CASCADE, null=True)
@@ -98,6 +63,41 @@ class OrderItem(models.Model):
 
 	def __str__(self):
 		return f'{self.product.title} - {self.order}'
+	
+	def get_total(self):
+		return self.quantity * self.product.price
+
+class Cart(models.Model):
+	vendor = models.OneToOneField(Vendor ,on_delete=models.CASCADE, null=True)
+	products = models.ManyToManyField(Product)
+	totalprice = models.DecimalField(max_digits=10,decimal_places=2, default=0)
+	quantity = models.IntegerField(default=0)
+	complete = models.BooleanField(default=False)
+	timestamp = models.DateTimeField(auto_now_add=True,auto_now=False)
+	updated = models.DateTimeField(auto_now_add=False,auto_now=True)
+	active = models.BooleanField(default=True)
+	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
+
+	def __str__(self):
+		return f'{self.order.ref_code} - {self.vendor}'
+
+	def get_cart_items(self):
+		return self.cartitem_set.all()
+
+	def get_cart_total(self):
+		return sum([item.product.price * item.quantity for item in self.cartitem_set.all()])
+
+class CartItem(models.Model):
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	quantity = models.IntegerField(default=0)
+	cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True, blank=True)
+	is_ordered = models.BooleanField(default=False)
+	date_added = models.DateTimeField(auto_now_add=True)
+	date_ordered = models.DateTimeField(null=True)
+	delivered = models.BooleanField(default=False)
+
+	def __str__(self):
+		return f'{self.product.title} - {self.cart}'
 	
 	def get_total(self):
 		return self.quantity * self.product.price
