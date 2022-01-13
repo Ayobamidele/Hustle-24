@@ -95,3 +95,18 @@ function openCty(order) {
     console.log(element)
     element.classList.toggle("show");
 }
+
+
+
+function openCtyVendor(order, order2, order3) {
+    var element = document.getElementById(order);
+    console.log(element)
+    element.classList.toggle("show");
+
+    var element2 = document.getElementById(order2);
+    element2.classList.toggle("show");
+
+    var element3 = document.getElementById(order3);
+    element3.classList.toggle("show");
+    
+}

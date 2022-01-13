@@ -42,7 +42,6 @@
   color: #fff;
   border: none;
   border-radius: 0;
-  width: 50%;
 }
 
 /* Change background color of buttons on hover */
@@ -725,7 +724,9 @@ button, input,.btn{
 .show {
   display: block;
 }
-
+.disappear {
+  display: none;
+}
 a .card-title{
   display: block;
   color: #555;
