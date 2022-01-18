@@ -16,11 +16,14 @@ from .forms import *
 from .decorators import *
 from shop.models import *
 import json
+import datetime
 from carts.models import *
 from carts.forms import *
 from carts.utils import cookieCart, cartData, guestOrder
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
+Now = datetime.now()
 
 @unauthenticated_user
 @with_usertype(allowed_roles=['Vendor'])
@@ -275,6 +278,13 @@ def vendorPage(request,vendor):
 		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
 		if passwordChangeForm.is_valid():
 			passwordChangeForm.save()
+	elif request.method == "POST" and request.POST.get("form_type") == 'itemDelivered':
+		print("wew", request.POST,type(request.POST.get('order-number')))
+		item = CartItem.objects.get(id=int(request.POST.get('order-number')))
+		print(type(Now),type(item.date_added))
+		item.delivered = True
+		# item.date_ordered = Now
+		item.save()
 	context = {	"vendor": vendor, "form": form,
 				'store': shop,"userPicture": userPicture,
 				"username": username,"passwordChangeForm": passwordChangeForm,

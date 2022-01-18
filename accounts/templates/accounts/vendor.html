@@ -99,28 +99,28 @@
 										</div>
 						</form>
 						<form id="passwordChange" method="POST" enctype="multipart/form-data">
-										<div class="row mb-2 mt-6">
-											<div class="col-12">
-												<h3>Password</h3>
-											</div>
-										</div>
-										<div class="col-md-auto py-3">
-											<h5>Try out the suggested Password.</h5>
-											<div class="d-flex">
-												<p class="my-auto" id="suggestedPassword"></p>
-												<span id="copy" class="icon-content_copy my-auto px-2 popup">
-													<span class="popuptext" id="myPopup">Text Copied!</span>
-												</span>
-											</div>
-										</div>
-										{% csrf_token %}
-										{{passwordChangeForm.as_p}}
-										<div class="row">
-											<div class="col">
-												<input type="hidden" name="form_type" value="passwordChange">
-												<input class="btn btn-primary" type="submit" value="Change Password" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
-											</div>
-										</div>
+							<div class="row mb-2 mt-6">
+								<div class="col-12">
+									<h3>Password</h3>
+								</div>
+							</div>
+							<div class="col-md-auto py-3">
+								<h5>Try out the suggested Password.</h5>
+								<div class="d-flex">
+									<p class="my-auto" id="suggestedPassword"></p>
+									<span id="copy" class="icon-content_copy my-auto px-2 popup">
+										<span class="popuptext" id="myPopup">Text Copied!</span>
+									</span>
+								</div>
+							</div>
+							{% csrf_token %}
+							{{passwordChangeForm.as_p}}
+							<div class="row">
+								<div class="col">
+									<input type="hidden" name="form_type" value="passwordChange">
+									<input class="btn btn-primary" type="submit" value="Change Password" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+								</div>
+							</div>
 						</form>
 
 						</div>
@@ -165,18 +165,28 @@
 										</div>
 									</div>
 								</div>
-								<div id="main{{order.id}}" class="add">
+								<div id="main{{order.id}}" class="add col-12">
 									<div id="order{{order.id}}"  class="tab orderlist ">
 									
 
-									<button class="btn tablinks active" onclick="openCity(event, 'order2{{order.id}}')">Description</button>
-									<button class="btn  tablinks" onclick="openCity(event, 'order3{{order.id}}')">Reviews</button>
+									<button class="btn tablinks active" onclick="openCity(event, 'order2{{order.id}}')">Order</button>
+									<button class="btn  tablinks" onclick="openCity(event, 'order3{{order.id}}')">Details</button>
 									</div>
-									<div id="order2{{order.id}}" class="tabcontent p-5">
+									<div id="order2{{order.id}}" class=" col-12 tabcontent p-5">
 										<section class="orderlists pt-3 col-12">
 											<div class="col text-center">
 												<h4 class="h2">Items - {{order.quantity}}</h4>
 										  	</div>
+										  	<form class="itemDelivered" method="POST" enctype="multipart/form-data">
+												{% csrf_token %}
+											  	<div class="row my-3">
+													<div class="col">
+														<input type="hidden" name="form_type" value="passwordChange">
+														<input class="btn btn-primary" type="submit" value="Change Password" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+													</div>
+												</div>
+											</form>
+
 											<div class="container">
 												<div class="py-3">
 													<div class="row mb-0 d-none d-lg-flex">
@@ -193,6 +203,8 @@
 													<div class="row">
 														<div class="col cart-item-list cart-item-list-minimal">
 															{% for item in order.get_cart_items %}
+															<form class="itemDelivered" method="POST" enctype="multipart/form-data">
+																{% csrf_token %}
 																<!-- cart item -->
 																<div class="cart-item">
 																	<div class="row align-items-center">
@@ -215,8 +227,24 @@
 																		<div class="col-4 col-lg-2 text-center">
 																			<span class="cart-item-price">Total - ${{ item.get_total }}</span>
 																		</div>
+
+																		<div class="col-4 col-lg-2 ">
+																			{% if item.delivered %}
+																				<span class="order-status sent mx-4">Delivered</span>
+																			{% else %}
+																				<input type="hidden" name="form_type" value="itemDelivered">
+																				<input type="hidden" name="order-number" value="{{item.id}}">
+																				
+																				<input type="submit" value="Done" name="Update Information"
+																				class="mx-4 order-status" 
+																				style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+																			{% endif %}
+																				
+																
+																		</div>
 																	</div>
 																</div>
+															</form>
 															{% endfor %}
 														</div>
 													</div>
@@ -230,17 +258,54 @@
 													</div>
 												</div>
 										  	</div>
-										</section>	
+										</section>
 									</div>
 
-									<div id="order3{{order.id}}" class="tabcontent p-5">
-										<section class="orderdetail pt-3 col-12">
-											<h3>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-											quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-											consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-											cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-											proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
+									<div id="order3{{order.id}}" class="col-12 tabcontent p-5">
+										<section class=" col-12orderdetail pt-3 col-12">
+											<h3>Location <span class="icon icon-external-link"></span></h3>
+											<hr>
+											<h4>Address</h4>
+											<p>
+												{{order.order.address.address}}
+											</p>
+											<h4>City</h4>
+											<p>
+												{{order.order.address.city}}
+											</p>
+											<h4>State</h4>
+											<p>
+												{{order.order.address.state}}
+											</p>
+											<h4>Country</h4>
+											<p>
+												{{order.order.address.country}}
+											</p>
+											<h4>Zipcode</h4>
+											<p>
+												{{order.order.address.zipcode}}
+											</p>
+											<h4>Date Added</h4>
+											<p>
+												{{order.order.address.date_added}}
+											</p>
+											
+											<span class="py-3"></span>
+
+											<h3 class="pt-3">Payment <span class="icon icon-receipt"></span></h3>
+											<hr>
+											<h4>Card Number</h4>
+											<p>
+												{{ order.order.payment.card_number }}
+											</p>
+											<h4>Name On Card</h4>
+											<p>
+												{{ order.order.payment.name_on_card }}
+											</p>
+											<div class="text-right">
+												<h3>Total</h3>
+												<h4 class="h2">${{order.totalprice}}</h4>
+											</div>
 										</section>
 									</div>
 								</div>
