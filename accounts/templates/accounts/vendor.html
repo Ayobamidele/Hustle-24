@@ -140,15 +140,17 @@
 										<div class="row align-items-center">
 											<div class="col-lg-4">
 												<h3 class="order-number">Order {{order.id}}</h3>
+												<small>${{order.totalprice}}</small>
+												<br>
 												<a href="#!" class="action viewOrders eyebrow" dataID="order{{order.id}}" onclick="openCtyVendor('order{{order.id}}', 'order2{{order.id}}', 'main{{order.id}}')">View Order</a>
 											</div>
-											{% if order.active %}
+											{% if order.completely_delivered %}
 												<div class="col-lg-4">
-													<span class="order-status canceled">Let's Deliver</span>
+													<span class="order-status sent">Delivered</span>
 												</div>
 											{% else %}
 												<div class="col-lg-4">
-													<span class="order-status sent">Delivered</span>
+													<span class="order-status canceled">Let's Deliver</span>
 												</div>
 											{% endif %}
 											<div class="col-lg-4">
@@ -177,15 +179,18 @@
 											<div class="col text-center">
 												<h4 class="h2">Items - {{order.quantity}}</h4>
 										  	</div>
-										  	<form class="itemDelivered" method="POST" enctype="multipart/form-data">
+										  	{% if not order.completely_delivered %}
+										  	<form class="DeliveredAll" method="POST" enctype="multipart/form-data">
 												{% csrf_token %}
 											  	<div class="row my-3">
 													<div class="col">
-														<input type="hidden" name="form_type" value="passwordChange">
-														<input class="btn btn-primary" type="submit" value="Change Password" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+														<input type="hidden" name="form_type" value="DeliveredAll">
+														<input type="hidden" name="order-number" value="{{order.id}}">
+														<input class="btn btn-primary" type="submit" value="Deliver All" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
 													</div>
 												</div>
 											</form>
+											{% endif %}
 
 											<div class="container">
 												<div class="py-3">

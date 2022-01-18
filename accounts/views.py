@@ -256,11 +256,7 @@ def vendorPage(request,vendor):
 	products = Shop.objects.get(vendor=vendor.id).products.all()
 	products = [ product.id for product in products]
 	order_list = set([])
-	orderedcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=False)
-	#Show cart that are yet to deliver
-	for a in orderedcarts:
-		for x in a.get_cart_items():
-			print(x.product.title)
+	orderedcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=False)	
 	if request.user.is_authenticated:
 		if request.user.is_customer:
 			userPicture = request.user.customer
@@ -279,12 +275,18 @@ def vendorPage(request,vendor):
 		if passwordChangeForm.is_valid():
 			passwordChangeForm.save()
 	elif request.method == "POST" and request.POST.get("form_type") == 'itemDelivered':
-		print("wew", request.POST,type(request.POST.get('order-number')))
 		item = CartItem.objects.get(id=int(request.POST.get('order-number')))
-		print(type(Now),type(item.date_added))
 		item.delivered = True
 		# item.date_ordered = Now
 		item.save()
+	elif request.method == "POST" and request.POST.get("form_type") == 'DeliveredAll':
+		deliveredOrder = Cart.objects.get(id=int(request.POST.get('order-number')))
+		for cartItem in deliveredOrder.get_cart_items():
+			if not cartItem.delivered:
+				cartItem.delivered = True
+				cartItem.save()
+		deliveredOrder.completely_delivered = True
+		deliveredOrder.save()
 	context = {	"vendor": vendor, "form": form,
 				'store': shop,"userPicture": userPicture,
 				"username": username,"passwordChangeForm": passwordChangeForm,
