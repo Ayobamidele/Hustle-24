@@ -254,9 +254,11 @@ def vendorPage(request,vendor):
 	userPicture = request.user
 	orders = OrderItem.objects.all()
 	products = Shop.objects.get(vendor=vendor.id).products.all()
-	products = [ product.id for product in products]
+	# products = [ product.id for product in products]
 	order_list = set([])
-	orderedcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=False)	
+	deliveredcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=True)
+	allorderedcarts = Cart.objects.filter(vendor=vendor.id)
+	undeliveredcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=False)
 	if request.user.is_authenticated:
 		if request.user.is_customer:
 			userPicture = request.user.customer
@@ -290,7 +292,9 @@ def vendorPage(request,vendor):
 	context = {	"vendor": vendor, "form": form,
 				'store': shop,"userPicture": userPicture,
 				"username": username,"passwordChangeForm": passwordChangeForm,
-				"carts" : orderedcarts, "cart_total" : len(orderedcarts),
+				"carts" : undeliveredcarts, "cart_total" : "make it js",
+				"allCarts": allorderedcarts, "deliveredcarts": deliveredcarts,
+				"products": products,
 	}
 	return render(request,'accounts/vendor.html',context)
 
