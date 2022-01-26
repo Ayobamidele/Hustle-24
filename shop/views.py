@@ -17,6 +17,7 @@ import locale
 # Create your views here.
 from django.contrib.auth import get_user_model
 from .decorators import *
+from .forms import *
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -109,3 +110,10 @@ def productDetail(request,product):
 		productsdict.append({'image': str('images/' + str(image))})
 	context = {'userPicture': userPicture,'product': product,'price': price, 'store': store, 'productsdict': productsdict, 'mainimage': mainimage, 'cartItems':cartItems,}
 	return render(request,'shop/product.html',context)
+
+def addProduct(request,shop):
+	form = AddProductForm()
+	if request.method == "POST" and request.POST.get("form_type") == 'addProduct':
+		print(request.POST,request.FILES,request)
+	context = {'form': form,}
+	return render(request,'shop/product-edit.html',context)

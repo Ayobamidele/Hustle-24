@@ -1,0 +1,554 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>H24| Product Edit</title>
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-grid.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-grid.min.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-reboot.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap-reboot.min.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">	
+	<link rel="stylesheet" href="{% static '/icomoon/demo-files/demo.css' %}">
+	<link rel="stylesheet" href="{% static '/css/vendor.css' %}">
+	<link rel="stylesheet" href="{% static '/css/style.css' %}">
+	<link rel="stylesheet" href="{% static '/icomoon/style.css' %}">
+	<link rel="stylesheet" href="{% static '/icomoon/demo-files/demo.css' %}">
+	<link rel="stylesheet" href="{% static '/css/h24.css' %}">
+	<style>
+
+
+		label {
+		   cursor: pointer;
+		   /* Style as you please, it will become the visible UI component. */
+		}
+
+		#upload-photo {
+		   opacity: 0;
+		   /*position: absolute;*/
+		   z-index: -1;
+		}
+		.sdiv {
+			padding-top: 20px !important;
+		}
+		#testimonials{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			width:100%;
+		}
+		.testimonial-heading{
+			letter-spacing: 1px;
+			margin: 30px 0px;
+			padding: 10px 20px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		 
+		.testimonial-heading span{
+			font-size: 1.3rem;
+			color: #252525;
+			margin-bottom: 10px;
+			letter-spacing: 2px;
+			text-transform: uppercase;
+		}
+		.testimonial-box-container{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+			width:100%;
+		}
+		.testimonial-box{
+			box-shadow: 2px 2px 30px rgba(0,0,0,0.1);
+			background-color: #ffffff;
+			padding: 20px;
+			margin: 15px;
+			cursor: pointer;
+		}
+		.profile-img{
+			width:50px;
+			height: 50px;
+			border-radius: 50%;
+			overflow: hidden;
+			margin-right: 10px;
+		}
+		.profile-img img{
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+		}
+		.profile{
+			display: flex;
+			align-items: center;
+		}
+		.name-user{
+			display: flex;
+			flex-direction: column;
+		}
+		.name-user strong{
+			color: #3d3d3d;
+			font-size: 1.1rem;
+			letter-spacing: 0.5px;
+		}
+		.name-user span{
+			color: #979797;
+			font-size: 0.8rem;
+		}
+		.reviews{
+			color: #f9d71c;
+		}
+		.box-top{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+		.client-comment p{
+			font-size: 0.9rem;
+			color: #4b4b4b;
+		}
+		 
+		@media(max-width:1060px){
+			.testimonial-box{
+				width:45%;
+				padding: 10px;
+			}
+		}
+		@media(max-width:790px){
+			.testimonial-box{
+				width:100%;
+			}
+			.testimonial-heading h1{
+				font-size: 1.4rem;
+			}
+		}
+		@media(max-width:340px){
+			.box-top{
+				flex-wrap: wrap;
+				margin-bottom: 10px;
+			}
+			.reviews{
+				margin-top: 10px;
+			}
+		}
+		::selection{
+			color: #ffffff;
+			background-color: #252525;
+		}
+		.tab button:hover, .tab button:focus {
+			outline: 0;
+			box-shadow: none;
+			color: #000;
+			background-color: transparent;
+		}
+		.fa {
+			font-size: 25px;
+		  }
+		  
+		  .checked {
+			color: orange;
+		  }
+		  
+		  /* Three column layout */
+		  .side {
+			float: left;
+			width: 15%;
+			margin-top:10px;
+		  }
+		  
+		  .middle {
+			margin-top:10px;
+			float: left;
+			width: 70%;
+		  }
+		  
+		  /* Place text to the right */
+		  .right {
+			text-align: right;
+		  }
+		  
+		  /* Clear floats after the columns */
+		  .row:after {
+			content: "";
+			display: table;
+			clear: both;
+		  }
+		  
+		  /* The bar container */
+		  .bar-container {
+			width: 100%;
+			background-color: #f1f1f1;
+			text-align: center;
+			color: white;
+		  }
+		  
+		  /* Individual bars */
+		  .bar-5 {width: 60%; height: 18px; background-color: #04AA6D;}
+		  .bar-4 {width: 30%; height: 18px; background-color: #2196F3;}
+		  .bar-3 {width: 10%; height: 18px; background-color: #00bcd4;}
+		  .bar-2 {width: 4%; height: 18px; background-color: #ff9800;}
+		  .bar-1 {width: 15%; height: 18px; background-color: #f44336;}
+		  
+		  /* Responsive layout - make the columns stack on top of each other instead of next to each other */
+		  @media (max-width: 400px) {
+			.side, .middle {
+			  width: 100%;
+			}
+			.right {
+			  display: none;
+			}
+		  }
+		  .heading {
+			font-size: 25px;
+			margin-right: 25px;
+		  }
+		.prate{
+		  margin: 0 auto; /* Center website */
+		  max-width: 800px; /* Max width */
+		  padding: 20px;
+		}
+
+		#img-preview {
+		  display: none; 
+		  width: 100%;   
+		  border: 2px dashed #333;  
+		  margin-bottom: 20px;
+		}
+		#img-preview img {  
+		  width: 100%;
+		  height: auto; 
+		  display: block;   
+		}
+
+		[type="file"] {
+		  height: 0;  
+		  width: 0;
+		  overflow: hidden;
+		}
+		[type="file"] + label {
+		  font-family: sans-serif;
+		  background: #f44336;
+		  padding: 10px 30px;
+		  border: 2px solid #f44336;
+		  border-radius: 3px;
+		  color: #fff;
+		  cursor: pointer;
+		  transition: all 0.2s;
+		}
+		[type="file"] + label:hover {
+		  background-color: #fff;
+		  color: #f44336;
+		}
+		[name="price"],[name="dicsount"]{
+		  padding: 10px;
+		  font: 20px Arial;
+		  width: 100%;
+		}
+
+		.input-categories{
+		}
+
+		.input-categories ul{
+		  display: flex;
+		  flex-direction: row;
+		  justify-content: flex-start;
+		  list-style-type: none;
+		  flex-wrap: wrap;
+		  height: 100px;
+		  overflow: scroll;
+		}
+
+		.input-categories li{
+		  border: 1px solid black;
+		  border-radius: 2px;
+		  font: 14px "Roboto", sans-serif;
+		  padding: 8px;
+		  margin: 1px;
+		  height: max-content;
+		}
+		.input-categories input{
+		  flex: 1 1 auto;
+		  align-self: flex-start;
+		  border: 1px solid;
+		  margin: 3px;
+		}
+
+	</style>
+	<script>
+		var user = '{{request.user}}'
+		var user_is_vendor = '{{request.user.is_vendor}}'
+
+		function getToken(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== '') {
+				const cookies = document.cookie.split(';');
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						console.log("heres 1233")
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+		const csrftoken = getToken('csrftoken');
+
+		function getCookie(name) {
+			// Split cookie string and get all individual name=value pairs in an array
+			var cookieArr = document.cookie.split(";");
+			
+			for(var i = 0; i < cookieArr.length; i++) {
+				var cookiePair = cookieArr[i].split("=");
+			
+				/* Removing whitespace at the beginning of the cookie name
+				and compare it with the given string */
+				if(name == cookiePair[0].trim()) {
+					// Decode the cookie value and return
+					return decodeURIComponent (cookiePair[1]);
+				}
+			}
+			return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+		
+		if(cart == undefined) {
+			cart = {}
+			console.log('Cart was created')
+			document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+		}
+		
+
+		console.log('Cart:', cart)
+	</script>	
+</head>
+	<body>
+		<div class="container">
+			<div class="row justify-content-center">
+			    <div class=" w-100">
+			      	<div class="card">
+				        <div class="card-header">
+					        <div class="d-flex">
+					            <div class="align-self-center flex-grow-1">Edit product | #1 <span id="titleMessage"></span>
+					            </div>
+					        </div>
+						 	 <div class="align-self-center py-3  " style="background-color: inherit;">
+								<button href="" class="btn btn-danger tab">Cancel</button>
+								<button href="" class="btn btn-primary tab" onclick="openCity(event, 'manimages')">Manage media</button>
+								<button href="" class="btn btn-primary tab" onclick="openCity(event, 'reviews')">Reviews</button>
+							</div>
+				        </div>
+			        </div>
+			        <div class="card-body">
+						<div id="manimages" class="tabcontent p-5" style="display: block">
+							<form id="addProduct" method="POST" enctype="multipart/form-data">
+							{% csrf_token %}
+							<!-- main product data -->
+								<div class="row">
+									<div class="col-md-4 border border-dark" style="display: flex;justify-content: center;background-color: aliceblue;padding: 50px;">
+										<div style="text-align: center;margin: auto;">
+										 	<div style="text-align: center;margin: auto;">
+										    	<div id="img-preview"></div>
+										    	<input type="file" accept="image/*" name="choose-file"  id="choose-file" name="choose-file" />
+										    	<label for="choose-file">Choose File</label>
+										  	</div>
+										</div>
+									</div>
+									<div class="col-md-8">
+										<div class="form-group">
+											<label for="title" class="col-form-label">Title</label>
+											<!-- <div class=""> -->
+												<input type="text" name="title" class="form-control" id="title">
+											<!-- </div> -->
+										</div>
+										<div class="form-group">
+											<label for="category" class=" col-form-label">Category</label>
+											<div class="">
+												<div class="input-categories">
+												  <ul name="categories">
+												    
+												  </ul>
+												  <input class="form-control" placeholder="Press Enter To Create Category" type="text"/>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="brand" class="col-form-label">Brand</label>
+											<div class="">
+												<input type="text" class="form-control" name="brand" id="brand">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="manufacturer_id" class="col-form-label">Manufacturer ID</label>
+											<div class="">
+											<input type="text" class="form-control" name="manufacturer_id" id="manufacturer_id">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="description" class="col-form-label">Description</label>
+											<div class="">
+												<textarea class="form-control textarea" name="description" id="description" ></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<h4 class="py-3">Prices</h4>
+									<hr/>
+									<div class="col-md-12 ">
+										<div class="form-group ">
+											<label for="price" class=" col-form-label">Price</label>
+											<div class="">
+												<input type='price' name="price" class="form-control" value="0.00" placeholder='Type a number & click outside' />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="dicsount" class="col-form-label">Dicsount Price</label>
+											<div class="">
+												<input type='dicsount' name="dicsount" class="form-control" value="0.00" placeholder='Type a number & click outside' />
+											</div>
+										</div>
+										<!-- <div class="form-group row">
+											<label for="attr_3" class="col-sm-2 col-form-label"></label>
+											<div class="col-sm-10">
+											<input type="text" class="form-control" id="attr_3" value="2кг" />
+											</div>
+										</div> -->
+									</div>
+								</div>
+								<!-- <input type="hidden" name="form_type" value="addProduct"> -->
+								<input class="btn btn-primary" type="submit" value="Save" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+							</form>
+							<!-- /Attributes -->
+						</div>
+						<div id="reviews" class="tabcontent">
+							<div class="prate">
+								<div class="prate-head">
+									<span class="heading py-1 d-block">Product Rating</span>
+									<br>
+									<div class=" stars my-1 d-flex">
+										<span class="fa fa-star icon icon-star checked"></span>
+										<span class="fa fa-star icon icon-star checked"></span>
+										<span class="fa fa-star icon icon-star checked"></span>
+										<span class="fa fa-star icon icon-star checked"></span>
+										<span class="fa fa-star icon icon-star_border"></span>
+									</div>
+									<p class=" py-1">4.1 average based on 254 reviews.</p>
+									<hr style="border:3px solid #f1f1f1">
+								</div>
+								<div class="row">
+									<div class="side">
+										<div>5 star</div>
+									</div>
+									<div class="middle">
+										<div class="bar-container">
+										<div class="bar-5"></div>
+										</div>
+									</div>
+									<div class="side right">
+										<div>150</div>
+									</div>
+									<div class="side">
+										<div>4 star</div>
+									</div>
+									<div class="middle">
+										<div class="bar-container">
+										<div class="bar-4"></div>
+										</div>
+									</div>
+									<div class="side right">
+										<div>63</div>
+									</div>
+									<div class="side">
+										<div>3 star</div>
+									</div>
+									<div class="middle">
+										<div class="bar-container">
+										<div class="bar-3"></div>
+										</div>
+									</div>
+									<div class="side right">
+										<div>15</div>
+									</div>
+									<div class="side">
+										<div>2 star</div>
+									</div>
+									<div class="middle">
+										<div class="bar-container">
+										<div class="bar-2"></div>
+										</div>
+									</div>
+									<div class="side right">
+										<div>6</div>
+									</div>
+									<div class="side">
+										<div>1 star</div>
+									</div>
+									<div class="middle">
+										<div class="bar-container">
+										<div class="bar-1"></div>
+										</div>
+									</div>
+									<div class="side right">
+										<div>20</div>
+									</div>
+								</div>				
+							</div>
+							<div class="testimonial-box">
+								<!--top------------------------->
+								<div class="box-top">
+									<!--profile----->
+									<div class="profile">
+										<!--img---->
+										<div class="profile-img">
+											<img src="https://cdn3.iconfinder.com/data/icons/avatars-15/64/_Ninja-2-512.png" />
+										</div>
+										<!--name-and-username-->
+										<div class="name-user">
+											<strong>Liam mendes</strong>
+											<span>@liammendes</span>
+										</div>
+									</div>
+									<!--reviews------>
+									<div class="reviews">
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="fas fa-star"></i>
+										<i class="far fa-star"></i><!--Empty star-->
+									</div>
+								</div>
+								<!--Comments---------------------------------------->
+								<div class="client-comment">
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, quaerat quis? Provident temporibus architecto asperiores nobis maiores nisi a. Quae doloribus ipsum aliquam tenetur voluptates incidunt blanditiis sed atque cumque.</p>
+								</div>
+							</div>
+						</div>
+			        </div>
+			     </div>
+			    </div>
+			</div>
+		</div>
+
+		<footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
+		<script src="{% static '/js/pedit.js' %}"></script>
+		<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>
+		<script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+		<script src="{% static '/bootstrap/js/bootstrap.js' %}"></script>
+		<script src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>
+		<script src="{% static '/js/vendor.min.js' %}"></script>
+		<!-- <script src="{% static '/js/app.js' %}"></script> -->
+		<script src="{% static '/js/cart.js' %}"></script>
+	</body>
+</html>
