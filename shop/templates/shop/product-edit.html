@@ -20,7 +20,10 @@
 	<link rel="stylesheet" href="{% static '/icomoon/demo-files/demo.css' %}">
 	<link rel="stylesheet" href="{% static '/css/h24.css' %}">
 	<style>
-
+		 #image-upload-demo {
+        width: 100%;
+        margin: auto;
+    	}
 
 		label {
 		   cursor: pointer;
@@ -281,12 +284,237 @@
 		  border: 1px solid;
 		  margin: 3px;
 		}
+		.iu-image-item-style {
+    position: relative;
+    display:inline-block;
+    vertical-align: top;
+}
 
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.iu-highlight {
+    border: 2px dashed #ff1a1a !important;
+}
+
+.iu-image-note {
+    font-size: 1rem;
+    color: black;
+    z-index: 9;
+    cursor: pointer;
+}
+
+.iu-image-placeholder {
+    margin-bottom: 0px;
+    display: block;
+    padding: 5px;
+    background-clip: content-box;
+    position: relative;
+}
+
+.iu-image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.iu-image-order-number {
+    position:absolute;
+    top: 5px;
+    left: 5px;
+    color: white;
+    font-size: 1rem;
+    background: rgba(0,0,0,.3);
+    padding:2px 8px;
+}
+
+.iu-close-button {
+    position:absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+    background: rgba(0,0,0,.3);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.4rem;
+    cursor:pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iu-close-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Times New Roman", Times, serif;
+}
+
+.iu-close-button:hover {
+    background: rgba(0,0,0,.5);
+}
+
+.iu-button {
+    display: none;
+}
+
+@keyframes  iu-backgroundColor {
+    0% {background-color: #c0b3a5;}
+    50% {background-color: #a18d78;}
+    100% {background-color: #c0b3a5;}
+}
+
+.iu-select-number {
+    width: 100%;
+}
+
+.iu-custom-select {
+    position: relative;
+    padding: 5px;
+    margin-top: -10px;
+    font-size: 1rem;
+}
+
+.iu-display-none {
+    display: none;
+}
+
+.iu-select-selected {
+    background-color: #1f1c1c;
+}
+
+.iu-select-selected:after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    transform: translate(0, calc(-50% + 3px));
+    right: calc(10px + 5px);
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+
+.iu-select-hide {
+    display: none;
+}
+
+.iu-select-selected.iu-select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    transform: translate(0, calc(-50% - 3px));
+}
+
+/* style the items (options), including the selected item: */
+.iu-select-items div,.iu-select-selected {
+    color: #ffffff;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+}
+
+/* Style items (options): */
+.iu-select-items {
+    position: absolute;
+    background-color: #1f1c1c;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-clip: content-box;
+    padding: 0 5px;
+}
+
+.iu-select-items div:hover, .iu-same-as-selected {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#iu-image-upload-zone {
+    min-height: 150px;
+    border: 2px dashed #a7a6ab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    flex: 1 1 100%;
+    text-align: center;
+    vertical-align: top;
+    margin-top: 16px;
+}
+#iu-image-upload-zone:hover {
+    border: 2px dashed #17a2b8;
+    border: 2px dashed #35ea35;
+}
+.iu-image-note {
+    font-weight: 700;
+}
+#iu-image-upload-zone input[type=file], /* FF, IE7+, chrome (except button) */
+#iu-image-upload-zone input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
+    cursor: pointer;
+}
+
+/* Spinner for image upload note */
+.iu-spinner {
+  border-top: 5px solid #3498db;
+  border-right: 5px solid #67b2e4;
+  border-bottom: 5px solid #67b2e4;
+  border-left: 5px solid #67b2e4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: iu-spin 700ms linear infinite;
+  margin: auto;
+  margin-top: 10px;
+}
+
+@keyframes  iu-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.iu-progress-bar {
+    width: 100%;
+    background-color: white;
+    border-radius: 0px;
+    margin: 0;
+    position: absolute;
+    left: 0;
+    padding: 5px;
+    bottom: 0;
+    background-clip: content-box;
+}
+
+.iu-percent-bar {
+    width: 0%;
+    height: 7px;
+    background-color: #4CAF50;
+    text-align: center;
+    line-height: 0px;
+    color: white;
+    border-radius: 0px;
+    font-size: 1rem;
+}
+.iu-flash-box {
+    position: fixed;
+    z-index: 2000;
+    color: #ffffff;
+    border-radius: 30px;
+    background: rgba(37,34,74,.9);
+    padding: 20px 20px;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
 	</style>
 	<script>
 		var user = '{{request.user}}'
 		var user_is_vendor = '{{request.user.is_vendor}}'
-
+		var logoPath = "{% static '/images/h24.png' %}"
 		function getToken(name) {
 			let cookieValue = null;
 			if (document.cookie && document.cookie !== '') {
@@ -390,9 +618,11 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="manufacturer_id" class="col-form-label">Manufacturer ID</label>
-											<div class="">
-											<input type="text" class="form-control" name="manufacturer_id" id="manufacturer_id">
+											<label for="stock" class="col-form-label">Stock</label>
+											<br>
+											<div class="stock d-flex">
+												
+												<input type="number" name="stock" class="form-control" id="stock" min="1" value="1" onkeypress="return isNumberKey(event)" /> 
 											</div>
 										</div>
 										<div class="form-group">
@@ -414,9 +644,9 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="dicsount" class="col-form-label">Dicsount Price</label>
+											<label for="dicsount" class="col-form-label">Discount Price</label>
 											<div class="">
-												<input type='dicsount' name="dicsount" class="form-control" value="0.00" placeholder='Type a number & click outside' />
+												<input type='discount' name="discount" class="form-control" value="0.00" placeholder='Type a number & click outside' />
 											</div>
 										</div>
 										<!-- <div class="form-group row">
@@ -427,13 +657,27 @@
 										</div> -->
 									</div>
 								</div>
-								<!-- <input type="hidden" name="form_type" value="addProduct"> -->
+									
+    							
+								<div class="row">
+									<h4 class="py-3">Extra Product Images
+										<br>
+									<small class="small">(Maximum images for upload is 24)</small>
+									</h4>
+									<hr/>
+									<div id="image-upload-demo" class="my-3">
+										<div id="iu-gallery"></div>
+										<div id="iu-image-upload-zone"></div>
+									</div>
+								</div>
+
+								<input type="hidden" name="form_type" value="addProduct">
 								<input class="btn btn-primary" type="submit" value="Save" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
 							</form>
 							<!-- /Attributes -->
 						</div>
 						<div id="reviews" class="tabcontent">
-							<div class="prate">
+							<!-- <div class="prate">
 								<div class="prate-head">
 									<span class="heading py-1 d-block">Product Rating</span>
 									<br>
@@ -504,43 +748,47 @@
 										<div>20</div>
 									</div>
 								</div>				
-							</div>
-							<div class="testimonial-box">
-								<!--top------------------------->
-								<div class="box-top">
-									<!--profile----->
-									<div class="profile">
-										<!--img---->
-										<div class="profile-img">
-											<img src="https://cdn3.iconfinder.com/data/icons/avatars-15/64/_Ninja-2-512.png" />
+							</div> -->
+							{% for review in reviews %}							
+								<div class="testimonial-box">
+									<!--top------------------------->
+									<div class="box-top">
+										<!--profile----->
+										<div class="profile">
+											<!--img---->
+											<div class="profile-img">
+												<img src="https://cdn3.iconfinder.com/data/icons/avatars-15/64/_Ninja-2-512.png" />
+											</div>
+											<!--name-and-username-->
+											<div class="name-user">
+												<strong>{{ reverw.customer }}</strong>
+												<span>@{{ review.customer.username }}</span>
+											</div>
 										</div>
-										<!--name-and-username-->
-										<div class="name-user">
-											<strong>Liam mendes</strong>
-											<span>@liammendes</span>
+										<!--reviews------>
+										<div class="reviews">
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="fas fa-star"></i>
+											<i class="far fa-star"></i><!--Empty star-->
 										</div>
 									</div>
-									<!--reviews------>
-									<div class="reviews">
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="far fa-star"></i><!--Empty star-->
+									<!--Comments---------------------------------------->
+									<div class="client-comment">
+										<h6>{{ review.product }}</h6>
+										<p>{{ review.content }}</p>
+										<small>{{ review.date_added }}</small>
 									</div>
 								</div>
-								<!--Comments---------------------------------------->
-								<div class="client-comment">
-									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, quaerat quis? Provident temporibus architecto asperiores nobis maiores nisi a. Quae doloribus ipsum aliquam tenetur voluptates incidunt blanditiis sed atque cumque.</p>
-								</div>
-							</div>
+							{% endfor %}
 						</div>
 			        </div>
 			     </div>
 			    </div>
 			</div>
 		</div>
-
+		
 		<footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
 		<script src="{% static '/js/pedit.js' %}"></script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>

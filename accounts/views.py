@@ -254,7 +254,12 @@ def vendorPage(request,vendor):
 	userPicture = request.user
 	orders = OrderItem.objects.all()
 	products = Shop.objects.get(vendor=vendor.id).products.all()
-	# products = [ product.id for product in products]
+	productsId = [ product.id for product in products]
+	reviews = []
+	for x in productsId:
+		z = ProductReview.objects.filter(product=x)
+		for a in z:
+			reviews.append(a)
 	order_list = set([])
 	deliveredcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=True)
 	allorderedcarts = Cart.objects.filter(vendor=vendor.id)
