@@ -111,6 +111,7 @@ for (var i = 0; i < es.length; i++) {
     if(e.keyCode == 13) {
       var c = e.target._icategories;
       if (categories.includes(c._input.value)) {
+        e.preventDefault();
       	return c._input.value = '';
   	  }
       categories.push(c._input.value)
@@ -126,16 +127,6 @@ for (var i = 0; i < es.length; i++) {
   }
 }
 
-
-var removeCategoryBtns = document.getElementsByClassName('remove-category');
-function see(e) {
-    var e = event || e;
-    var category = e.target.parentNode.innerText
-    category = categories.indexOf(category)
-    categories.splice(category)
-    e.target.parentNode.remove()
-    e.preventDefault();
-}
 
 
 

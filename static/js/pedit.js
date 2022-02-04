@@ -131,31 +131,6 @@ function remove(arrOriginal, elementToRemove){
     return arrOriginal = arrOriginal.filter(function(el){return el !== elementToRemove});
 }// caching the elements
 
-function removeItemOnce(arr, index) {
-        arr.splice(index, 1);
-        return arr;
-}
-
-function indexOfCustom (parentArray, searchElement) {
-    for ( var i = 0; i < parentArray.length; i++ ) {
-        if ( parentArray[i][0] == searchElement[0] || parentArray[i][1] == searchElement[1] ) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-var removeCategoryBtns = document.getElementsByClassName('remove-category');
-
-function see(e) {
-    var e = event || e;
-    var category = String(e.target.parentNode.innerText)
-    const index = indexOfCustom(categories,category);
-  removeItemOnce(categories, index)
-    // console.log(typeof categories,typeof category)
-    e.target.parentNode.remove()
-    e.preventDefault();
-}
 
 
 
