@@ -19,7 +19,6 @@
 	<link rel="stylesheet" href="{% static '/icomoon/style.css' %}">
 	<link rel="stylesheet" href="{% static '/icomoon/demo-files/demo.css' %}">
 	<link rel="stylesheet" href="{% static '/css/h24.css' %}">
-	
 	<style>
 		 #image-upload-demo {
         width: 100%;
@@ -286,239 +285,236 @@
 		  margin: 3px;
 		}
 		.iu-image-item-style {
-		    position: relative;
-		    display:inline-block;
-		    vertical-align: top;
-		}
+    position: relative;
+    display:inline-block;
+    vertical-align: top;
+}
 
-		*, ::after, ::before {
-		    box-sizing: border-box;
-		}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
 
-		.iu-highlight {
-		    border: 2px dashed #ff1a1a !important;
-		}
+.iu-highlight {
+    border: 2px dashed #ff1a1a !important;
+}
 
-		.iu-image-note {
-		    font-size: 1rem;
-		    color: black;
-		    z-index: 9;
-		    cursor: pointer;
-		}
+.iu-image-note {
+    font-size: 1rem;
+    color: black;
+    z-index: 9;
+    cursor: pointer;
+}
 
-		.iu-image-placeholder {
-		    margin-bottom: 0px;
-		    display: block;
-		    padding: 5px;
-		    background-clip: content-box;
-		    position: relative;
-		}
+.iu-image-placeholder {
+    margin-bottom: 0px;
+    display: block;
+    padding: 5px;
+    background-clip: content-box;
+    position: relative;
+}
 
-		.iu-image {
-		    object-fit: cover;
-		    width: 100%;
-		    height: 100%;
-		}
+.iu-image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
 
-		.iu-image-order-number {
-		    position:absolute;
-		    top: 5px;
-		    left: 5px;
-		    color: white;
-		    font-size: 1rem;
-		    background: rgba(0,0,0,.3);
-		    padding:2px 8px;
-		}
+.iu-image-order-number {
+    position:absolute;
+    top: 5px;
+    left: 5px;
+    color: white;
+    font-size: 1rem;
+    background: rgba(0,0,0,.3);
+    padding:2px 8px;
+}
 
-		.iu-close-button {
-		    position:absolute;
-		    top: 5px;
-		    right: 5px;
-		    color: white;
-		    background: rgba(0,0,0,.3);
-		    width: 30px;
-		    height: 30px;
-		    border-radius: 50%;
-		    font-weight: bold;
-		    font-size: 1.4rem;
-		    cursor:pointer;
-		    display: flex;
-		    justify-content: center;
-		    align-items: center;
-		}
+.iu-close-button {
+    position:absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+    background: rgba(0,0,0,.3);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.4rem;
+    cursor:pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-		.iu-close-icon {
-		    position: absolute;
-		    top: 50%;
-		    left: 50%;
-		    transform: translate(-50%, -50%);
-		    font-family: "Times New Roman", Times, serif;
-		}
+.iu-close-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Times New Roman", Times, serif;
+}
 
-		.iu-close-button:hover {
-		    background: rgba(0,0,0,.5);
-		}
+.iu-close-button:hover {
+    background: rgba(0,0,0,.5);
+}
 
-		.iu-button {
-		    display: none;
-		}
+.iu-button {
+    display: none;
+}
 
-		@keyframes  iu-backgroundColor {
-		    0% {background-color: #c0b3a5;}
-		    50% {background-color: #a18d78;}
-		    100% {background-color: #c0b3a5;}
-		}
+@keyframes  iu-backgroundColor {
+    0% {background-color: #c0b3a5;}
+    50% {background-color: #a18d78;}
+    100% {background-color: #c0b3a5;}
+}
 
-		.iu-select-number {
-		    width: 100%;
-		}
+.iu-select-number {
+    width: 100%;
+}
 
-		.iu-custom-select {
-		    position: relative;
-		    padding: 5px;
-		    margin-top: -10px;
-		    font-size: 1rem;
-		}
+.iu-custom-select {
+    position: relative;
+    padding: 5px;
+    margin-top: -10px;
+    font-size: 1rem;
+}
 
-		.iu-display-none {
-		    display: none;
-		}
+.iu-display-none {
+    display: none;
+}
 
-		.iu-select-selected {
-		    background-color: #1f1c1c;
-		}
+.iu-select-selected {
+    background-color: #1f1c1c;
+}
 
-		.iu-select-selected:after {
-		    position: absolute;
-		    content: "";
-		    top: 50%;
-		    transform: translate(0, calc(-50% + 3px));
-		    right: calc(10px + 5px);
-		    width: 0;
-		    height: 0;
-		    border: 6px solid transparent;
-		    border-color: #fff transparent transparent transparent;
-		}
+.iu-select-selected:after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    transform: translate(0, calc(-50% + 3px));
+    right: calc(10px + 5px);
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
 
-		.iu-select-hide {
-		    display: none;
-		}
+.iu-select-hide {
+    display: none;
+}
 
-		.iu-select-selected.iu-select-arrow-active:after {
-		    border-color: transparent transparent #fff transparent;
-		    transform: translate(0, calc(-50% - 3px));
-		}
+.iu-select-selected.iu-select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    transform: translate(0, calc(-50% - 3px));
+}
 
-		/* style the items (options), including the selected item: */
-		.iu-select-items div,.iu-select-selected {
-		    color: #ffffff;
-		    padding: 5px 10px;
-		    border: 1px solid transparent;
-		    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
-		    cursor: pointer;
-		}
+/* style the items (options), including the selected item: */
+.iu-select-items div,.iu-select-selected {
+    color: #ffffff;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+}
 
-		/* Style items (options): */
-		.iu-select-items {
-		    position: absolute;
-		    background-color: #1f1c1c;
-		    left: 0;
-		    right: 0;
-		    z-index: 99;
-		    background-clip: content-box;
-		    padding: 0 5px;
-		}
+/* Style items (options): */
+.iu-select-items {
+    position: absolute;
+    background-color: #1f1c1c;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-clip: content-box;
+    padding: 0 5px;
+}
 
-		.iu-select-items div:hover, .iu-same-as-selected {
-		    background-color: rgba(0, 0, 0, 0.5);
-		}
-		#iu-image-upload-zone {
-		    min-height: 150px;
-		    border: 2px dashed #a7a6ab;
-		    display: flex;
-		    align-items: center;
-		    justify-content: center;
-		    flex-direction: column;
-		    cursor: pointer;
-		    flex: 1 1 100%;
-		    text-align: center;
-		    vertical-align: top;
-		    margin-top: 16px;
-		}
-		#iu-image-upload-zone:hover {
-		    border: 2px dashed #17a2b8;
-		    border: 2px dashed #35ea35;
-		}
-		.iu-image-note {
-		    font-weight: 700;
-		}
-		#iu-image-upload-zone input[type=file], /* FF, IE7+, chrome (except button) */
-		#iu-image-upload-zone input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
-		    cursor: pointer;
-		}
+.iu-select-items div:hover, .iu-same-as-selected {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#iu-image-upload-zone {
+    min-height: 150px;
+    border: 2px dashed #a7a6ab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    flex: 1 1 100%;
+    text-align: center;
+    vertical-align: top;
+    margin-top: 16px;
+}
+#iu-image-upload-zone:hover {
+    border: 2px dashed #17a2b8;
+    border: 2px dashed #35ea35;
+}
+.iu-image-note {
+    font-weight: 700;
+}
+#iu-image-upload-zone input[type=file], /* FF, IE7+, chrome (except button) */
+#iu-image-upload-zone input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
+    cursor: pointer;
+}
 
-		/* Spinner for image upload note */
-		.iu-spinner {
-		  border-top: 5px solid #3498db;
-		  border-right: 5px solid #67b2e4;
-		  border-bottom: 5px solid #67b2e4;
-		  border-left: 5px solid #67b2e4;
-		  border-radius: 50%;
-		  width: 40px;
-		  height: 40px;
-		  animation: iu-spin 700ms linear infinite;
-		  margin: auto;
-		  margin-top: 10px;
-		}
+/* Spinner for image upload note */
+.iu-spinner {
+  border-top: 5px solid #3498db;
+  border-right: 5px solid #67b2e4;
+  border-bottom: 5px solid #67b2e4;
+  border-left: 5px solid #67b2e4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: iu-spin 700ms linear infinite;
+  margin: auto;
+  margin-top: 10px;
+}
 
-		@keyframes  iu-spin {
-		  0% { transform: rotate(0deg); }
-		  100% { transform: rotate(360deg); }
-		}
-		.iu-progress-bar {
-		    width: 100%;
-		    background-color: white;
-		    border-radius: 0px;
-		    margin: 0;
-		    position: absolute;
-		    left: 0;
-		    padding: 5px;
-		    bottom: 0;
-		    background-clip: content-box;
-		}
+@keyframes  iu-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.iu-progress-bar {
+    width: 100%;
+    background-color: white;
+    border-radius: 0px;
+    margin: 0;
+    position: absolute;
+    left: 0;
+    padding: 5px;
+    bottom: 0;
+    background-clip: content-box;
+}
 
-		.iu-percent-bar {
-		    width: 0%;
-		    height: 7px;
-		    background-color: #4CAF50;
-		    text-align: center;
-		    line-height: 0px;
-		    color: white;
-		    border-radius: 0px;
-		    font-size: 1rem;
-		}
-		.iu-flash-box {
-		    position: fixed;
-		    z-index: 2000;
-		    color: #ffffff;
-		    border-radius: 30px;
-		    background: rgba(37,34,74,.9);
-		    padding: 20px 20px;
-		    text-align: center;
-		    width: 80%;
-		    max-width: 400px;
-		    top: 10%;
-		    left: 50%;
-		    transform: translate(-50%, 0%);
-		}
+.iu-percent-bar {
+    width: 0%;
+    height: 7px;
+    background-color: #4CAF50;
+    text-align: center;
+    line-height: 0px;
+    color: white;
+    border-radius: 0px;
+    font-size: 1rem;
+}
+.iu-flash-box {
+    position: fixed;
+    z-index: 2000;
+    color: #ffffff;
+    border-radius: 30px;
+    background: rgba(37,34,74,.9);
+    padding: 20px 20px;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
 	</style>
 	<script>
 		var user = '{{request.user}}'
 		var user_is_vendor = '{{request.user.is_vendor}}'
 		var logoPath = "{% static '/images/h24.png' %}"
-
-
-
 		function getToken(name) {
 			let cookieValue = null;
 			if (document.cookie && document.cookie !== '') {
@@ -563,8 +559,7 @@
 		
 
 		console.log('Cart:', cart)
-	</script>
-
+	</script>	
 </head>
 	<body>
 		<div class="container">
@@ -592,33 +587,27 @@
 									<div class="col-md-4 border border-dark" style="display: flex;justify-content: center;background-color: aliceblue;padding: 50px;">
 										<div style="text-align: center;margin: auto;">
 										 	<div style="text-align: center;margin: auto;">
-										    	<div id="img-preview" style="display: block;">
-										    		<img id="mainImage" name="choose-file" src="{{ productimage }}" />
-										    	</div>
+										    	<div id="img-preview"></div>
 										    	<input type="file" accept="image/*" name="choose-file"  id="choose-file" name="choose-file" />
-										    	<label for="choose-file">Choose 2 File</label>
+										    	<label for="choose-file">Choose File</label>
 										  	</div>
 										</div>
 									</div>
 									<div class="col-md-8">
 										<div class="form-group">
 											<label for="title" class="col-form-label">Title</label>
+											<!-- <div class=""> -->
 												<input type="text" name="title" class="form-control" id="title">
-												<!-- {{ form.title }}											 -->
+											<!-- </div> -->
 										</div>
 										<div class="form-group">
 											<label for="category" class=" col-form-label">Category</label>
 											<div class="">
 												<div class="input-categories">
-												  	<ul name="categories">
-													<!-- {% for category in categories %}
-      													<li>
-															{{ category }}
-      														<span onclick="see()" class="icon icon-remove remove-category"></span><input type="hidden" name="categories" value="{{ category }}">
-														</li>		
-													{% endfor %} -->
-												  	</ul>
-												  	<input class="form-control" placeholder="Press Enter To Create Category" type="text"/>
+												  <ul name="categories">
+												    
+												  </ul>
+												  <input class="form-control" placeholder="Press Enter To Create Category" type="text"/>
 												</div>
 											</div>
 										</div>
@@ -687,7 +676,6 @@
 							</form>
 							<!-- /Attributes -->
 						</div>
-
 						<div id="reviews" class="tabcontent">
 							<!-- <div class="prate">
 								<div class="prate-head">
@@ -801,13 +789,8 @@
 			</div>
 		</div>
 		
-		{{ form.as_p }}
-		{{ form.image.value }}
-
 		<footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
-		<script src="{% static '/js/pedit.js' %}"></script>
-		<script type="text/javascript">
-					</script>
+		<script src="{% static '/js/padd.js' %}"></script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 		<script src="{% static '/bootstrap/js/bootstrap.js' %}"></script>

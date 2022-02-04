@@ -24,7 +24,7 @@
 <div class=" my-10" >
 
     <!-- listing -->
-    <section class="pt-5">
+    <section class="pt-5" style="overflow: clip;">
 		<div class="container">
 		  <div class="row gutter-4 justify-content-between">
   
@@ -743,7 +743,7 @@
 												</a>	
 												<div class=" py-2">
 													<div class="add underline">
-														<a href="#" class="add underline">Edit Product</a>
+														<a href="{% url 'editProduct' store product product.id %}" class="add underline">Edit Product</a>
 													</div>
 													<p class="card-text pr-1">${{ product.price }}</p>
 												</div>

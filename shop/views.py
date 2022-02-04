@@ -161,4 +161,64 @@ def addProduct(request,shop):
 		shop.products.add(create_product)
 		shop.save()
 	context = {'form': form,}
+	return render(request,'shop/product-add.html',context)
+
+
+def editProduct(request,shop,product,id):
+	product = Product.objects.get(id=int(id))
+	form = AddProductForm(instance=product)
+	productimage = product.image.url
+	categories = []
+	for category in product.category.all():
+		categories.append(category.name)
+	print(categories)
+	# vendor = request.user.vendor
+	# products = Shop.objects.get(vendor=vendor.id).products.all()
+	# shop = Shop.objects.get(vendor=vendor)
+	# print(shop.products.all())
+	# productsId = [ product.id for product in products]
+	# reviews = []
+	# for x in productsId:
+	# 	z = ProductReview.objects.filter(product=x)
+	# 	for a in z:
+	# 		reviews.append(a)
+	# # print(shop.products)
+	if request.method == "POST" and request.POST.get("form_type") == 'addProduct':
+		print(request.FILES)
+	# 	title = request.POST.get('title')
+	# 	categories = request.POST.getlist('categories')
+	# 	brand = request.POST.get('brand')
+	# 	description = request.POST.get('description')
+	# 	stock =request.POST.get('stock')
+	# 	price = float((request.POST.get('price')[1:]).replace(',',''))
+	# 	discount = float((request.POST.get('discount')[1:]).replace(',',''))	
+	# 	image = request.FILES.get('choose-file')
+	# 	productImages = request.FILES.getlist('productImages')
+	# 	create_product = Product.objects.create(
+	# 			title=title,
+	# 			brand=brand,
+	# 			description=description,
+	# 			price=price,
+	# 			discount_price=discount,
+	# 			image=image,
+	# 			available=True,
+	# 			stock=stock,
+	# 			is_featured=True
+	# 		)
+	# 	for category in categories:
+	# 		# Check if string is empty or contain spaces only
+	# 		if not re.search("^\s*$", category):
+	# 			category_slug = category.replace(" ", "-")
+	# 			create_category = Category.objects.create(name=category,slug=category_slug)
+	# 			create_category.save()
+	# 			create_product.category.add(create_category)
+	# 	for image in productImages:
+	# 		create_ProductImage = ProductImage.objects.create(images=image)
+	# 		create_ProductImage.save()
+	# 		create_product.productimages.add(create_ProductImage)
+	# 	create_product.save()
+	# 	shop.products.add(create_product)
+	# 	shop.save()
+	context = {'form': form, 'productimage': productimage,
+				'categories': categories,}
 	return render(request,'shop/product-edit.html',context)

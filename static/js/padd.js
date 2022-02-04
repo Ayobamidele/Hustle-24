@@ -1,37 +1,36 @@
 // tabs
 function openCity(evt, cityName) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
+	var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tabcontent");
+	for (i = 0; i < tabcontent.length; i++) {
+	  tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+	  tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
+	document.getElementById(cityName).style.display = "block";
+	evt.currentTarget.className += " active";
   }
 
   
   function openCity2(evt, cityName) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent2");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablinks2");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
+	var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tabcontent2");
+	for (i = 0; i < tabcontent.length; i++) {
+	  tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks2");
+	for (i = 0; i < tablinks.length; i++) {
+	  tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
+	document.getElementById(cityName).style.display = "block";
+	evt.currentTarget.className += " active";
   }
  
 
 const chooseFile = document.getElementById("choose-file");
 const imgPreview = document.getElementById("img-preview");
-const mainImage = document.getElementById("mainImage");
 
 chooseFile.addEventListener("change", function () {
   getImgData();
@@ -112,8 +111,8 @@ for (var i = 0; i < es.length; i++) {
     if(e.keyCode == 13) {
       var c = e.target._icategories;
       if (categories.includes(c._input.value)) {
-        return c._input.value = '';
-      }
+      	return c._input.value = '';
+  	  }
       categories.push(c._input.value)
       // var li = document.createElement('li');
 
@@ -127,36 +126,16 @@ for (var i = 0; i < es.length; i++) {
   }
 }
 
-function remove(arrOriginal, elementToRemove){
-    return arrOriginal = arrOriginal.filter(function(el){return el !== elementToRemove});
-}// caching the elements
-
-function removeItemOnce(arr, index) {
-        arr.splice(index, 1);
-        return arr;
-}
-
-function indexOfCustom (parentArray, searchElement) {
-    for ( var i = 0; i < parentArray.length; i++ ) {
-        if ( parentArray[i][0] == searchElement[0] || parentArray[i][1] == searchElement[1] ) {
-            return i;
-        }
-    }
-    return -1;
-}
 
 var removeCategoryBtns = document.getElementsByClassName('remove-category');
-
 function see(e) {
     var e = event || e;
-    var category = String(e.target.parentNode.innerText)
-    const index = indexOfCustom(categories,category);
-  removeItemOnce(categories, index)
-    // console.log(typeof categories,typeof category)
+    var category = e.target.parentNode.innerText
+    category = categories.indexOf(category)
+    categories.splice(category)
     e.target.parentNode.remove()
     e.preventDefault();
 }
-
 
 
 
@@ -173,7 +152,7 @@ function display(source,destination)
 // events
 titleInput.onkeyup=function(e)
 { 
-  display(this.value,h2); 
+	display(this.value,h2); 
   e.preventDefault();
 };
 

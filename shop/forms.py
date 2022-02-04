@@ -14,3 +14,4 @@ class AddProductForm(ModelForm):
 		super(AddProductForm, self).__init__(*args, **kwargs)		
 		for field in self.fields.keys():
 			self.fields[field].widget.attrs.update({'class': 'form-control'})
+			print(field)
