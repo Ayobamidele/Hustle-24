@@ -105,13 +105,16 @@ var categories = [];
 
 var es = document.querySelectorAll('.input-categories');
 for (var i = 0; i < es.length; i++) {
-  es[i]._input = es[i].querySelector('input');
+  es[i]._input = es[i].querySelector('input[type="text"]');
+  console.log(es[i]._input)
   es[i]._input._icategories = es[i];
+  console.log(es[i]._input._icategories)
   es[i].onkeydown = function(e){
     var e = event || e;
     if(e.keyCode == 13) {
       var c = e.target._icategories;
-      if (categories.includes(c._input.value)) {
+      console.log(c)
+      if(categories.includes(c._input.value)) {
         return c._input.value = '';
       }
       categories.push(c._input.value)
@@ -127,9 +130,7 @@ for (var i = 0; i < es.length; i++) {
   }
 }
 
-function remove(arrOriginal, elementToRemove){
-    return arrOriginal = arrOriginal.filter(function(el){return el !== elementToRemove});
-}// caching the elements
+// caching the elements
 
 
 
@@ -137,7 +138,7 @@ function remove(arrOriginal, elementToRemove){
 
 
 // caching the elements
-var titleInput = document.getElementById("title")
+var titleInput = document.getElementById("id_title")
 var h2 = document.getElementById("titleMessage")
 // the main function: get the content from source and display it in destination
 function display(source,destination)

@@ -792,35 +792,16 @@
 		<footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
 		<script src="{% static '/js/padd.js' %}"></script>
 		<script type="text/javascript">
-			function remove(arrOriginal, elementToRemove){
-    return arrOriginal = arrOriginal.filter(function(el){return el !== elementToRemove});
-}// caching the elements
 
-function removeItemOnce(arr, index) {
-        arr.splice(index, 1);
-        return arr;
-}
+			var removeCategoryBtns = document.getElementsByClassName('remove-category');
 
-function indexOfCustom (parentArray, searchElement) {
-    for ( var i = 0; i < parentArray.length; i++ ) {
-        if ( parentArray[i][0] == searchElement[0] || parentArray[i][1] == searchElement[1] ) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-var removeCategoryBtns = document.getElementsByClassName('remove-category');
-
-function see(e) {
-    var e = event || e;
-    var category = String(e.target.parentNode.innerText)
-    const index = indexOfCustom(categories,category);
-  removeItemOnce(categories, index)
-    // console.log(typeof categories,typeof category)
-    e.target.parentNode.remove()
-    e.preventDefault();
-}
+			function see(e) {
+			    var e = event || e;
+			    e.target.parentNode.lastElementChild.attributes.value.nodeValue
+			    categories.splice(categories.indexOf(e.target.parentNode.lastElementChild.attributes.value.nodeValue),1)
+			    e.target.parentNode.remove()
+			    e.preventDefault();
+			}
 		</script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

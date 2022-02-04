@@ -596,27 +596,27 @@
 										    		<img id="mainImage" name="choose-file" src="{{ productimage }}" />
 										    	</div>
 										    	<input type="file" accept="image/*" name="choose-file"  id="choose-file" name="choose-file" />
-										    	<label for="choose-file">Choose 2 File</label>
+										    	<label for="choose-file">Choose File</label>
 										  	</div>
 										</div>
 									</div>
 									<div class="col-md-8">
 										<div class="form-group">
 											<label for="title" class="col-form-label">Title</label>
-												<input type="text" name="title" class="form-control" id="title">
-												<!-- {{ form.title }}											 -->
+												<!-- <input type="text" name="title" class="form-control" id="title"> -->
+												{{ form.title }}											
 										</div>
 										<div class="form-group">
 											<label for="category" class=" col-form-label">Category</label>
 											<div class="">
 												<div class="input-categories">
 												  	<ul name="categories">
-													<!-- {% for category in categories %}
+													{% for category in categories %}
       													<li>
 															{{ category }}
       														<span onclick="see()" class="icon icon-remove remove-category"></span><input type="hidden" name="categories" value="{{ category }}">
 														</li>		
-													{% endfor %} -->
+													{% endfor %}
 												  	</ul>
 												  	<input class="form-control" placeholder="Press Enter To Create Category" type="text"/>
 												</div>
@@ -807,32 +807,23 @@
 		<footer class="note">This is cool because you don't need to change the color of the link on :hover. The mix-blend-mode in the ::after will invert it for you.</footer>
 		<script src="{% static '/js/pedit.js' %}"></script>
 		<script type="text/javascript">
-			function removeItemOnce(arr, index) {
-				arr.splice(index, 1);
-				return arr;
-			}
-			
-			function indexOfCustom (parentArray, searchElement) {
-			    for ( var i = 0; i < parentArray.length; i++ ) {
-			        if ( parentArray[i][0] == searchElement[0] || parentArray[i][1] == searchElement[1] ) {
-			            return i;
-			        }
-			    }
-			    return -1;
-			}
-			
+
 			var removeCategoryBtns = document.getElementsByClassName('remove-category');
 
 			function see(e) {
 			    var e = event || e;
-			    var category = String(e.target.parentNode.innerText)
-			    const index = indexOfCustom(categories,category);
-				removeItemOnce(categories, index)
-			    // console.log(typeof categories,typeof category)
+			    e.target.parentNode.lastElementChild.attributes.value.nodeValue
+			    categories.splice(categories.indexOf(e.target.parentNode.lastElementChild.attributes.value.nodeValue),1)
 			    e.target.parentNode.remove()
 			    e.preventDefault();
 			}
 
+		</script>
+		<script type="text/javascript">
+			var category2 = {{ categories|safe }}
+			for (var i = 0; i < category2.length; i++) {	
+				categories.push(category2[i])
+			}
 		</script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
