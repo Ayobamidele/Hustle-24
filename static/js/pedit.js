@@ -180,6 +180,8 @@ sendRequestToServer: true,
 displayImageOrderNumber: false,
 maxImages: 24,
 addLogo: [logoPath, 100, 35, 'center'],
+headers: {"X-CSRFToken": csrftoken,},
+deleteImageRoute : "updatephoto",
 dictUploadImageNote: 'Click or drop photos here to upload',
 alertUploadingImage: function(fileLength) {
     var dictUploadingMessage;
@@ -438,6 +440,7 @@ function ImageUpload(options = {}) {
         if (headers) {
             for (const [key, value] of Object.entries(headers)) {
                 xhttp.setRequestHeader(key, value);
+                // console.log(key, value)
             }
         }
     }
@@ -2491,24 +2494,48 @@ function ImageUpload(options = {}) {
                 });
 
                 if (sendRequestToServer === true) {
+                    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
                     xhttp.onreadystatechange = function() {
-                        if (this.readyState == 4 && this.status == 200) {
+                      console.log(xhttp.status)
+                        if (xhttp.readyState == 4 && xhttp.status == 200) {
                             xhttpSuccessAction();
                         }
                     };
+                    xhttp.open("POST", '/updatephoto');
+                    // setHeaders(xhttp);
+                    xhttp.setRequestHeader('X-CSRFToken', csrftoken);
 
-                    xhttp.open("POST", deleteImageRoute, true);
-                    setHeaders(xhttp);
 
-                    var deleteImageRouteTimeout = returnOptionValue('deleteImageRouteTimeout');
-                    if (Number.isInteger(deleteImageRouteTimeout)) {
-                        xhttp.timeout = deleteImageRouteTimeout;
-                    }
+                    // var deleteImageRouteTimeout = returnOptionValue('deleteImageRouteTimeout');
+                    // if (Number.isInteger(deleteImageRouteTimeout)) {
+                    //     xhttp.timeout = deleteImageRouteTimeout;
+                    // }
 
-                    xhttp.ontimeout = function () {
-                        checkMethodExists('deleteImageRouteTimeoutAction');
-                    }
-                    xhttp.send(formData);
+                    // xhttp.ontimeout = function () {
+                    //     checkMethodExists('deleteImageRouteTimeoutAction');
+                    // }
+
+                    let notes = "Timmys store/Sweet Rootz/15/edit/"  // sample data
+                    const data = new FormData();
+                    console.log(notes);
+                    data.append('motif',notes); 
+                    xhttp.send(data);
+
+
+    // Get the token
+
+                    // Create new request add token 
+                    // const generateRequest = new XMLHttpRequest();
+                    // generateRequest.open('POST', '/updatephoto');
+                    // generateRequest.setRequestHeader('X-CSRFToken', csrftoken);
+
+                    // // Add the motif to send with the request
+                    // const data = new FormData();
+                    // console.log(notes);
+                    // data.append('motif', JSON.stringify(notes));  // stringify notes
+
+                    // // Send request
+                    // generateRequest.send(data);
                 }
                 else if (sendRequestToServer === false) {
 

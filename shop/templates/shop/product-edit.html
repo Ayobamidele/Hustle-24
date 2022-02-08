@@ -511,6 +511,32 @@
 		    left: 50%;
 		    transform: translate(-50%, 0%);
 		}
+
+[data-toggle="collapse"]:after {
+display: inline-block;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  content: "\e254";
+  transform: rotate(90deg) ;
+  transition: all linear 0.25s;
+  float: right;
+  font-family: 'icomoon' !important;
+font-style: normal;
+font-weight: normal;
+font-variant: normal;
+text-transform: none;
+line-height: 1;
+
+  }   
+[data-toggle="collapse"].collapsed:after {
+  transform: rotate(0deg) ;
+  content: "\e254";
+
+}
 	</style>
 	<script>
 		var user = '{{request.user}}'
@@ -625,21 +651,20 @@
 										<div class="form-group">
 											<label for="brand" class="col-form-label">Brand</label>
 											<div class="">
-												<input type="text" class="form-control" name="brand" id="brand">
+												{{ form.brand }}		
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="stock" class="col-form-label">Stock</label>
 											<br>
 											<div class="stock d-flex">
-												
-												<input type="number" name="stock" class="form-control" id="stock" min="1" value="1" onkeypress="return isNumberKey(event)" /> 
+												{{ form.stock }}		
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="description" class="col-form-label">Description</label>
 											<div class="">
-												<textarea class="form-control textarea" name="description" id="description" ></textarea>
+												{{ form.description }}	
 											</div>
 										</div>
 									</div>
@@ -651,13 +676,47 @@
 										<div class="form-group ">
 											<label for="price" class=" col-form-label">Price</label>
 											<div class="">
-												<input type='price' name="price" class="form-control" value="0.00" placeholder='Type a number & click outside' />
+												<div id="accordion" role="tablist">
+													<div class="card">
+													    <div class="card-header" role="tab" id="headingTwo">
+													      <h5 class="mb-0">
+													        <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+													          Current Price - {{ form.price.value|default_if_none:"" }}
+													        </a>
+													      </h5>
+													    </div>
+													    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+													      <div class="card-body">
+													        <input type='price' name="price" class="form-control" value="" placeholder='Type a number & click outside' />
+													      </div>
+													    </div>
+													</div>
+												</div>
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="dicsount" class="col-form-label">Discount Price</label>
 											<div class="">
-												<input type='discount' name="discount" class="form-control" value="0.00" placeholder='Type a number & click outside' />
+												<div id="accordion2" role="tablist">
+												  <div class="card">
+												    <div class="card-header" role="tab" id="headingThree">
+												      <h5 class="mb-0">
+												        <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+												           Current Discount Price - {{ form.discount_price.value|default_if_none:"" }}
+												        </a>
+												      </h5>
+												    </div>
+												    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion2">
+												      <div class="card-body">
+												        <input type='discount' name="discount" class="form-control" value="0.00" placeholder='Type a number & click outside' />
+												      </div>
+												    </div>
+												  </div>
+												</div>
+
+
+
+												
 											</div>
 										</div>
 										<!-- <div class="form-group row">
@@ -677,7 +736,35 @@
 									</h4>
 									<hr/>
 									<div id="image-upload-demo" class="my-3">
-										<div id="iu-gallery"></div>
+										<div id="iu-gallery">
+											{% for image in productimages %}
+											<!-- 	<div class="iu-image-uploading-placeholder iu-image-item-style {{image.images}">
+													<div class="iu-image-placeholder" style="animation: 0s ease 0s 1 normal none running none; width: 171.233px; height: 171.333px;">
+														<img class="iu-image" draggable="false" name="productImages" src="{{ image.images.url }}">
+														<div class="iu-image-order-number iu-display-none">1</div>
+														<div class="iu-progress-bar">
+															<div class="iu-percent-bar" style="width: 100%;">100%</div>
+														</div>
+														<div class="iu-close-button" data-image-name="{{image.images}">
+															<div class="iu-close-icon">×</div>
+														</div>
+													</div>
+													<div class="iu-custom-select">
+														<select class="iu-display-none iu-select-number">
+															{% for ops in productimages %}
+																<option>{{ forloop.counter }}</option>
+															{% endfor %}
+														</select>
+														
+														<div class="iu-select-selected">{{ forloop.counter }}</div>
+														<div class="iu-select-items iu-select-hide">
+															<div class="iu-same-as-selected">1</div>
+														</div>
+													</div>
+												</div> -->
+											<!-- {% endfor %} -->
+
+										</div>
 										<div id="iu-image-upload-zone"></div>
 									</div>
 								</div>
@@ -824,6 +911,31 @@
 			for (var i = 0; i < category2.length; i++) {	
 				categories.push(category2[i])
 			}
+			{% for image in productimages %}
+													
+				var imageSrc = "{{image.images.url}}";
+
+			    //Get imageName from database image.
+			    var imageName = '{{image.images}}';
+
+			    //Get imageId from database image.
+			    var imageId = '{{image.id}}';
+			    console.log(imageSrc)
+			    myImageUpload.options.deleteImageRoute = "{% url 'updatephoto' %}"
+			    myImageUpload.appendServerImage(imageSrc, imageName, imageId);
+			{% endfor %}
+			function recommend(){
+		        const req = new XMLHttpRequest()
+		        req.open('GET',"{% url 'updatephoto' %}")
+		        req.onload = () =>{
+		            console.log(req.response)
+		        }
+		        req.send();
+		    }
+
+		    window.onload = ()=>{
+		        // recommend()
+		    }
 		</script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.js' %}"></script>
 		<script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

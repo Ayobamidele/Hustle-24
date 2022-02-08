@@ -2,7 +2,7 @@ from .models import *
 from accounts.models import *
 from carts.utils import *
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 
@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from carts.models import *
 import locale
 import re
+import json
 
 # Create your views here.
 from django.contrib.auth import get_user_model
@@ -72,22 +73,22 @@ def home(request,category_slug=None):
 				}
 	return render(request, 'shop/index.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Vendor'])
-def shop(request,shop):
-	userPicture = request.user
-	if request.user.is_authenticated:
-		if request.user.is_customer:
-			userPicture = request.user.customer
-		elif request.user.is_vendor:
-			userPicture = request.user.vendor
-			print(userPicture.profile_pic.url)
-	vendor = request.user.vendor
-	store = Vendor.objects.filter(id=vendor.id).get().storename
-	products = Shop.objects.filter(shopname=store).get().products.all()
-	reviews = Shop.objects.filter(shopname=store).get().review.all()
-	context = {'products':products,'store': store, 'reviews':reviews, 'userPicture': userPicture}
-	return render(request,'shop/shop.html',context)
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['Vendor'])
+# def shop(request,shop):
+# 	userPicture = request.user
+# 	if request.user.is_authenticated:
+# 		if request.user.is_customer:
+# 			userPicture = request.user.customer
+# 		elif request.user.is_vendor:
+# 			userPicture = request.user.vendor
+# 			# print(userPicture.profile_pic.url)
+# 	vendor = request.user.vendor
+# 	store = Vendor.objects.filter(id=vendor.id).get().storename
+# 	products = Shop.objects.filter(shopname=store).get().products.all()
+# 	reviews = Shop.objects.filter(shopname=store).get().review.all()
+# 	context = {'products':products,'store': store, 'reviews':reviews, 'userPicture': userPicture}
+# 	return render(request,'shop/shop.html',context)
 
 def productDetail(request,product):
 	userPicture = request.user
@@ -168,10 +169,12 @@ def editProduct(request,shop,product,id):
 	product = Product.objects.get(id=int(id))
 	form = AddProductForm(instance=product)
 	productimage = product.image.url
+	productimages= product.productimages.all()
 	categories = []
 	for category in product.category.all():
 		categories.append(category.name)
-	print(categories)
+	for x in productimages:
+		print(x.images.url)
 	# vendor = request.user.vendor
 	# products = Shop.objects.get(vendor=vendor.id).products.all()
 	# shop = Shop.objects.get(vendor=vendor)
@@ -185,6 +188,8 @@ def editProduct(request,shop,product,id):
 	# # print(shop.products)
 	if request.method == "POST" and request.POST.get("form_type") == 'addProduct':
 		print(request.FILES)
+	elif request.method == "POST":
+		print(request.POST)
 	# 	title = request.POST.get('title')
 	# 	categories = request.POST.getlist('categories')
 	# 	brand = request.POST.get('brand')
@@ -219,6 +224,12 @@ def editProduct(request,shop,product,id):
 	# 	create_product.save()
 	# 	shop.products.add(create_product)
 	# 	shop.save()
-	context = {'form': form, 'productimage': productimage,
-				'categories': categories,}
+	context = {'form': form,'id': id, 'productimage': productimage,
+				'categories': categories,'productimages': productimages,}
 	return render(request,'shop/product-edit.html',context)
+
+def deleteProductImage(request):
+	# data = json.loads(request.body)
+	# print(data)
+	print("got here",request.POST['motif'])
+	return JsonResponse(status=302 ,data={'success' : request.POST['motif'] })
