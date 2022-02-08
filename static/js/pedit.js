@@ -2498,30 +2498,30 @@ function ImageUpload(options = {}) {
                     xhttp.onreadystatechange = function() {
                       console.log(xhttp.status)
                         if (xhttp.readyState == 4 && xhttp.status == 200) {
-                            xhttpSuccessAction();
+                          xhttpSuccessAction();
                         }
                     };
-                    xhttp.open("POST", '/updatephoto');
+                    xhttp.open("POST", '/updatephoto',true);
                     // setHeaders(xhttp);
                     xhttp.setRequestHeader('X-CSRFToken', csrftoken);
 
 
-                    // var deleteImageRouteTimeout = returnOptionValue('deleteImageRouteTimeout');
-                    // if (Number.isInteger(deleteImageRouteTimeout)) {
-                    //     xhttp.timeout = deleteImageRouteTimeout;
-                    // }
+                    var deleteImageRouteTimeout = returnOptionValue('deleteImageRouteTimeout');
+                    if (Number.isInteger(deleteImageRouteTimeout)) {
+                        xhttp.timeout = deleteImageRouteTimeout;
+                    }
 
-                    // xhttp.ontimeout = function () {
-                    //     checkMethodExists('deleteImageRouteTimeoutAction');
-                    // }
-
+                    xhttp.ontimeout = function () {
+                        checkMethodExists('deleteImageRouteTimeoutAction');
+                    }
+                    
                     let notes = "Timmys store/Sweet Rootz/15/edit/"  // sample data
                     const data = new FormData();
                     console.log(notes);
                     data.append('motif',notes); 
                     xhttp.send(data);
-
-
+                    event.preventDefault()
+                    return xhttp
     // Get the token
 
                     // Create new request add token 

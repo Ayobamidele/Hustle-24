@@ -232,4 +232,4 @@ def deleteProductImage(request):
 	# data = json.loads(request.body)
 	# print(data)
 	print("got here",request.POST['motif'])
-	return JsonResponse(status=302 ,data={'success' : request.POST['motif'] })
+	return JsonResponse({ 'success' : True }, status=200 )

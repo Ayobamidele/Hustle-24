@@ -920,9 +920,8 @@ line-height: 1;
 
 			    //Get imageId from database image.
 			    var imageId = '{{image.id}}';
-			    console.log(imageSrc)
-			    myImageUpload.options.deleteImageRoute = "{% url 'updatephoto' %}"
-			    myImageUpload.appendServerImage(imageSrc, imageName, imageId);
+			    // myImageUpload.options.deleteImageRoute = "{% url 'updatephoto' %}"
+			    myImageUpload.appendServerImage('{{image.images.url}}', '{{image.images}}', '{{image.id}}');
 			{% endfor %}
 			function recommend(){
 		        const req = new XMLHttpRequest()
