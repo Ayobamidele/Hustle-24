@@ -13,17 +13,19 @@
 					<span class="icon icon-search" aria-hidden="true"></span>
 				</div>
 			</a>
-
-			<a href="{% url 'login' %}">
-				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
-					<small class="icon nav-link">Sign In</small>
-				</div>
-			</a>
-			<a href="{% url 'customer_signup' %}">
-				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
-					<small class="icon nav-link">Sign Up</small>
-				</div>
-			</a>
+			{% if request.user.is_authenticated %}
+			{% else %}
+				<a href="{% url 'login' %}">
+					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+						<small class="icon nav-link">Sign In</small>
+					</div>
+				</a>
+				<a href="{% url 'customer_signup' %}">
+					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+						<small class="icon nav-link">Sign Up</small>
+					</div>
+				</a>
+			{% endif %}
 			<a href="{% url 'cart' %}">
 			<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 					<span class=" icon icon-shopping-cart"></span>
@@ -54,9 +56,6 @@
 					{% elif request.user.is_customer %}
 						<a href="{% url 'logout' %}">Log Out</a>
 						<a href="{% url 'customer' request.user.username %}">View Profile</a>
-					{% else %}
-						<a href="{% url 'login' %}">Log In</a>
-						<a href="{% url 'customer_signup' %}">Register</a>
 						<!-- /accounts/signup/customer/ -->
 						<!-- <h4 class="h2">Items - {{order.get_cart_items}}</h4> -->
 					{% endif %}
