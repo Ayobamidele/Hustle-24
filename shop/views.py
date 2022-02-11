@@ -23,6 +23,7 @@ from .decorators import *
 from .forms import *
 
 locale.setlocale(locale.LC_ALL, '')
+deletedProductImages = set([])
 
 def generateRefCode():	
 	chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
@@ -187,10 +188,8 @@ def editProduct(request,shop,product,id):
 	# 	for a in z:
 	# 		reviews.append(a)
 	# # print(shop.products)
-	if request.method == "POST" and request.POST.get("form_type") == 'addProduct':
-		print(request.FILES)
-	elif request.method == "POST":
-		print(request.POST)
+	if request.method == "POST" and request.POST.get("form_type") == 'editProduct':
+		print(request.POST, deletedProductImages,22222333)
 	# 	title = request.POST.get('title')
 	# 	categories = request.POST.getlist('categories')
 	# 	brand = request.POST.get('brand')
@@ -225,20 +224,14 @@ def editProduct(request,shop,product,id):
 	# 	create_product.save()
 	# 	shop.products.add(create_product)
 	# 	shop.save()
-	x = '[10,9,8]'
-	x = ast.literal_eval(x)
-	print(type(x),x)
-	# for x in e:
-		# print(x)
+	deletedProductImages.clear()
 	context = {'form': form,'id': id, 'productimage': productimage,
 				'categories': categories,'productimages': productimages,}
 	return render(request,'shop/product-edit.html',context)
 
 def deleteProductImage(request):
-	deletedProductImages = []
 	data = request.POST['motif']
 	data = ast.literal_eval(data)
 	for x in data:
-		deletedProductImages.append(x)
-	print("got here", deletedProductImages,request.POST)
+		deletedProductImages.add(x)
 	return JsonResponse({ 'success' : True }, status=200 )

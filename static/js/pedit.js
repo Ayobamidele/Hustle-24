@@ -156,7 +156,7 @@ function openCity(evt, cityName) {
   
   var textareas = document.querySelectorAll('textarea');
   
-  document.getElementById('addProduct').addEventListener('keydown', function(e) {
+  document.getElementById('editProduct').addEventListener('keydown', function(e) {
     for (var i = 0; i < textareas.length; i++) {
   
       if (e.keyCode === 13 && e.target !== textareas[i]) {

@@ -16,7 +16,6 @@ class AddProductForm(ModelForm):
 			'onkeypress': 'return isNumberKey(event)', 'min': 1})
 		for field in self.fields.keys():
 			self.fields[field].widget.attrs.update({'class': 'form-control'})
-			print(field)
 		self.fields['description'].widget.attrs['class'] = 'form-control textarea'
 		self.fields['price'].widget.attrs.update({'type': 'price',
 			'placeholder': 'Type a number & click outside', 'min': 0.00,
