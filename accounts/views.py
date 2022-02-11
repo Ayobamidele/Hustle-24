@@ -1,3 +1,4 @@
+import email
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
@@ -30,20 +31,19 @@ Now = datetime.now()
 def registerPageCustomer(request):
 	form = CreateUserForm()
 	if request.method == "POST":
-		print(request.POST)
-		post = request.POST.copy() # to make it mutable
-		post.update({'username': str(post['first_name'] + " " + post['last_name'])})
-		form = CreateUserForm(post)
-		if form.is_valid():
-			# or set several values from dict
-			print(post)
-			print(form)
-			username = post['first_name'] + " " + post['last_name']
+		firstname = request.POST.get('firstname')
+		lastname = request.POST.get('lastname')
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+		print("helo",request.POST,request.POST.get('password'))
+		if password:			
+			print("helo")
+			username = firstname + " " + lastname
 			new_user = User.objects.create_user(username= username,
-												email=post['email'],
-												password=post['password1'],
-												first_name=post['first_name'],
-												last_name = post['last_name']
+												email=email,
+												password=password,
+												first_name=firstname,
+												last_name = lastname
 												)
 			new_user.save()
 			messages.success(request, 'Account was created for ' + username)

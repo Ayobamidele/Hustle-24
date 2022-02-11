@@ -2798,7 +2798,9 @@ input[type="button"].btn-block {
 
 .nav-link {
   display: block;
-  padding: 0.5rem 1rem; }
+  border: 1.5px solid;
+  padding: 0.5rem 1rem;
+  }
   .nav-link:hover, .nav-link:focus {
     text-decoration: none; }
   .nav-link.disabled {

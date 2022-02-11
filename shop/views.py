@@ -15,6 +15,7 @@ from carts.models import *
 import locale
 import re
 import json
+import ast
 
 # Create your views here.
 from django.contrib.auth import get_user_model
@@ -224,12 +225,20 @@ def editProduct(request,shop,product,id):
 	# 	create_product.save()
 	# 	shop.products.add(create_product)
 	# 	shop.save()
+	x = '[10,9,8]'
+	x = ast.literal_eval(x)
+	print(type(x),x)
+	# for x in e:
+		# print(x)
 	context = {'form': form,'id': id, 'productimage': productimage,
 				'categories': categories,'productimages': productimages,}
 	return render(request,'shop/product-edit.html',context)
 
 def deleteProductImage(request):
-	# data = json.loads(request.body)
-	# print(data)
-	print("got here",request.POST['motif'])
+	deletedProductImages = []
+	data = request.POST['motif']
+	data = ast.literal_eval(data)
+	for x in data:
+		deletedProductImages.append(x)
+	print("got here", deletedProductImages,request.POST)
 	return JsonResponse({ 'success' : True }, status=200 )
