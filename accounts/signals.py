@@ -7,11 +7,15 @@ from .models import *
 
 def profile(sender, instance, created, **kwargs):
 	if created:
-		if instance.is_vendor:
-			group = Group.objects.get(name='Vendor')
+		if instance.is_vendor and instance.is_customer == False:
+			group = Group.object.get(name='Vendor')
 			instance.groups.add(group)
 			user = str(instance.first_name  + " " +instance.last_name)
 			Vendor.objects.create(user=instance,username=user, email=instance.email,firstname=instance.first_name,lastname=instance.last_name)
+			print("Profile created!")
+		elif instance.is_vendor and instance.is_customer:
+			user = str(instance.first_name  + " " +instance.last_name)
+			Customer.objects.create(user=instance,username=user, email=instance.email,firstname=instance.first_name,lastname=instance.last_name)
 			print("Profile created!")
 		else:
 			group = Group.objects.get(name='Customer')
