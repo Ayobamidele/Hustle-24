@@ -1,3 +1,4 @@
+from dis import dis
 from .models import *
 from accounts.models import *
 from carts.utils import *
@@ -189,17 +190,52 @@ def editProduct(request,shop,product,id):
 	# 		reviews.append(a)
 	# # print(shop.products)
 	if request.method == "POST" and request.POST.get("form_type") == 'editProduct':
-		print(request.POST, deletedProductImages,22222333)
-	# 	title = request.POST.get('title')
-	# 	categories = request.POST.getlist('categories')
-	# 	brand = request.POST.get('brand')
-	# 	description = request.POST.get('description')
-	# 	stock =request.POST.get('stock')
-	# 	price = float((request.POST.get('price')[1:]).replace(',',''))
-	# 	discount = float((request.POST.get('discount')[1:]).replace(',',''))	
-	# 	image = request.FILES.get('choose-file')
-	# 	productImages = request.FILES.getlist('productImages')
-	# 	create_product = Product.objects.create(
+		# print(request.POST, deletedProductImages,22222333)
+		title = request.POST.get('title')
+		categoriesRecieved = request.POST.getlist('categories')
+		brand = request.POST.get('brand')
+		description = request.POST.get('description')
+		stock = request.POST.get('stock')
+		# Price
+		price = request.POST.get('price')
+		non_decimalPrice = re.compile(r'[^\d.]+')
+		price = float(non_decimalPrice.sub('', price))
+		# Discount
+		discount = request.POST.get('discount')
+		print(discount)
+		non_decimalDiscount = re.compile(r'[^\d.]+')
+		discount = float(non_decimalDiscount.sub('', discount))
+
+		image = request.FILES.get('choose-file')
+		productImages = request.FILES.getlist('productImages')
+
+		print(title,categories,brand,description,stock,price,discount,image,productImages)
+		product.title = title
+		product.brand = brand
+		product.description = description
+		product.price = price
+		product.discount = discount
+
+		if image == None:
+			pass
+		else:
+			product.image = image
+		# for itemCategory in categoriesRecieved:
+		# 	if itemCategory in categories:
+		# 		pass
+		# 	else
+
+		# for imageItem in deletedProductImages:
+		# 	productExtraImage
+
+		# for category in categories:
+		# 	# Check if string is empty or contain spaces only
+		# 	if not re.search("^\s*$", category):
+		# 		category_slug = category.replace(" ", "-")
+		# 		create_category = Category.objects.create(name=category,slug=category_slug)
+		# 		create_category.save()
+		# 		create_product.category.add(create_category)
+	# create_product = Product.objects.create(
 	# 			title=title,
 	# 			brand=brand,
 	# 			description=description,

@@ -24,8 +24,13 @@
 						</div>
 
 						<div class="row">
-							<div class="col-md-8">
+							<!-- <div class="col-md-8">
 								<a href="#!" class="btn btn-outline-dark my-2 my-sm-0 btn-block btn-lg">Add to Cart</a>
+							</div> -->
+							<div href="#" data-product={{product.id}} data-action="add" class="update-cart col-md-8">								
+								<span class="btn btn-outline-dark my-2 my-sm-0 btn-block btn-lg">
+									Add to Cart
+								</span>
 							</div>
 						</div>
 					</div>
@@ -57,19 +62,17 @@
 	
 		<div class="tab">
 			<button class="btn tablinks active" onclick="openCity(event, 'London')">Description</button>
-			<button class="btn  tablinks" onclick="openCity(event, 'Paris')">Reviews</button>
+			<!-- <button class="btn  tablinks" onclick="openCity(event, 'Paris')">Reviews</button> -->
 		</div>
 
 		<div id="London" class="tabcontent p-5" style="display: block">
 		<h3>Description</h3>
-		<p>London is the capital city of England.</p>
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo eveniet veniam tempora fuga tenetur placeat sapiente architecto illum soluta consequuntur, aspernatur quidem at sequi ipsa!</p>
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, perferendis eius. Dignissimos, labore suscipit. Unde.</p>
+		{{ product.description }}
 		</div>
 
-		<div id="Paris" class="tabcontent p-5">
+		<!-- <div id="Paris" class="tabcontent p-5">
 		<h3>Reviews</h3>
-		<p>Paris is the capital of France.</p> 
+		<p>Paris is the capital of France.</p>  -->
 		</div>
 	</section>
 

@@ -172,7 +172,8 @@ def processOrder(request):
 	Get all vendors involved
 	Arrange the order by vendor Id
 	"""
-	order = orderIdv
+	# order = orderIdv
+	print(order)
 	orderItems = order.get_cart_items()
 	allVendors = []
 	allVendorsId = set([])
