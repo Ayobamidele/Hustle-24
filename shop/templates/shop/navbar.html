@@ -1,0 +1,81 @@
+{% load static %}
+
+<nav class=" navbar-expand-lg fixed-top p-0 ">
+	
+    <div class="navbar  d-flex" style="padding: 0;">
+        <div class="navbar-header py-2">
+            <a href="{% url 'home' %}" class="navbar-brand px-lg-2 px-1" ><img src="{% static '/images/h24.png' %}"></a>
+        </div>
+        <div class="navbar-brand ml-lg-5 order-lg-last order-0 py-lg-2 px-1 d-flex" href="#">
+
+			<a href="javascript:void(0);" style="padding: 0 8px;" class="" onclick="showsearch()">
+				<div class="order-lg-last order-0 d-flex align-items-start account ">
+					<span class="icon icon-search" aria-hidden="true"></span>
+				</div>
+			</a>
+			{% if request.user.is_authenticated %}
+			{% else %}
+				<a href="{% url 'login' %}">
+					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+						<small class="icon nav-link">Sign In</small>
+					</div>
+				</a>
+				<a href="{% url 'customer_signup' %}">
+					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+						<small class="icon nav-link">Sign Up</small>
+					</div>
+				</a>
+			{% endif %}
+			<a href="{% url 'cart' %}">
+			<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+					<span class=" icon icon-shopping-cart"></span>
+					<div>
+						<p id="cart-total">{{ cartItems }}</p>
+					</div>
+				</div>
+			</a>
+			<div class=" order-lg-last order-0 d-flex align-items-start account dropdown px-lg-2 px-1">
+				<a href="#" class="d-flex " data-toggle="dropdown">
+					{% if request.user.is_customer %}
+					<div class="image-cropper">
+						<img class="profile-pic" src="{% static userPicture.profile_pic.url %}">
+					</div>
+					<span class="icon icon-chevron-down dropbtn px-lg-2 px-1" onclick="myFunction()" style="font-size: 12px;padding: 0;margin: auto 0;"></span>
+					
+					{% elif request.user.is_vendor %}
+					<div class="image-cropper">
+						<img class="profile-pic" src="{% static userPicture.profile_pic.url %}">
+					</div>
+					<span class="icon icon-chevron-down dropbtn px-lg-2 px-1" onclick="myFunction()" style="font-size: 12px;padding: 0;margin: auto 0;"></span>
+					{% endif %}
+				</a>
+				<div class="dropdown-content" id="myDropdown">
+					{% if request.user.is_vendor %}
+						<a href="{% url 'logout' %}">Log Out</a>
+						<a href="{% url 'vendor' request.user.username %}">View Profile</a>
+					{% elif request.user.is_customer %}
+						<a href="{% url 'logout' %}">Log Out</a>
+						<a href="{% url 'customer' request.user.username %}">View Profile</a>
+						<!-- /accounts/signup/customer/ -->
+						<!-- <h4 class="h2">Items - {{order.get_cart_items}}</h4> -->
+					{% endif %}
+				</div>
+			</div>
+        </div>
+        <div class="collapse navbar-collapse mx-auto py-2" id="mymenu">
+            <form class="form-inline my-2 my-lg-0 nav navbar-nav mr-auto mx-auto">
+                <input class="form-control mr-sm-2 " style="width: 400px; border-radius: 0px;" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>		
+    </div>
+
+	<div class="shortsearch">
+		<div id="myLinks" class="mx-auto">
+			<form class="form-inline my-2 my-lg-0 nav mr-auto mx-auto d-flex px-3">
+          		<input class="form-control mr-sm-2" style="width: 77%;" type="search" placeholder="Search" aria-label="Search">
+          		<button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+      		</form> 
+		</div>
+	</div>
+</nav>

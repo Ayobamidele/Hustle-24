@@ -1,0 +1,24 @@
+<h1>Home page</h1>
+<span> <a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+
+{% if show %}
+	<a class="nav-link" href="{% url 'customer' user  %}">Settings</a>
+{% else %}
+	<a class="nav-link" href="{% url 'vendor' user %}">Settings</a>
+{% endif %}
+
+<h2>{{ request.user }}</h2>
+<h3>{{ request.user.id }}</h3>
+
+<table style="border: 2px solid red;">
+	<tr>
+		<th>Title</th>
+		<th>Price</th>
+	</tr>
+	{% for product in products %}
+		<tr>
+			<td>{{ product.title }}</td>
+			<td>{{ product.price }}</td>
+		</tr>
+	{% endfor %}
+</table>
