@@ -80,12 +80,12 @@ def registerPageVendor(request):
 
 @unauthenticated_user
 def loginPage(request):
-	if request.method == "POST":
+	form = LoginForm(request.POST or None)
+	if request.POST:
 		username = request.POST.get('username')
 		password = request.POST.get('password')
-		customer = request.POST.get('customer')
-		user = authenticate(request, username=username, password=password)
-		if user is not None:
+		if form.is_valid():
+			user = form.login(request)
 			print('here1')
 			if user.is_customer:
 				try:
@@ -121,9 +121,9 @@ def loginPage(request):
 				return redirect(f'/vendor/{username}',)
 			else:
 				messages.info(request, 'Username OR password is incorrect')
-		else:
-			messages.info(request, 'Username OR password is incorrect')					
-	return render(request,'accounts/login.html')
+	else:
+		messages.info(request, 'Username OR password is incorrect')					
+	return render(request,'accounts/login.html', {'form': form })
 
 
 
