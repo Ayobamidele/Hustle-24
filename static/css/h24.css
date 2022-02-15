@@ -876,15 +876,7 @@ a .card-title{
   color: white;
   background:#fff;
 }
-.counter .counter-minus, .counter .counter-plus {
-top: 0;
-height: 1.875rem;
-line-height: 1.875rem;
-top: 0px;
-height: 28px;
-padding: 5px;
-text-align: center;
-}
+.counter .counter-minus, .counter .counter-plus {/* top: 0; *//* height: 1.875rem; *//* line-height: 1.875rem; *//* top: 0px; *//* height: 28px; *//* padding: 5px; *//* text-align: center; */}
 [class^="icon-"], [class*=" icon-"] {
 box-sizing: content-box;
 }

@@ -74,9 +74,12 @@ def updateItem(request):
 		order.quantity = (order.quantity - 1)
 	orderItem.save()
 	order.save()
+	if action == 'removeAll':
+		order.quantity = (order.quantity - orderItem.quantity)
+		orderItem.delete()
+		order.save()
 	if orderItem.quantity <= 0:
 		orderItem.delete()
-
 	return JsonResponse('Item was added', safe=False)
 
 def checkout(request):
