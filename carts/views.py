@@ -124,48 +124,52 @@ def processOrder(request):
 		order = cookieData['order']
 		items = cookieData['items']
 		userData = json.loads(request.body)['form']
-		print('total')
+		print(cookieCart)
+		print(cartItems)
+		print(order)
 		print(items)
-		# Create user
 		print(userData)
-		username = userData['first_name'] + " " + userData['last_name']
-		password = userData['password']
-		print(username ,password)
-		new_user = User.objects.create_user(username= username,
-											email=userData['email'],
-											password=password,
-											first_name=userData['first_name'],
-											last_name=userData['last_name']
-											)
-		new_user.save()
-		messages.success(request, 'Account was created for ' + username)
-		print(new_user.id)
-		customer = Customer.objects.get(user=new_user.id)
-		print("here")
-		cusorder = Order.objects.create(
-											customer=customer,
-											complete=True,
-											is_ordered=True,
-											quantity=order['get_cart_items'],
-											ref_code=generateRefCode()
-											)
-		print('here2')
-		cusorder.save()
-		orderIdv = cusorder.ref_code
-		print(cusorder)
-		for item in items:
-			productitem = Product.objects.get(id=item['product']['id'])
-			print('here3')
-			print(productitem,cusorder,item['quantity'])
+		# print(items)
+		# # Create user
+		# print(userData)
+		# username = userData['first_name'] + " " + userData['last_name']
+		# password = userData['password']
+		# print(username ,password)
+		# new_user = User.objects.create_user(username= username,
+		# 									email=userData['email'],
+		# 									password=password,
+		# 									first_name=userData['first_name'],
+		# 									last_name=userData['last_name']
+		# 									)
+		# new_user.save()
+		# messages.success(request, 'Account was created for ' + username)
+		# print(new_user.id)
+		# customer = Customer.objects.get(user=new_user.id)
+		# print("here")
+		# cusorder = Order.objects.create(
+		# 									customer=customer,
+		# 									complete=True,
+		# 									is_ordered=True,
+		# 									quantity=order['get_cart_items'],
+		# 									ref_code=generateRefCode()
+		# 									)
+		# print('here2')
+		# cusorder.save()
+		# orderIdv = cusorder.ref_code
+		# print(cusorder)
+		# for item in items:
+			# productitem = Product.objects.get(id=item['product']['id'])
+			# print('here3')
+			# print(productitem,cusorder,item['quantity'])
 			# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
-			orderI=OrderItem.objects.create(
-											order=cusorder, 
-											product=productitem, 
-											quantity=item['quantity'], 
-											is_ordered=True,
-										)
-			print('here4')
-			orderI.save()
+			# orderI=OrderItem.objects.create(
+			# 								order=cusorder, 
+			# 								product=productitem, 
+			# 								quantity=item['quantity'], 
+			# 								is_ordered=True,
+			# 							)
+			# print('here4')
+			# orderI.save()
 		# pass in order
 		"""
 	Get a order
@@ -173,43 +177,44 @@ def processOrder(request):
 	Arrange the order by vendor Id
 	"""
 	# order = orderIdv
-	print(order)
-	orderItems = order.get_cart_items()
-	allVendors = []
-	allVendorsId = set([])
-	sortedAllVendors = {}
+	# print(order)
+	# orderItems = order.get_cart_items()
+	# print(orderItems)
+	# allVendors = []
+	# allVendorsId = set([])
+	# sortedAllVendors = {}
 
-	for orderItem in orderItems:
-		vendorId = orderItem.product.shop_set.first().vendor_id
-		allVendorsId.add(vendorId)
-		allVendors.append({ vendorId : [orderItem] })
+	# for orderItem in orderItems:
+	# 	vendorId = orderItem.product.shop_set.first().vendor_id
+	# 	allVendorsId.add(vendorId)
+	# 	allVendors.append({ vendorId : [orderItem] })
 
-	for id in allVendorsId:
-		sortedAllVendors[id] = []
-	def addOrder(orderId):
-		for order in allVendors:
-			if orderId in order.keys():
-				for x in order[orderId]:
-					sortedAllVendors[orderId].append(x)
+	# for id in allVendorsId:
+	# 	sortedAllVendors[id] = []
+	# def addOrder(orderId):
+	# 	for order in allVendors:
+	# 		if orderId in order.keys():
+	# 			for x in order[orderId]:
+	# 				sortedAllVendors[orderId].append(x)
 
-	for order in allVendorsId:
-		addOrder(order)
+	# for order in allVendorsId:
+	# 	addOrder(order)
 
-	for cartkey in sortedAllVendors:
-		vendorUser = Vendor.objects.get(id=cartkey)
-		vendorsCart = Cart.objects.create()
-		vendorsCart.vendor = vendorUser
-		vendorsCart.order = cusorder
-		for orderedProducts in sortedAllVendors[cartkey]:
-			vendorsCart.totalprice += orderedProducts.get_total()
-			productitem = Product.objects.get(id=orderedProducts.product.id)
-			orderedProduct = CartItem.objects.create(
-											cart=vendorsCart, 
-											product=productitem, 
-											quantity=orderedProducts.quantity, 
-											is_ordered=True,
-										)
-			orderedProduct.save()
-			vendorsCart.quantity += orderedProducts.quantity
-		vendorsCart.save()
+	# for cartkey in sortedAllVendors:
+	# 	vendorUser = Vendor.objects.get(id=cartkey)
+	# 	vendorsCart = Cart.objects.create()
+	# 	vendorsCart.vendor = vendorUser
+	# 	vendorsCart.order = cusorder
+	# 	for orderedProducts in sortedAllVendors[cartkey]:
+	# 		vendorsCart.totalprice += orderedProducts.get_total()
+	# 		productitem = Product.objects.get(id=orderedProducts.product.id)
+	# 		orderedProduct = CartItem.objects.create(
+	# 										cart=vendorsCart, 
+	# 										product=productitem, 
+	# 										quantity=orderedProducts.quantity, 
+	# 										is_ordered=True,
+	# 									)
+	# 		orderedProduct.save()
+	# 		vendorsCart.quantity += orderedProducts.quantity
+	# 	vendorsCart.save()
 	return JsonResponse('Payment complete!', safe=False)
