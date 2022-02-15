@@ -75,7 +75,7 @@
 							<h4 class="h2">${{order.get_cart_total}}</h4>
 						</div>
 					</div>
-					<div class="col-md-6 col-lg-4 py-1">
+					<div class="col-md-6 col-lg-4 py-1" id="checkoutBtn">
 						<a href="{% url 'checkout' %}" class="btn btn-outline-dark my-2 my-sm-0 btn-block mt-1">Checkout</a>
 					</div>
 				</div>
@@ -85,5 +85,20 @@
 		  
 	</div>
 </main>
+<script>
+	{% if request.user.is_authenticated %}
+		var itemTotal = {{cartItems}}
+	{% else %}
+		var itemTotal = {{order.get_cart_items}}
+	{% endif %}
+	var checkoutBtn = document.getElementById('checkoutBtn');
 
+	function display_register() {
+		if (itemTotal == 0) {
+			checkoutBtn.remove()
+		}
+	}
+	
+	var disp = display_register();
+</script>
 {% endblock %}
