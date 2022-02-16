@@ -116,6 +116,9 @@ def productDetail(request,product):
 	context = {'userPicture': userPicture,'product': product,'price': price, 'store': store, 'productsdict': productsdict, 'mainimage': mainimage, 'cartItems':cartItems,}
 	return render(request,'shop/product.html',context)
 
+# @unauthenticated_user
+@login_required(login_url='login')
+@with_usertype(allowed_roles=['Vendor'])
 def addProduct(request,shop):
 	form = AddProductForm()
 	vendor = request.user.vendor
@@ -167,7 +170,9 @@ def addProduct(request,shop):
 	context = {'form': form,}
 	return render(request,'shop/product-add.html',context)
 
-
+# @unauthenticated_user
+@login_required(login_url='login')
+@with_usertype(allowed_roles=['Vendor'])
 def editProduct(request,shop,product,id):
 	product = Product.objects.get(id=int(id))
 	form = AddProductForm(instance=product)
@@ -265,6 +270,9 @@ def editProduct(request,shop,product,id):
 				'categories': categories,'productimages': productimages,}
 	return render(request,'shop/product-edit.html',context)
 
+# @unauthenticated_user
+@login_required(login_url='login')
+@with_usertype(allowed_roles=['Vendor'])
 def deleteProductImage(request):
 	data = request.POST['motif']
 	data = ast.literal_eval(data)
