@@ -640,8 +640,9 @@ pre {
     width: auto;
     max-width: 100%; }
   .col-sm-1 {
-    flex: 0 0 8.33333%;
-    max-width: 8.33333%; }
+    flex: 0 0 2.33333%;
+    max-width: 8.33333%;
+    }
   .col-sm-2 {
     flex: 0 0 16.66667%;
     max-width: 16.66667%; }
@@ -667,8 +668,9 @@ pre {
     flex: 0 0 75%;
     max-width: 75%; }
   .col-sm-10 {
-    flex: 0 0 83.33333%;
-    max-width: 83.33333%; }
+    flex: 0 0 108.33333%;
+    max-width: 83.33333%;
+    }
   .col-sm-11 {
     flex: 0 0 91.66667%;
     max-width: 91.66667%; }
@@ -12901,3 +12903,9 @@ div.code-toolbar > .toolbar {
 /*height: 100%;*/
 }
 .image-cropper {height: 100px;position: relative;border-radius: 50%;width: 50px;height: 50px;border: 1px solid black;}
+@media (min-width: 576px){
+  .col-sm-1b {
+      flex: 0 0 2.33333%;
+      max-width: 8.33333%;
+  }
+}

@@ -78,4 +78,24 @@
       		</form> 
 		</div>
 	</div>
+	<div class=" navbar-body p-1 h6 mb-0 bg-light d-flex" id="setUpShop">
+		<span class="icon icon-close col-sm-1 col-sm-1b" id="closeSetUpShop"></span>
+		<div class="col text-right">
+			<p class="eyebrow fs-12">Want to sell something ?</p>
+			<a href="{% url 'vendor_signup' %}" class="btn btn-link btn-sm">
+				<small>Set up Shop</small>
+				<span class="icon icon-store_mall_directory"></span>
+			</a>
+		</div>
+	</div>
+	<script>
+		var setUpShop = document.getElementById('setUpShop')
+		var closeSetUpShop = document.getElementById('closeSetUpShop')
+		if(user_is_vendor == 'True'){
+			setUpShop.remove()
+		}
+		closeSetUpShop.onclick =  function() {
+			setUpShop.remove()
+		}
+	</script>
 </nav>

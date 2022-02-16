@@ -68,7 +68,7 @@ class OrderItem(models.Model):
 		return self.quantity * self.product.price
 
 class Cart(models.Model):
-	vendor = models.OneToOneField(Vendor ,on_delete=models.CASCADE, null=True)
+	vendor = models.ForeignKey(to=Vendor ,on_delete=models.CASCADE, null=True)
 	products = models.ManyToManyField(Product)
 	totalprice = models.DecimalField(max_digits=10,decimal_places=2, default=0)
 	quantity = models.IntegerField(default=0)
@@ -79,7 +79,8 @@ class Cart(models.Model):
 	order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
 
 	def __str__(self):
-		return f'{self.order.ref_code} - {self.vendor}'
+		return f'{self.vendor}'
+		# return f'{self.order.ref_code} - {self.vendor}'
 
 	def get_cart_items(self):
 		return self.cartitem_set.all()
