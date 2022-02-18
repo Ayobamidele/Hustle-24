@@ -2851,12 +2851,13 @@ input[type="button"].btn-block {
   display: block; }
 
 .navbar {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 15px; }
+  /* position: relative; */
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  /* padding: 0 15px; */
+  }
   .navbar > .container,
   .navbar > .container-fluid {
     display: flex;
@@ -4546,7 +4547,8 @@ button.bg-dark:focus {
   display: table-cell !important; }
 
 .d-flex {
-  display: flex !important; }
+  display: flex !important;
+  }
 
 .d-inline-flex {
   display: inline-flex !important; }
@@ -5508,7 +5510,8 @@ button.bg-dark:focus {
   margin-left: 6.25rem !important; }
 
 .p-0 {
-  padding: 0 !important; }
+  padding: 0 !important;
+  }
 
 .pt-0,
 .py-0 {
@@ -11192,7 +11195,8 @@ aside .btn-group-square .btn {
     border-top: 1px solid #dddddd; }
 
 .navbar {
-  min-height: 5rem; }
+  /* min-height: 5rem; */
+  }
   @media (max-width: 1199.98px) {
     .navbar {
       /* min-height: auto; */

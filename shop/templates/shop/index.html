@@ -7,21 +7,20 @@
 
 		{% for product in productsdict %}
 			<div class="product-card card" >
-				<img class="card-img-top" src=static{{product.image}} alt="Card image cap">
-				<div class="card-body">
-					<a href="{% url 'product' product.link %}" class="">
-						<h5 class="card-title py-2 my-2">{{ product.title }}</h5>
-					</a>		
-					<div class=" py-2">
-						<div href="#" data-product={{product.id}} data-action="add" class="add underline update-cart">
-							<span class="icon icon-add_shopping_cart"></span>
-						</div>
-						<p class="card-text pr-1">${{ product.price }}</p>
+				<img class="card-img-top" src=static{{product.image}} alt={{product.image}}>
+				<div class="d-flex border">
+					<div class="px-1 small col text-left border-right" style="padding: 5px 0;">
+						<a href="{% url 'product' product.link %}" class="">
+							<h5 class="fs-16">{{ product.title }}</h5>		
+							<p class="card-text m-0 ">{{ product.price }}</p>
+						</a>
+					</div>
+					<div href="#" data-product={{product.id}} data-action="add" class="add underline update-cart col-3 mx-auto d-flex justify-content-center">
+						<span class="icon icon-add_shopping_cart"></span>
 					</div>
 				</div>
 			</div>
 		{% endfor %}
-		
-		
+
 	</div>
 {% endblock %}
