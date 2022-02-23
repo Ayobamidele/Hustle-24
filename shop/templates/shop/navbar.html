@@ -2,100 +2,125 @@
 
 <nav class=" navbar-expand-lg fixed-top p-0 ">
 	
-    <div class="navbar  d-flex" style="padding: 0;">
-        <div class="navbar-header py-2">
+    <div class="navbar  d-flex">
+        <div class="navbar-header py-2 col-5">
             <a href="{% url 'home' %}" class="navbar-brand px-lg-2 px-1" ><img src="{% static '/images/h24.png' %}"></a>
         </div>
-        <div class="navbar-brand ml-lg-5 order-lg-last order-0 py-lg-2 px-1 d-flex" href="#">
+        <div class="navbar-brand ml-lg-5 order-lg-last order-0 py-lg-1 px-1 d-flex" href="#">
 
 			<a href="javascript:void(0);" style="padding: 0 8px;" class="" onclick="showsearch()">
 				<div class="order-lg-last order-0 d-flex align-items-start account ">
 					<span class="icon icon-search" aria-hidden="true"></span>
 				</div>
 			</a>
+			<a href="{% url 'vendor_signup' %}" id="navSetupShop" class="signLinks invisible">
+				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+					<p class="eyebrow">Set up Shop</p>
+					<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
+				</div>
+			</a>
 			{% if request.user.is_authenticated %}
 			{% else %}
-				<a href="{% url 'login' %}">
+				<a href="{% url 'login' %}" class="signLinks">
 					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 						<small class="icon nav-link eyebrow">Sign In</small>
 					</div>
 				</a>
-				<a href="{% url 'customer_signup' %}">
+				<a href="{% url 'customer_signup' %}" class="signLinks">
 					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 						<small class="icon nav-link eyebrow">Sign Up</small>
 					</div>
 				</a>
 			{% endif %}
+			
 			<a href="{% url 'cart' %}">
-			<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 					<span class=" icon icon-shopping-cart"></span>
 					<div>
 						<p id="cart-total" class="eyebrow">{{ cartItems }}</p>
 					</div>
 				</div>
 			</a>
-			<div class=" order-lg-last order-0 d-flex align-items-start account dropdown px-lg-2 px-1">
-				<div class="d-flex " data-toggle="dropdown">
-					{% if request.user.is_customer %}
-					<div class="image-cropper d-flex">
-						<img class="profile-pic" src="{% static userPicture.profile_pic.url %}">
+			<a id="subMenu" class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+					<!-- <span class=" icon icon-menu"></span> -->
+					<div class="menu-container">
+						<div class="menu_icon">
+						  <span class="one"></span>
+						  <span class="two"></span>
+						  <span class="three"></span>
+						</div>
 					</div>
-					<span class="icon icon-chevron-down dropbtn px-lg-2 px-1" onclick="myFunction()" style="font-size: 12px;padding: 0;margin: auto 0;"></span>
-					
-					{% elif request.user.is_vendor %}
-					<div class="image-cropper">
-						<img class="profile-pic" src="{% static userPicture.profile_pic.url %}">
-					</div>
-					<span class="icon icon-chevron-down dropbtn px-lg-2 px-1" onclick="myFunction()" style="font-size: 12px;padding: 0;margin: auto 0;"></span>
-					{% endif %}
 				</div>
-				<div class="dropdown-content" id="myDropdown">
-					{% if request.user.is_vendor %}
-						<a href="{% url 'logout' %}" class="eyebrow">Log Out</a>
-						<a href="{% url 'vendor' request.user.username %}" class="eyebrow">View Profile</a>
-					{% elif request.user.is_customer %}
-						<a href="{% url 'logout' %}" class="eyebrow">Log Out</a>
-						<a href="{% url 'customer' request.user.username %}" class="eyebrow">View Profile</a>
-						<!-- /accounts/signup/customer/ -->
-						<!-- <h4 class="h2">Items - {{order.get_cart_items}}</h4> -->
-					{% endif %}
-				</div>
-			</div>
+			</a>
+		
         </div>
-        <div class="collapse navbar-collapse mx-auto py-2" id="mymenu">
-            <form class="form-inline my-2 my-lg-0 nav navbar-nav mr-auto mx-auto">
-                <input class="form-control mr-sm-2 eyebrow" style="width: 400px; border-radius: 0px;" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-dark my-2 my-sm-0 eyebrow" type="submit">Search</button>
-            </form>
-        </div>		
     </div>
 
 	<div class="shortsearch">
 		<div id="myLinks" class="mx-auto">
-			<form class="form-inline my-2 my-lg-0 nav mr-auto mx-auto d-flex px-3 col-12 d-xl-flex">
-          		<input class="form-control eyebrow col-8" type="search" placeholder="Search" aria-label="Search">
-          		<button class="btn btn-outline-dark eyebrow col-4" type="submit">Search</button>
-      		</form> 
+			<div class="card-body d-flex">
+				<input type='search' name="search" class="form-control mr-1" value="" placeholder='Search for products shops or vendors' />
+				<button type="button" class="btn btn-default ml-1" datadismiss="modal">Close</button>
+			</div>
 		</div>
 	</div>
+
+	
+	<div id="accordion2" role="tablist" style="background-color: #b7f73c; background-image: url({% static '/images/levi-stute-mFF39sOZSgM-unsplash.jpg' %});background-position: center;background-size: cover;">
+		<div class="card">
+			<div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion2">
+				<ul class="card-body menu">
+					<li class="py-1">
+						<a href="{% url 'login' %}" class="">
+							<small class="icon nav-link eyebrow invert">Sign In</small>
+						</a>
+					</li>
+					<li class="py-1">
+						<a href="{% url 'customer_signup' %}" class="">
+							<small class="icon nav-link eyebrow invert">Sign Up</small>
+						</a>
+					</li>
+					<li class="py-1">
+						<a href="{% url 'vendor_signup' %}" class="">
+							<div class="d-flex invert nav-link">
+								<p class="eyebrow text-center my-auto">Set up Shop</p>
+								<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
 	<div class=" navbar-body p-1 h6 my-0 bg-light d-flex" id="setUpShop">
-		<span class="icon icon-close col-sm-1 col-sm-1b" id="closeSetUpShop"></span>
-		<div class="col text-right">
-			<p class="eyebrow fs-12">Want to sell something ?</p>
+		<span class="icon icon-close col-sm-1 p-0" id="closeSetUpShop"></span>
+		<div class="col text-right d-flex justify-content-end">
+			<p class="eyebrow my-auto" style="font-size: 11px;">Want to sell something ?</p>
 			<a href="{% url 'vendor_signup' %}" class="btn btn-link btn-sm">
 				<small>Set up Shop</small>
-				<span class="icon icon-store_mall_directory"></span>
+				<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
 			</a>
 		</div>
 	</div>
 	<script>
 		var setUpShop = document.getElementById('setUpShop')
+		var navSetUpShop = document.getElementById('navSetupShop')
 		var closeSetUpShop = document.getElementById('closeSetUpShop')
 		if(user_is_vendor == 'True'){
 			setUpShop.remove()
+			navSetUpShop.remove()
 		}
-		closeSetUpShop.onclick =  function() {
+		if(getCookie('shop') == 'true'){
 			setUpShop.remove()
+			navSetUpShop.classList.toggle("invisible");
 		}
+
+		let icon = document.querySelector(".menu_icon");
+
+		icon.addEventListener("click", () => {
+		  icon.classList.toggle("clicked");
+		});
 	</script>
 </nav>

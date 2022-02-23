@@ -62,3 +62,9 @@ function addCookieItem(productId, action) {
 	document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
 	location.reload()
 }
+
+closeSetUpShop.onclick =  function() {
+	setUpShop.remove();
+	navSetUpShop.classList.toggle("invisible");
+	document.cookie = 'shop=true;domain=;path=/'
+}

@@ -11200,7 +11200,7 @@ aside .btn-group-square .btn {
   @media (max-width: 1199.98px) {
     .navbar {
       /* min-height: auto; */
-      padding: 15px; }
+      padding: 15px 0; }
       .navbar .navbar-toggler {
         border: 0; } }
 
