@@ -27,7 +27,7 @@ User = get_user_model()
 Now = datetime.now()
 
 @unauthenticated_user
-@with_usertype(allowed_roles=['Vendor'])
+@with_usertype(allowed_roles=['Vendor','bami'])
 def registerPageCustomer(request):
 	form = CreateUserForm()
 	if request.method == "POST":
@@ -35,9 +35,8 @@ def registerPageCustomer(request):
 		lastname = request.POST.get('lastname')
 		email = request.POST.get('email')
 		password = request.POST.get('password')
-		print("helo",request.POST,request.POST.get('password'))
+		print("Hello, ",request.POST,request.POST.get('password'))
 		if password:			
-			print("helo")
 			username = firstname + " " + lastname
 			new_user = User.objects.create_user(username= username,
 												email=email,
@@ -55,25 +54,22 @@ def registerPageCustomer(request):
 def registerPageVendor(request):
 	form = CreateUserForm()
 	if request.method == "POST":
-		print(request.POST)
-		post = request.POST.copy() # to make it mutable
-		post.update({'username': str(post['first_name'] + " " + post['last_name'])})
-		form = CreateUserForm(post)
-		if form.is_valid():
-			# or set several values from dict
-			print(post)
-			print(form)
-			username = post['first_name'] + " " + post['last_name']
+		firstname = request.POST.get('firstname')
+		lastname = request.POST.get('lastname')
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+		print("Hello, ",request.POST,request.POST.get('password'))
+		if password:			
+			username = firstname + " " + lastname
 			new_user = User.objects.create_user(username= username,
-												email=post['email'],
-												password=post['password1'],
-												first_name=post['first_name'],
-												last_name=post['last_name'],
+												email=email,
+												password=password,
+												first_name=firstname,
+												last_name = lastname,
 												is_vendor=True,
-												is_customer=False,
 												)
 			new_user.save()
-			messages.success(request, 'Account and Shop was created for ' + username)
+			messages.success(request,'Account and Shop was created for ' + username)
 			return redirect('login')
 	context = {'form': form}
 	return render(request, 'accounts/register_vendor.html', context)
@@ -114,6 +110,7 @@ def loginPage(request):
 				except:
 					cart = {}
 				login(request,user)
+				print('hopefully')
 				return redirect(f'/customer/{username}',)
 			elif user.is_vendor:
 				login(request,user)

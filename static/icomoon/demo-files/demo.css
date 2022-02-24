@@ -15,7 +15,7 @@ small {
   font-size: .66666667em;
 }
 a {
-  color: #e74c3c;
+  /* color: #e74c3c; */
   text-decoration: none;
 }
 /* a:hover, a:focus {

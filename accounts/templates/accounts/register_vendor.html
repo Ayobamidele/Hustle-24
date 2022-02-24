@@ -1,14 +1,72 @@
-<h1>Vendor Registration Page</h1>
-<form action="" method="POST" enctype="multipart/form-data">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<div class=" d-flex justify-content-center mt-3 login_container">
-		<input class="btn login_btn" type="submit" value="Register">
-	</div>
-</form>
+{% extends 'shop/main.html' %}
+{% block title %}Shop{% endblock %}
+{% load static %}
+{% block content %}	
 
-<div class=" mt-4">
-	<div class=" d-flex justify-content-center links">
-		Already have an account <a href="{% url 'login' %}" class=" ml-2">Login</a>
+<div class="image image-overlay" style="background-image:url({% static '/images/pexels-nice-guys-757432.jpg' %})">
+</div>
+{% if form.non_field_errors %}
+<div class="alert alert-danger" role="alert">
+  {% for error in form.non_field_errors %}
+	{{ error }}
+  {% endfor %}
+</div>
+{% endif %}
+<div class="container py-8">
+	<div class="row justify-content-center align-items-center vh-md-100">
+		<div class="col-md-10 col-lg-5">
+			<div class="accordion accordion-portal" id="accordionExample">
+				<div class="card" style="padding: 0;">
+					<div class="card-header" id="headingOne">
+						<h2 class="mb-0 p-3 border-bottom">Sign Up - Setup Shop</h2>
+					</div>
+
+					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+						<form action="" method="POST">
+							<div class="card-body">
+								<div class="row mt-2">
+									{% csrf_token %}
+									<div class="form-group col-12">
+										<label for="firstname1">Firstname</label>
+										<input type="text" name="firstname" class="form-control" id="firstname1">
+									</div>
+									<div class="form-group col-12">
+										<label for="lastname1">Lastname</label>
+										<input type="text" name="lastname" class="form-control" id="lastname1">
+									</div>
+									<div class="form-group col-12">
+										<label for="Email1">Email</label>
+										<input type="email" name="email" class="form-control" id="email">
+									</div>
+									<div class="form-group col-12 mt-1">
+										<label for="password1">Password</label>
+										<input type="password"  name="password" class="form-control" id="password1">
+									</div>
+									<div class="form-group col-12 mt-1">
+										<label for="password2">Password Confermation</label>
+										<input type="password"  name="password" class="form-control" id="password2">
+									</div>
+									<!-- <input type="hidden" name="customer" value="True" /> -->
+									<div class="col-12 mt-2">
+										<input class="btn btn-block btn-primary" type="submit" value="sign up" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+									</div>
+								</div>
+								
+							</div>
+							<div class=" d-flex justify-content-center links col-12 my-3" style="padding: 5px 0;">
+								<small class="small">
+									Already have an account ? <a href="{% url 'login' %}" class=" ml-2 eyebrow">Sign-In</a>
+								</small>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+
+
+
+
+{% endblock %}

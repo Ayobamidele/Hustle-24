@@ -41,6 +41,22 @@
 					</div>
 				</div>
 			</a>
+			
+			{% if request.user.is_vendor %}
+				
+				<a href="{% url 'vendor' request.user %}" id="user">
+					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+						<span class=" icon icon-user"></span>
+					</div>
+				</a>
+			{% else %}
+				<a href="{% url 'customer' request.user %}" id="user">
+					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+						<span class=" icon icon-user-circle"></span>
+					</div>
+				</a>
+			{% endif %}
+				
 			<a id="subMenu" class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
 				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 					<!-- <span class=" icon icon-menu"></span> -->
@@ -108,9 +124,13 @@
 		var setUpShop = document.getElementById('setUpShop')
 		var navSetUpShop = document.getElementById('navSetupShop')
 		var closeSetUpShop = document.getElementById('closeSetUpShop')
+		var userProfile = document.getElementById('user')
 		if(user_is_vendor == 'True'){
 			setUpShop.remove()
 			navSetUpShop.remove()
+		}
+		if(user == 'AnonymousUser'){
+			userProfile.remove()
 		}
 		if(getCookie('shop') == 'true'){
 			setUpShop.remove()

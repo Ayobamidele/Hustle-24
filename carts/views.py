@@ -49,7 +49,11 @@ def cart(request):
 	cartItems = data['cartItems']
 	order = data['order']
 	items = data['items']
-	context = {'items':items, 'order':order, 'cartItems':cartItems, 'userPicture':userPicture}
+	if request.user.is_authenticated:
+		total = cartItems
+	else:
+		total = order.get('get_cart_items')
+	context = {'items':items, 'order':order, 'cartItems':cartItems, 'total':total, 'userPicture':userPicture}
 	return render(request, 'carts/cart.html', context)
 
 def updateItem(request):
