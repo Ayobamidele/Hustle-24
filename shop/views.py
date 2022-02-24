@@ -34,6 +34,7 @@ def generateRefCode():
 
 def home(request,category_slug=None):
 	userPicture = request.user
+	print(userPicture,request)
 	if request.user.is_authenticated:
 		if request.user.is_customer:
 			userPicture = request.user.customer

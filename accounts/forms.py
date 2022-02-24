@@ -24,7 +24,7 @@ class VendorForm(ModelForm):
 	class Meta:
 		model = Vendor
 		fields = '__all__'
-		exclude = [ 'user' ]
+		exclude = [ 'user', 'orders' ]
 	
 	def __init__(self, *args, **kwargs):
 		super(VendorForm, self).__init__(*args, **kwargs)

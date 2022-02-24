@@ -11,6 +11,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import Group
 
+from carts.utils import *
+
 # Create your views here.
 from .models import *
 from .forms import *
@@ -133,8 +135,12 @@ def logoutUser(request):
 @allowed_users(allowed_roles=['Customer'])
 def customerPage(request,customer):
 	customer = request.user.customer
+	if request.user.is_vendor:
+		vendor = request.user.vendor
 	userPicture = request.user
 	orders = []
+	data = cartData(request)
+	cartItems = data['cartItems']
 	customerAddresses = ShippingAddressCustomer.objects.filter(customer=customer)
 	customerPayments = ShippingPaymentCustomer.objects.filter(customer=customer)
 	print(customerPayments)
@@ -173,6 +179,10 @@ def customerPage(request,customer):
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
 		if form.is_valid():
 			form.save()
+		if request.user.is_vendor:
+			form = VendorForm(request.POST, request.FILES, instance=vendor)
+			if form.is_valid():
+				form.save()
 	elif request.method == "POST" and request.POST.get("form_type") == 'passwordChange':
 		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
 		if passwordChangeForm.is_valid():
@@ -241,6 +251,7 @@ def customerPage(request,customer):
 				"ShippingAddressForm": ShippingAddressForm,
 				"customerAddress" : customerAddresses,
 				"customerPayments": customerPayments,
+				"cartItems": cartItems,
 			  }
 	return render(request,'accounts/customer.html',context)
 
@@ -253,6 +264,8 @@ def vendorPage(request,vendor):
 	products = Shop.objects.get(vendor=vendor.id).products.all()
 	productsId = [ product.id for product in products]
 	reviews = []
+	data = cartData(request)
+	cartItems = data['cartItems']
 	for x in productsId:
 		z = ProductReview.objects.filter(product=x)
 		for a in z:
@@ -296,7 +309,7 @@ def vendorPage(request,vendor):
 				"username": username,"passwordChangeForm": passwordChangeForm,
 				"carts" : undeliveredcarts, "cart_total" : "make it js",
 				"allCarts": allorderedcarts, "deliveredcarts": deliveredcarts,
-				"products": products,
+				"products": products, "cartItems": cartItems,
 	}
 	return render(request,'accounts/vendor.html',context)
 

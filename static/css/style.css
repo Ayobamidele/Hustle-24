@@ -12912,3 +12912,15 @@ div.code-toolbar > .toolbar {
       max-width: 8.33333%;
   }
 }
+
+/* style.css | http://127.0.0.1:8000/static/css/style.css */
+
+.image-cropper {
+  /* position: relative; */
+  /* width: 50px; */
+  /* height: 50px; */
+  position: unset;
+  width: 38px;
+  height: inherit;
+  border: none;
+}

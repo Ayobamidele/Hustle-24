@@ -29,7 +29,7 @@ class Customer(models.Model):
 	username = models.CharField(max_length=200, null=False)
 	phone_number = models.CharField(max_length=20)
 	email = models.CharField(max_length=200, null=False)
-	profile_pic = models.ImageField(upload_to=photo_path,default="profile.png")
+	profile_pic = models.ImageField(upload_to=photo_path,default="victor-aldabalde-HguvvRqNgxo-unsplash.jpg")
 	gender = models.CharField(max_length=200, null=True, choices=GENDER)
 	
 	def __str__(self):

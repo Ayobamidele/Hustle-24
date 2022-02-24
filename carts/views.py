@@ -68,8 +68,8 @@ def updateItem(request):
 	customer = request.user.customer
 	product = Product.objects.get(id=productId)
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
-	print("came here")
 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+	print("came here", customer, product,order,orderItem)
 	if action == 'add':
 		orderItem.quantity = (orderItem.quantity + 1)
 		order.quantity = (order.quantity + 1)

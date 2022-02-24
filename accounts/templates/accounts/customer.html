@@ -1,6 +1,6 @@
 {% extends 'shop/main.html' %}
 {% load static %}
-
+{% block title %}{{username}}{% endblock %}
 {% block content %}	
 <link rel="stylesheet" href="{% static '/css/style.css' %}">
 <section class="hero hero-small bg-blac text-white parallax" style="background-image: url({% static  customer.profile_pic.url %});background-position: center;background-repeat: no-repeat;background-size: cover;position: relative;">
@@ -10,9 +10,9 @@
 				<h1 class="mb-0 invert">{{username}}</h1>
 				<span class="text-muted invert">{{form.email.value}}</span>
 			</div>
-			<div class="col-md-6 text-center text-md-right">
+			<!-- <div class="col-md-6 text-center text-md-right">
 				<a href="{% url 'logout' %}" class="btn btn-sm btn-outline-white invert">Sign out</a>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </section>

@@ -40,5 +40,7 @@ def createShop(sender, instance, created, **kwargs):
 		shopname ='vendor-{randomstring}'.format(randomstring= randomstr)
 		Shop.objects.create(vendor=instance,shopname=shopname)
 		print("Shop created!")
+		id = Shop.objects.filter(shopname=shopname).get().id
+		Vendor.objects.filter(username=instance.username).update(storename=id)
 
 post_save.connect(createShop,sender=Vendor,dispatch_uid="createShop")

@@ -42,33 +42,30 @@
 				</div>
 			</a>
 			
-			{% if request.user.is_vendor %}
-				
+			{% if request.user.is_authenticated %}
 				<a href="{% url 'vendor' request.user %}" id="user">
 					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
-						<span class=" icon icon-user"></span>
-					</div>
-				</a>
-			{% else %}
-				<a href="{% url 'customer' request.user %}" id="user">
-					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
-						<span class=" icon icon-user-circle"></span>
+						<div class="image-cropper d-flex">
+							<img class="profile-pic" src="{% static userPicture.profile_pic.url %}">
+						</div>
 					</div>
 				</a>
 			{% endif %}
-				
+			
+			
 			<a id="subMenu" class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
 				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 					<!-- <span class=" icon icon-menu"></span> -->
 					<div class="menu-container">
 						<div class="menu_icon">
-						  <span class="one"></span>
-						  <span class="two"></span>
-						  <span class="three"></span>
+						<span class="one"></span>
+						<span class="two"></span>
+						<span class="three"></span>
 						</div>
 					</div>
 				</div>
 			</a>
+				
 		
         </div>
     </div>
@@ -87,6 +84,16 @@
 		<div class="card">
 			<div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion2">
 				<ul class="card-body menu">
+					{% if request.user.is_authenticated %}
+					<li class="py-1">
+						<a href="{% url 'logout' %}" class="" >
+							<div class="d-flex invert nav-link">
+								<p class="eyebrow text-center my-auto">Sign out</p>
+								<span class="icon icon-sign-out ml-auto" style="color: #63DE63;"></span>
+							</div>
+						</a>
+					</li>
+					{% else %}
 					<li class="py-1">
 						<a href="{% url 'login' %}" class="">
 							<small class="icon nav-link eyebrow invert">Sign In</small>
@@ -105,10 +112,12 @@
 							</div>
 						</a>
 					</li>
+					{% endif %}
 				</ul>
 			</div>
 		</div>
 	</div>
+		
 	
 	<div class=" navbar-body p-1 h6 my-0 bg-light d-flex" id="setUpShop">
 		<span class="icon icon-close col-sm-1 p-0" id="closeSetUpShop"></span>
