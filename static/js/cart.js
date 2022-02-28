@@ -1,4 +1,5 @@
 var updateBtns = document.getElementsByClassName('update-cart');
+var cartTotal = document.getElementById("cart-total")
 
 for (i = 0; i < updateBtns.length; i++){
 	updateBtns[i].addEventListener("click", function (){
@@ -19,7 +20,7 @@ function updateUserOrder(productId, action) {
 	console.log('User is authenticated, sending data ...')
 	
 	var url = '/cart/update-item'	
-
+	event.preventDefault();
 	fetch(url, {
 		method:"POST",
 		headers:{
@@ -29,11 +30,12 @@ function updateUserOrder(productId, action) {
 		body:JSON.stringify({"productId":productId, "action":action})
 	})
 	.then((response) => {
+		cartTotal.innerHTML = parseInt(cartTotal.innerHTML) + 1;
 		return response.json();
 	})
 	.then((data) => {
 		console.log('Data:', data)
-		location.reload()
+		// location.reload()
 	})
 }
 

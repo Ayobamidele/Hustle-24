@@ -1,4 +1,5 @@
 {% extends 'shop/main.html' %}
+{% load humanize %}
 {% block title %}Home{% endblock %}
 {% load static %}
 
@@ -15,7 +16,7 @@
 					<div class="px-1 small col-9 text-left border-right" style="padding: 5px 0;">
 						<a href="{% url 'product' product.link %}" class="">
 							<h5 class="fs-16 text-truncate">{{ product.title }}</h5>		
-							<p class="card-text m-0 ">{{ product.price }}</p>
+							<p class="card-text m-0 ">${{ product.price|floatformat:2|intcomma }}</p>
 						</a>
 					</div>
 					<div href="#" data-product={{product.id}} data-action="add" class="add underline update-cart col-3 mx-auto d-flex justify-content-center cart-add">
