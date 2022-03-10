@@ -4,8 +4,7 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 
-from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, get_user_model
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
@@ -23,7 +22,6 @@ import datetime
 from carts.models import *
 from carts.forms import *
 from carts.utils import cookieCart, cartData, guestOrder
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 Now = datetime.now()
@@ -181,7 +179,7 @@ def customerPage(request,customer):
 	ShippingAddressForm = ShippingAddressCustomerForm(instance=customer)
 	ShippingPaymentForm = ShippingPaymentCustomerForm()
 	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
-	print(request.POST)
+	print(request.POST,form,passwordChangeForm)
 	if request.method == "POST" and request.POST.get("form_type") == 'accountSetting':
 		form = CustomerForm(request.POST, request.FILES, instance=customer)
 		if form.is_valid():
@@ -194,6 +192,7 @@ def customerPage(request,customer):
 		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
 		if passwordChangeForm.is_valid():
 			passwordChangeForm.save()
+			update_session_auth_hash(request, request.user)
 	elif request.method == "POST" and request.POST.get("form_type") == 'AddressAdded':
 		ShippingAddressForm = ShippingAddressCustomerForm(request.POST, request.FILES,instance=customer)
 		print(ShippingAddressForm,request.POST)
