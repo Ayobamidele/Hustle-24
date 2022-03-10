@@ -51,7 +51,7 @@ class ProductImage(models.Model):
 class Product(models.Model):
 	title = models.CharField(max_length=100)
 	category = models.ManyToManyField(Category, blank=True)
-	price = models.DecimalField(max_digits=10, decimal_places=2)
+	price = models.DecimalField(max_digits=100, decimal_places=2)
 	brand = models.CharField(max_length=1000,  null=True)
 	discount_price = models.FloatField(blank=True, null=True)
 	image = models.FileField()

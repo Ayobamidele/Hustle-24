@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'carts',
     'accounts.apps.AccountsConfig',
     'rest_framework',
+    'wishlist.apps.WishlistConfig',
 ]
 
 MIDDLEWARE = [
