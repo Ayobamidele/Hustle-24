@@ -85,43 +85,50 @@ def loginPage(request):
 		if form.is_valid():
 			user = form.login(request)
 			print('here1')
-			if user.is_customer:
+			if user.is_vendor and user.is_customer == False:
+				#create customer for vendor
+				group = Group.objects.get(name='Customer')
+				user.groups.add(group)
 				try:
-					cart = json.loads(request.COOKIES['cart'])
-					customer = Customer.objects.get(user=user)
-					order, created = Order.objects.get_or_create(customer=customer, complete=False)
-					print(order)
-					print(cart)
-					cookieData = cookieCart(request)
-					items = cookieData['items']
-					for item in items:
-						productitem = Product.objects.get(id=item['product']['id'])
-						print('here3')
-						print(productitem,item['quantity'])
-						# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
-						orderI=OrderItem.objects.create(
-														order=order, 
-														product=productitem, 
-														quantity=item['quantity'], 
-													)
-						order.quantity += 1
-						order.save()
-						print('here4')
-						orderI.save()
-					request.COOKIES['cart'].clear()
+					Customer.objects.create(user=user,username=username, email=user.email,firstname=user.first_name,lastname=user.last_name)
 				except:
-					cart = {}
-				login(request,user)
-				print('hopefully')
-				return redirect(f'/customer/{username}',)
-			elif user.is_vendor:
-				login(request,user)
-				print('here3')
-				return redirect(f'/vendor/{username}',)
-			else:
-				messages.info(request, 'Username OR password is incorrect')
-	else:
-		messages.info(request, 'Username OR password is incorrect')					
+					user.is_customer = True
+					user.save()
+				print("Profile created!")
+			try:
+				cart = json.loads(request.COOKIES['cart'])
+				customer = Customer.objects.get(user=user)
+				order, created = Order.objects.get_or_create(customer=customer, complete=False)
+				print(order)
+				print(cart)
+				cookieData = cookieCart(request)
+				items = cookieData['items']
+				for item in items:
+					productitem = Product.objects.get(id=item['product']['id'])
+					print('here3')
+					print(productitem,item['quantity'])
+					# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
+					orderI=OrderItem.objects.create(
+													order=order, 
+													product=productitem, 
+													quantity=item['quantity'], 
+												)
+					order.quantity += 1
+					order.save()
+					print('here4')
+					orderI.save()
+				request.COOKIES['cart'].clear()
+			except:
+				cart = {}
+			login(request,user)
+			print('hopefully')
+			return redirect(f'/customer/{username}',)
+			# elif user.is_vendor:
+			# 	login(request,user)
+			# 	print('here3')
+			# 	return redirect(f'/vendor/{username}',)
+		else:
+			messages.info(request, 'Username OR password is incorrect')				
 	return render(request,'accounts/login.html', {'form': form })
 
 
