@@ -105,15 +105,15 @@
 						{% endif %}
 							
 					{% else %}
-					<li class="py-1">
-						<a href="{% url 'login' %}" class="">
+					<a href="{% url 'login' %}" class="">
+						<li class="py-1">
 							<small class="icon nav-link eyebrow invert">Sign In</small>
-						</a>
-					</li>
+						</li>
+					</a>
 					<a href="{% url 'customer_signup' %}" class="">
-					<li class="py-1">
-							<small class="icon nav-link eyebrow invert">Sign Up</small>
-					</li>
+						<li class="py-1">
+								<small class="icon nav-link eyebrow invert">Sign Up</small>
+						</li>
 					</a>
 					<li class="py-1">
 						<a href="{% url 'vendor_signup' %}" class="">

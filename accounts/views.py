@@ -289,15 +289,15 @@ def vendorPage(request,vendor):
 	form = VendorForm(instance=vendor)
 	passwordChangeForm = ChangeUserPasswordForm(instance=request.user)
 	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
-	if request.method == "POST" and request.POST.get("form_type") == 'accountSetting':
-		form = VendorForm(request.POST, request.FILES, instance=vendor)
-		if form.is_valid():
-			form.save()
-	elif request.method == "POST" and request.POST.get("form_type") == 'passwordChange':
-		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
-		if passwordChangeForm.is_valid():
-			passwordChangeForm.save()
-	elif request.method == "POST" and request.POST.get("form_type") == 'itemDelivered':
+	# if request.method == "POST" and request.POST.get("form_type") == 'accountSetting':
+	# 	form = VendorForm(request.POST, request.FILES, instance=vendor)
+	# 	if form.is_valid():
+	# 		form.save()
+	# elif request.method == "POST" and request.POST.get("form_type") == 'passwordChange':
+	# 	passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
+	# 	if passwordChangeForm.is_valid():
+	# 		passwordChangeForm.save()
+	if request.method == "POST" and request.POST.get("form_type") == 'itemDelivered':
 		item = CartItem.objects.get(id=int(request.POST.get('order-number')))
 		item.delivered = True
 		# item.date_ordered = Now

@@ -32,11 +32,10 @@
 			<!-- sidebar -->
 			<aside class="col-lg-3">
 				<div class="nav nav-pills flex-column lavalamp" id="sidebar-1" role="tablist">
-					<a class="nav-link active" data-toggle="tab" href="#sidebar-1-1" role="tab"  aria-controls="sidebar-1" aria-selected="true">Profile</a>
-					<a class="nav-link" data-toggle="tab" href="#sidebar-1-2" role="tab" aria-controls="sidebar-1-2" aria-selected="false">New Orders</a>
-					<a class="nav-link" data-toggle="tab" href="#sidebar-1-3" role="tab" aria-controls="sidebar-1-3" aria-selected="false">All</a>
-					<a class="nav-link" data-toggle="tab" href="#sidebar-1-4" role="tab" aria-controls="sidebar-1-4" aria-selected="false">Delivered Orders</a>
-					<a class="nav-link" data-toggle="tab" href="#sidebar-1-5" role="tab" aria-controls="sidebar-1-5" aria-selected="false">Products</a>
+					<a class="nav-link active" data-toggle="tab" href="#sidebar-1-1" role="tab" aria-controls="sidebar-1-1" aria-selected="true">New Orders</a>
+					<a class="nav-link" data-toggle="tab" href="#sidebar-1-2" role="tab" aria-controls="sidebar-1-2" aria-selected="false">All</a>
+					<a class="nav-link" data-toggle="tab" href="#sidebar-1-3" role="tab" aria-controls="sidebar-1-3" aria-selected="false">Delivered Orders</a>
+					<a class="nav-link" data-toggle="tab" href="#sidebar-1-4" role="tab" aria-controls="sidebar-1-4" aria-selected="false">Products</a>
 					<a class="nav-link dash eyebrow d-flex" style="border: 2px solid black;" href="{% url 'customer' request.user %}" >
 						<div class="action col-10 pl-0">Back to profile</div>
 						<span class="icon icon-user col-2 fs-20"></span>
@@ -49,88 +48,9 @@
 			  <div class="col-lg-9">
 			  	<div class="row">
 					<div class="col">
-						<div class="tab-content" id="myTabContent">
-							<div class="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
-								<form id="accountSetting" method="POST" enctype="multipart/form-data">
-									{% csrf_token %}
-									<div class="row mb-2">
-										<div class="col-12">
-											<h3>Personal Data</h3>
-										</div>
-									</div>
-									<div class="row gutter-1">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="exampleInput1">First Name</label>
-													{{form.firstname}}
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="exampleInput2">Last Name</label>
-													{{form.lastname}}
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="exampleInput3">Username</label>
-													{{form.username}}
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="exampleInput-6">Gender</label>
-												{{form.gender}}
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="exampleInput6">Telephone</label>
-												{{form.phone_number}}
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="exampleInput7">Email</label>
-												{{form.email}}
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<input type="hidden" name="form_type" value="accountSetting">
-											<input class="btn btn-primary" type="submit" value="Save Changes" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
-										</div>
-									</div>
-								</form>
-								<form id="passwordChange" method="POST" enctype="multipart/form-data">
-									<div class="row mb-2 mt-6">
-										<div class="col-12">
-											<h3>Password</h3>
-										</div>
-									</div>
-									<div class="col-md-auto py-3">
-										<h5>Try out the suggested Password.</h5>
-										<div class="d-flex">
-											<p class="my-auto" id="suggestedPassword"></p>
-											<span id="copy" class="icon-content_copy my-auto px-2 popup">
-												<span class="popuptext" id="myPopup">Text Copied!</span>
-											</span>
-										</div>
-									</div>
-									{% csrf_token %}
-									{{passwordChangeForm.as_p}}
-									<div class="row">
-										<div class="col">
-											<input type="hidden" name="form_type" value="passwordChange">
-											<input class="btn btn-primary" type="submit" value="Change Password" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
-										</div>
-									</div>
-								</form>
-							</div>
-	
+						
 							<!-- new orders -->
-							<div class="tab-pane fade" id="sidebar-1-2" role="tabpanel" aria-labelledby="sidebar-1-2">
+							<div class="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
 								<div class="row">
 									<div class="col-12">
 										<h3 class="mb-0">Orders</h3>
@@ -325,7 +245,7 @@
 							</div>
 							
 							<!-- all -->
-							<div class="tab-pane fade" id="sidebar-1-3" role="tabpanel" aria-labelledby="sidebar-1-4">
+							<div class="tab-pane fade" id="sidebar-1-2" role="tabpanel" aria-labelledby="sidebar-1-2">
 								<div class="row">
 									<div class="col-12">
 										<h3 class="mb-0">Orders</h3>
@@ -520,7 +440,7 @@
 							</div>
 							
 							<!-- delivered -->
-							<div class="tab-pane fade" id="sidebar-1-4" role="tabpanel" aria-labelledby="sidebar-1-4">
+							<div class="tab-pane fade" id="sidebar-1-3" role="tabpanel" aria-labelledby="sidebar-1-3">
 								<div class="row">
 									<div class="col-12">
 										<h3 class="mb-0">Orders</h3>
@@ -715,7 +635,7 @@
 							</div>
 
 							<!-- products -->
-							<div class="tab-pane fade" id="sidebar-1-5" role="tabpanel" aria-labelledby="sidebar-1-5">
+							<div class="tab-pane fade" id="sidebar-1-4" role="tabpanel" aria-labelledby="sidebar-1-4">
 								<div class="row">
 								<div class="col-12">
 									<h3 class="mb-0">Products</h3>
