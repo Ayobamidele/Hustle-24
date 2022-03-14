@@ -58,8 +58,8 @@ class Vendor(models.Model):
 
 
 class WatchGroup(models.Model):
-	members = models.ManyToManyField("User", null=False, related_name="members")
-	watch_list = models.ManyToManyField("WatchList", null=False, related_name="WatchList")
+	members = models.ManyToManyField(to="User", related_name="members")
+	watch_list = models.ManyToManyField(to="watched_products.WatchList", related_name="+")
 
 
 class WatchGroupMember(models.Model):

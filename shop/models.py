@@ -1,3 +1,4 @@
+from itertools import product
 import os
 import random
 from PIL import Image
@@ -9,7 +10,7 @@ from django.contrib.auth.models import User
 # from accounts.models import User,Vendor
 from django.urls import reverse
 from django.template.defaultfilters import slugify
-
+from watched_products.models import WatchList
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -100,3 +101,13 @@ class Shop(models.Model):
 
 	def __str__(self):
 		return self.shopname
+
+class WatchedProduct(models.Model):
+	watch_list = models.ForeignKey(WatchList, on_delete=models.CASCADE, null=False, related_name="WatchList")
+	product =  models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	initial_Price = models.DecimalField(decimal_places=2,max_digits=100)
+	initial_quantity = models.IntegerField(default=0)
+	date_added = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return "{self.product} - {self.watch_list}"
