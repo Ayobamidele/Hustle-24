@@ -5,12 +5,15 @@ import random
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User, Group
+# from watched_products.models import watch_list
 
 # Create your models here.
+
 GENDER = (
 			('Male', 'male'),
 			('Female', 'female')
 			)
+
 class User(AbstractUser):
 	is_customer = models.BooleanField(default=True)
 	is_vendor = models.BooleanField(default=False)
@@ -52,3 +55,15 @@ class Vendor(models.Model):
 	
 	def __str__(self):
 		return str(self.firstname + " " + self.lastname)
+
+
+class WatchGroup(models.Model):
+	members = models.ManyToManyField("User", null=False, related_name="members")
+	watch_list = models.ManyToManyField("WatchList", null=False, related_name="WatchList")
+
+
+class WatchGroupMember(models.Model):
+	user = models.OneToOneField(User, null=False, on_delete=models.CASCADE)
+	Group = models.OneToOneField(WatchGroup, on_delete=models.CASCADE, null=False, related_name="group")
+	products_added = models.IntegerField(default=0)
+	can_add = models.BooleanField(default=False)
