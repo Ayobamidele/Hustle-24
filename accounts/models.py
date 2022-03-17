@@ -36,6 +36,7 @@ class Customer(models.Model):
 	email = models.CharField(max_length=200, null=False)
 	profile_pic = models.ImageField(upload_to=photo_path,default="victor-aldabalde-HguvvRqNgxo-unsplash.jpg")
 	gender = models.CharField(max_length=200, null=True, choices=GENDER)
+	watch_list = models.ManyToManyField(to="watched_products.WatchList", related_name="+")
 	
 	def __str__(self):
 		return self.username

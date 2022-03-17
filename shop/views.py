@@ -2,21 +2,21 @@ from dis import dis
 from .models import *
 from accounts.models import *
 from carts.utils import *
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, JsonResponse
-from django.forms import inlineformset_factory
-from django.contrib.auth.forms import UserCreationForm
-
-from django.contrib.auth import authenticate, login, logout
-
-from django.contrib import messages
-
+from django.shortcuts import render
+from django.http import JsonResponse
+# from django.forms import inlineformset_factory
+# from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth import authenticate, login, logout
+# from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from carts.models import *
 import locale
 import re
 import json
 import ast
+from django.shortcuts import get_object_or_404
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.views import APIView
 
 # Create your views here.
 from django.contrib.auth import get_user_model
@@ -31,6 +31,23 @@ def generateRefCode():
 	randomstr = ''.join((random.choice(chars)) for x in range(10))
 	return randomstr
 
+ 
+class home(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'profile_detail.html'
+ 
+    def get(self, request, pk):
+        profile = get_object_or_404(Profile, pk=pk)
+        serializer = ProfileSerializer(profile)
+        return Response({'serializer': serializer, 'profile': profile})
+ 
+    def post(self, request, pk):
+        profile = get_object_or_404(Profile, pk=pk)
+        serializer = ProfileSerializer(profile, data=request.data)
+        if not serializer.is_valid():
+            return Response({'serializer': serializer, 'profile': profile})
+        serializer.save()
+        return redirect('profile-list')
 
 def home(request,category_slug=None):
 	userPicture = request.user

@@ -10,9 +10,19 @@
 				<h1 class="mb-0 invert">{{username}}</h1>
 				<span class="text-muted invert">{{form.email.value}}</span>
 			</div>
-			<!-- <div class="col-md-6 text-center text-md-right">
-				<a href="{% url 'logout' %}" class="btn btn-sm btn-outline-white invert">Sign out</a>
-			</div> -->
+			<div class="col-md-6 text-center text-md-right">
+				<!-- <a href="" class="btn btn-sm btn-outline-white invert">Change Picture</a> -->
+				<!-- <input  type="file"> -->
+				<form method="post">
+
+					<label class="btn btn-sm btn-outline-white invert">
+						<i class="fa fa-image"></i> Change Photo<input type="file" style="display: none;" name="profile-image" type="file" id="profile-image" accept=".jpg,.jpeg,.png,.gif">
+					</label>
+
+					<!-- {% csrf_token %} -->
+					<!-- <input class="btn btn-sm btn-outline-white invert custom-file-input" name="profile-image" type="file" id="profile-image" accept=".jpg,.jpeg,.png,.gif"  value="Update-Photo"> -->
+				</form>
+			</div>
 		</div>
 	</div>
 </section>
@@ -30,6 +40,7 @@
 						<a class="nav-link dash" data-toggle="tab" href="#sidebar-1-2" role="tab" aria-controls="sidebar-1-2" aria-selected="false">Orders</a>
 						<a class="nav-link dash" data-toggle="tab" href="#sidebar-1-3" role="tab" aria-controls="sidebar-1-3" aria-selected="false">Payments</a>
 						<a class="nav-link dash" data-toggle="tab" href="#sidebar-1-4" role="tab" aria-controls="sidebar-1-4" aria-selected="false">Address</a>
+						<a class="nav-link dash" data-toggle="tab" href="#sidebar-1-5" role="tab" aria-controls="sidebar-1-5" aria-selected="false">Watchlist</a>
 						
 						{% if request.user.is_vendor %}	
 							<a class="nav-link dash eyebrow d-flex" style="border: 2px solid black;" href="{% url 'vendor' request.user %}" >
@@ -47,6 +58,7 @@
 					<div class="row">
 						<div class="col">
 							<div class="tab-content" id="myTabContent">
+								<!-- profile -->
 								<div class="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
 									<form id="accountSetting" method="POST" enctype="multipart/form-data">
 										{% csrf_token %}
@@ -145,104 +157,103 @@
 										</div>
 									</div>
 									<div class="row gutter-2">
-											{% for order in orders %}
-												{% if order.order.quantity < 1 %}
-														<div class="col-12" style="display: none;">
+										{% for order in orders %}
+											{% if order.order.quantity < 1 %}
+											<div class="col-12" style="display: none;"></div>
+											{% else %}
+											<div class="col-12">
+												<div class="order">
+													<div class="row align-items-center">
+														<div class="col-lg-4">
+															{% if order.order.id %}
+																<h3 class="order-number">Order {{order.order.id}}</h3>
+																<a href="#!" class="action viewOrders eyebrow " dataID="order{{order.order.id}}" onclick="openCty('order{{order.order.id}}')">View Order</a>
+															{% else %}
+																<h3 class="order-number">Order (current)</h3>
+																<a href="{% url 'cart' %}" class="action eyebrow ">View Order</a>
+															{% endif %}
 														</div>
-												{% else %}
-														<div class="col-12">
-															<div class="order">
-															<div class="row align-items-center">
-																<div class="col-lg-4">
-																	{% if order.order.id %}
-																		<h3 class="order-number">Order {{order.order.id}}</h3>
-																		<a href="#!" class="action viewOrders eyebrow " dataID="order{{order.order.id}}" onclick="openCty('order{{order.order.id}}')">View Order</a>
-																	{% else %}
-																		<h3 class="order-number">Order (current)</h3>
-																		<a href="{% url 'cart' %}" class="action eyebrow ">View Order</a>
-																	{% endif %}
-																</div>
-																{% if order.order.is_ordered %}
-																	<div class="col-lg-4">
-																		<span class="order-status sent">Sent</span>
-																	</div>
-																{% else %}
-																	<div class="col-lg-4">
-																		<span class="order-status canceled">Active</span>
-																	</div>
-																{% endif %}
-																<div class="col-lg-4">
-																	<ul class="order-preview justify-content-end">
-																		{% for image in order.order.orderItems %}
-																			<li>
-																				<a href={% url 'product'  image.product.title %} title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top">
-																					<img src={% static  image.product.image.url %} alt="Red Analog Magazine Rack">
-																				</a>
-																			</li>
-																		{% endfor %}	
-																	</ul>
-																</div>
-															</div>
-															</div>
+														{% if order.order.is_ordered %}
+														<div class="col-lg-4">
+															<span class="order-status sent">Sent</span>
 														</div>
-												{% endif %}
-												<section id="order{{order.order.id}}" class="orderlist pt-3 col-12">
-													<div class="col text-center">
-														<h4 class="h2">Items - {{order.order.get_cart_items}}</h4>
-												  	</div>
-										<div class="container">
-				<div class=" py-3">
-					<div class="row mb-0 d-none d-lg-flex">
-						<div class="col">
-							<div class="row pr-6">
-								<div class="col-lg-6"><span class="eyebrow">Product</span></div>
-								<div class="col-lg-2 text-center"><span class="eyebrow">Price</span></div>
-								<div class="col-lg-2 text-center"><span class="eyebrow">Quantity</span></div>
-								<div class="col-lg-2 text-center"><span class="eyebrow">Total</span></div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col cart-item-list cart-item-list-minimal">
-							{% for item in order.order.orderItems %}
-								<!-- cart item -->
-								<div class="cart-item">
-									<div class="row align-items-center">
-										<div class="col-12 col-lg-6">
-											<div class="media media-product">
-												<a href="#!"><img src={% static  item.product.image.url %} alt="Image"></a>
-												<div class="media-body">
-													<h5 class="media-title">{{ item.product.title }}</h5>
+														{% else %}
+														<div class="col-lg-4">
+															<span class="order-status canceled">Active</span>
+														</div>
+														{% endif %}
+														<div class="col-lg-4">
+															<ul class="order-preview justify-content-end">
+																{% for image in order.order.orderItems %}
+																	<li>
+																		<a href={% url 'product'  image.product.title %} title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top">
+																			<img src={% static  image.product.image.url %} alt="Red Analog Magazine Rack">
+																		</a>
+																	</li>
+																{% endfor %}	
+															</ul>
+														</div>
+													</div>
 												</div>
 											</div>
-										</div>
-										<div class="col-4 col-lg-2 text-center">
-											<span class="cart-item-price">${{ item.product.price }}</span>
-										</div>
-										<div class="col-4 col-lg-2 text-center">
-											<div class="counter py-1">
-												<h5>{{ item.quantity }}</h5>
-											</div>
-										</div>
-										<div class="col-4 col-lg-2 text-center">
-											<span class="cart-item-price">${{ item.get_total }}</span>
-										</div>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					</div>
-				</div>
-				<div class="row justify-content-between">
-					<div class="col-md-6 col-lg-4">
-						<div class="inline-block">
-							<span class="eyebrow">Total</span>
-							<h4 class="h2">${{order.order.get_cart_total}}</h4>
-						</div>
-					</div>
-				</div>
-			  </div>
-										</section>
+											{% endif %}
+											<section id="order{{order.order.id}}" class="orderlist pt-3 col-12">
+												<div class="col text-center">
+													<h4 class="h2">Items - {{order.order.get_cart_items}}</h4>
+												</div>
+												<div class="container">
+													<div class=" py-3">
+														<div class="row mb-0 d-none d-lg-flex">
+															<div class="col">
+																<div class="row pr-6">
+																	<div class="col-lg-6"><span class="eyebrow">Product</span></div>
+																	<div class="col-lg-2 text-center"><span class="eyebrow">Price</span></div>
+																	<div class="col-lg-2 text-center"><span class="eyebrow">Quantity</span></div>
+																	<div class="col-lg-2 text-center"><span class="eyebrow">Total</span></div>
+																</div>
+															</div>
+														</div>
+															<div class="row">
+																<div class="col cart-item-list cart-item-list-minimal">
+																	{% for item in order.order.orderItems %}
+																		<!-- cart item -->
+																		<div class="cart-item">
+																			<div class="row align-items-center">
+																				<div class="col-12 col-lg-6">
+																					<div class="media media-product">
+																						<a href="#!"><img src={% static  item.product.image.url %} alt="Image"></a>
+																						<div class="media-body">
+																							<h5 class="media-title">{{ item.product.title }}</h5>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-4 col-lg-2 text-center">
+																					<span class="cart-item-price">${{ item.product.price }}</span>
+																				</div>
+																				<div class="col-4 col-lg-2 text-center">
+																					<div class="counter py-1">
+																						<h5>{{ item.quantity }}</h5>
+																					</div>
+																				</div>
+																				<div class="col-4 col-lg-2 text-center">
+																					<span class="cart-item-price">${{ item.get_total }}</span>
+																				</div>
+																			</div>
+																		</div>
+																	{% endfor %}
+																</div>
+															</div>
+														</div>
+														<div class="row justify-content-between">
+															<div class="col-md-6 col-lg-4">
+																<div class="inline-block">
+																	<span class="eyebrow">Total</span>
+																	<h4 class="h2">${{order.order.get_cart_total}}</h4>
+																</div>
+															</div>
+														</div>
+												</div>
+											</section>
 										{% endfor %}
 									</div>
 								</div>
@@ -483,6 +494,15 @@
 											<input class="btn btn-primary" type="submit" value="Add New Address" name="Update Information" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
 										</div>
 									</form>
+								</div>
+								<div class="tab-pane fade" id="sidebar-1-5" role="tabpanel" aria-labelledby="sidebar-1-5">
+									<div class="row">
+									  <div class="col">
+										<h3 class="mb-0">Watchlist</h3>
+										<!-- <span class="eyebrow">{{totalAddress}} Entry</span> -->
+									  </div>
+									</div>
+									
 								</div>
 							</div>
 						</div>
