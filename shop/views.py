@@ -17,7 +17,7 @@ import ast
 from django.shortcuts import get_object_or_404
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
-
+from rest_framework.response import Response
 # Create your views here.
 from django.contrib.auth import get_user_model
 from .decorators import *
@@ -32,22 +32,62 @@ def generateRefCode():
 	return randomstr
 
  
-class home(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'profile_detail.html'
+class HomePage(APIView):
+	renderer_classes = [TemplateHTMLRenderer]
+	template_name = 'shop/index.html'
+
+	def get(self, request):
+		userPicture = request.user
+		print(userPicture,request)
+		if request.user.is_authenticated:
+			if request.user.is_customer:
+				userPicture = request.user.customer
+			elif request.user.is_vendor:
+				userPicture = request.user.vendor
+		user = request.user
+		userId = request.user.id
+		ref_code = generateRefCode
+		# print(ref_code, r)
+		products = Product.objects.filter(available=True)
+		data = cartData(request)
+		cartItems = data['cartItems']
+		order = data['order']
+		items = data['items']
+		show = True
+		for group in request.user.groups.all():
+			print(group)
+			if 'Vendor' == str(group):
+				show = False
+		# print(products.productimages)
+		# products = list(products)
+		productsdict = []
+		for product in products:
+			title = product.title
+			price = product.price
+			pid = product.id
+			description = product.description
+			link = str(title)
+			image = product.image.url
+			productsdict.append({'title': title,'price': price,'description': description,'link': link, 'image': image, 'id': pid})
+		# print(productsdict,cartItems)
+		# for product in productsdict:
+		print(cartItems)
+		context = { 'productsdict':productsdict,
+				'show': show,
+				'id': userId,
+				'user': user,
+				'cartItems':cartItems,
+				'userPicture': userPicture
+				}
+		return Response(context)
  
-    def get(self, request, pk):
-        profile = get_object_or_404(Profile, pk=pk)
-        serializer = ProfileSerializer(profile)
-        return Response({'serializer': serializer, 'profile': profile})
- 
-    def post(self, request, pk):
-        profile = get_object_or_404(Profile, pk=pk)
-        serializer = ProfileSerializer(profile, data=request.data)
-        if not serializer.is_valid():
-            return Response({'serializer': serializer, 'profile': profile})
-        serializer.save()
-        return redirect('profile-list')
+    # def post(self, request, pk):
+    #     profile = get_object_or_404(Profile, pk=pk)
+    #     serializer = ProfileSerializer(profile, data=request.data)
+    #     if not serializer.is_valid():
+    #         return Response({'serializer': serializer, 'profile': profile})
+    #     serializer.save()
+    #     return redirect('profile-list')
 
 def home(request,category_slug=None):
 	userPicture = request.user
