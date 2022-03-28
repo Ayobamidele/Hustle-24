@@ -917,12 +917,12 @@ line-height: 1;
 
 			    //Get imageId from database image.
 			    var imageId = '{{image.id}}';
-			    // myImageUpload.options.deleteImageRoute = "{% url 'updatephoto' %}"
+			    // myImageUpload.options.deleteImageRoute = "{% url 'update-photo' %}"
 			    myImageUpload.appendServerImage('{{image.images.url}}', '{{image.images}}', '{{image.id}}');
 			{% endfor %}
 			function recommend(){
 		        const req = new XMLHttpRequest()
-		        req.open('GET',"{% url 'updatephoto' %}")
+		        req.open('GET',"{% url 'update-photo' %}")
 		        req.onload = () =>{
 		            console.log(req.response)
 		        }

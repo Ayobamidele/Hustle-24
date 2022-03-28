@@ -181,7 +181,7 @@ function openCity(evt, cityName) {
   maxImages: 24,
   addLogo: [logoPath, 100, 35, 'center'],
   headers: {"X-CSRFToken": csrftoken,},
-  deleteImageRoute : "updatephoto",
+  deleteImageRoute : "update-photo",
   dictUploadImageNote: 'Click or drop photos here to upload',
   alertUploadingImage: function(fileLength) {
       var dictUploadingMessage;
@@ -2501,7 +2501,7 @@ function openCity(evt, cityName) {
                             xhttpSuccessAction();
                           }
                       };
-                      xhttp.open("POST", '/updatephoto',true);
+                      xhttp.open("POST", '/update-photo',true);
                       // setHeaders(xhttp);
                       xhttp.setRequestHeader('X-CSRFToken', csrftoken);
                       deletedImages.push(parseInt(deletedImageId))
@@ -2525,7 +2525,7 @@ function openCity(evt, cityName) {
   
                       // Create new request add token 
                       // const generateRequest = new XMLHttpRequest();
-                      // generateRequest.open('POST', '/updatephoto');
+                      // generateRequest.open('POST', '/update-photo');
                       // generateRequest.setRequestHeader('X-CSRFToken', csrftoken);
   
                       // // Add the motif to send with the request

@@ -1,15 +1,24 @@
+from dis import dis
+from .models import *
+from accounts.models import *
 from carts.utils import *
 from django.shortcuts import render
 from django.http import JsonResponse
+# from django.forms import inlineformset_factory
+# from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth import authenticate, login, logout
+# from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from carts.models import *
 import locale
 import re
+import json
 import ast
 from django.shortcuts import get_object_or_404
 from rest_framework.renderers import TemplateHTMLRenderer
-from rest_framework.response import Response
-from shop.serializers import ProductSerializer
-from rest_framework import permissions, renderers, viewsets
+from rest_framework import viewsets
+from .serializer import *
+
 # Create your views here.
 from django.contrib.auth import get_user_model
 from .decorators import *
@@ -19,83 +28,35 @@ locale.setlocale(locale.LC_ALL, '')
 deletedProductImages = set([])
 
 
-def generateRefCode():
+def generate_ref_code():
     chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
-    random_str = ''.join((random.choice(chars)) for x in range(10))
+    random_str = ''.join((random.choice(chars)) for _ in range(10))
     return random_str
 
 
 class ProductsViewSet(viewsets.ModelViewSet):
-    """
-        API endpoint that allows groups to be viewed or edited.
-    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
-    template_name = 'shop/index.html'
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset()
-        print(queryset)
-        user_picture = self.request.user
-        print(user_picture, self.request)
-        if self.request.user.is_authenticated:
-            if self.request.user.is_customer:
-                user_picture = self.request.user.customer
-            elif self.request.user.is_vendor:
-                user_picture = self.request.user.vendor
-        user = self.request.user
-        userId = self.request.user.id
-        ref_code = generateRefCode
-        # print(ref_code, r)
-        products = Product.objects.filter(available=True)
-        data = cartData(self.request)
-        cartItems = data['cartItems']
-        order = data['order']
-        items = data['items']
-        show = True
-        for group in self.request.user.groups.all():
-            print(group)
-            if 'Vendor' == str(group):
-                show = False
-        # print(products.productimages)
-        # products = list(products)
-        products_dict = []
-        for product in products:
-            title = product.title
-            price = product.price
-            pid = product.id
-            description = product.description
-            link = str(title)
-            image = product.image.url
-            products_dict.append(
-                {'title': title, 'price': price, 'description': description, 'link': link, 'image': image,
-                 'id': pid})
-        # print(products_dict,cartItems)
-        # for product in products_dict:
-        print(cartItems)
-        context = {'products_dict': products_dict,
-                   'show': show,
-                   'id': userId,
-                   'user': user,
-                   'cartItems': cartItems,
-                   'user_picture': user_picture
-                   }
-        print(context,"finally")
-        # response = super(ProductsViewSet, self).list(self.request, *args, **kwargs)
-        if self.request.accepted_renderer.format == 'html':
-            return Response(context, template_name='shop/index.html')
-        return queryset
+
+class CategoriesViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class ProductImagesViewSet(viewsets.ModelViewSet):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
 
 
 def home(request, category_slug=None):
-    user_picture = request.user
-    print(user_picture, request, category_slug)
+    userPicture = request.user
+    print(userPicture, request)
     if request.user.is_authenticated:
         if request.user.is_customer:
-            user_picture = request.user.customer
+            userPicture = request.user.customer
         elif request.user.is_vendor:
-            user_picture = request.user.vendor
+            userPicture = request.user.vendor
     user = request.user
     userId = request.user.id
     ref_code = generateRefCode
@@ -112,7 +73,7 @@ def home(request, category_slug=None):
             show = False
     # print(products.productimages)
     # products = list(products)
-    products_dict = []
+    productsdict = []
     for product in products:
         title = product.title
         price = product.price
@@ -120,17 +81,17 @@ def home(request, category_slug=None):
         description = product.description
         link = str(title)
         image = product.image.url
-        products_dict.append({'title': title, 'price': price, 'description': description, 'link': link, 'image': image,
-                              'id': pid})
-    # print(products_dict,cartItems)
-    # for product in products_dict:
+        productsdict.append(
+            {'title': title, 'price': price, 'description': description, 'link': link, 'image': image, 'id': pid})
+    # print(productsdict,cartItems)
+    # for product in productsdict:
     print(cartItems)
-    context = {'products_dict': products_dict,
+    context = {'productsdict': productsdict,
                'show': show,
                'id': userId,
                'user': user,
                'cartItems': cartItems,
-               'user_picture': user_picture
+               'userPicture': userPicture
                }
     return render(request, 'shop/index.html', context)
 

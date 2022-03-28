@@ -1,9 +1,7 @@
 import json
 from .models import *
 import random
-
-
-def generateRefCode():
+def generateRefCode():	
 	chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
 	randomstr = ''.join((random.choice(chars)) for x in range(10))
 	return randomstr
@@ -16,7 +14,7 @@ def cookieCart(request):
 		cart = {}
 		print('Cart:', cart)
 	items = []
-	order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+	order = {'get_cart_total': 0, 'get_cart_items': 0,'shipping': False}
 	cartItems = order['get_cart_items']
 	for i in cart:
 		try:
@@ -27,37 +25,35 @@ def cookieCart(request):
 			order['get_cart_items'] += cart[i]['quantity']
 
 			item = {
-				'product': {
+				'product':{
 					'id': product.id,
 					'title': product.title,
 					'price': product.price,
 					'image': product.image,
-				},
+					},
 				'quantity': cart[i]['quantity'],
 				'get_total': total,
-			}
+				}
 			items.append(item)
 		except:
 			pass
-	return {'items': items, 'order': order, 'cartItems': cartItems}
-
+	return {'items': items , 'order': order, 'cartItems':cartItems}
 
 def cartData(request):
 	if request.user.is_authenticated and request.user.is_customer == True:
 		customer = request.user.customer
-		print("was here", customer, request.user.is_customer)
+		print("was here",customer, request.user.is_customer)
 		# the mess is here
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		items = order.orderitem_set.all()
 		cartItems = order.quantity
-		print(cartItems, order, "cartData")
+		print(cartItems,order,"cartData")
 	else:
 		cookieData = cookieCart(request)
 		cartItems = cookieData['cartItems']
 		order = cookieData['order']
 		items = cookieData['items']
-	return {'items': items, 'order': order, 'cartItems': cartItems}
-
+	return {'items': items , 'order': order, 'cartItems':cartItems}
 
 def guestOrder(request, data):
 	# collects user form data
@@ -67,13 +63,13 @@ def guestOrder(request, data):
 		password = data['form']['password']
 		email = data['form']['email']
 		username = str(first_name) + " " + str(last_name)
-	except:
+	except :
 		pass
 	else:
 		username = data['form']['username']
 		password = data['form']['password']
 
-	# Collects cart data
+	#Collects cart data
 	cookieData = cookieCart(request)
 	cartItems = cookieData['cartItems']
 	order = cookieData['order']
@@ -89,8 +85,8 @@ def guestOrder(request, data):
 				password=password
 		)
 		customer.save()
-	except Exception as e:
-		print(e)
+	except:
+		pass
 	else:
 		customer, created = Customer.objects.get_or_create(
 				username=username,

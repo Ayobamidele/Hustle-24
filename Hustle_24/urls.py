@@ -14,22 +14,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from django.urls import include, path
 from rest_framework import routers
 from shop import views
 
 router = routers.DefaultRouter()
-router.register(r'products', views.ProductsViewSet)
-urlpatterns = [
+router.register(r'Products', views.ProductsViewSet)
+router.register(r'Categories', views.CategoriesViewSet)
+router.register(r'Product-Images', views.ProductImagesViewSet)
 
-    path('home/', include(router.urls)),
+# Wire up our API using automatic URL routing.
+# Additionally, we include login URLs for the browsable API.
+urlpatterns = [
+    path('api-home/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    
+
     path('admin/', admin.site.urls),
     path('', include('shop.urls')),
+    # path('', include(('shop.urls', 'shop'))),
     path('', include('accounts.urls')),
     path('', include('carts.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
