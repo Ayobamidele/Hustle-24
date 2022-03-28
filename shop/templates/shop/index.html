@@ -7,15 +7,15 @@
 
 	<div class="products w-80 mx-auto">
 
-		{% for product in productsdict %}
+		{% for product in data %}
 			<div class="product-card card" >
 				<div class="img-container">
-					<img class="card-img-top product-img" src=static{{product.image}} alt={{product.image}}>
+					<img class="card-img-top product-img" src={{product.image}} alt={{product.image}}>
 				</div>
 				<div class="d-flex border">
 					<div class="px-1 small col-9 text-left border-right" style="padding: 5px 0;">
-						<a href="{% url 'product' product.link %}" class="">
-							<h5 class="fs-16 text-truncate">{{ product.title }}</h5>		
+						<a href="{{product.link}}" class="">
+							<h5 class="fs-16 text-truncate">{{ product.title }}</h5>
 							<p class="card-text m-0 ">${{ product.price|floatformat:2|intcomma }}</p>
 						</a>
 					</div>

@@ -21,6 +21,7 @@ from rest_framework import routers
 from shop import views
 
 router = routers.DefaultRouter()
+router.register(r'home', views.ProductsViewSet, basename='home')
 router.register(r'Products', views.ProductsViewSet)
 router.register(r'Categories', views.CategoriesViewSet)
 router.register(r'Product-Images', views.ProductImagesViewSet)
@@ -28,7 +29,7 @@ router.register(r'Product-Images', views.ProductImagesViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('api-home/', include(router.urls)),
+    path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('admin/', admin.site.urls),

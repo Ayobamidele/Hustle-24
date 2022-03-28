@@ -15,8 +15,8 @@ import re
 import json
 import ast
 from django.shortcuts import get_object_or_404
-from rest_framework.renderers import TemplateHTMLRenderer
-from rest_framework import viewsets
+from rest_framework import renderers, viewsets
+from rest_framework.response import Response
 from .serializer import *
 
 # Create your views here.
@@ -37,6 +37,40 @@ def generate_ref_code():
 class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
+
+    def list(self, request, *args, **kwargs):
+        response = super(ProductsViewSet, self).list(request, *args, **kwargs)
+        print(request.accepted_renderer.format)
+        if request.accepted_renderer.format == 'html':
+            userPicture = request.user
+            print(userPicture, request)
+            if request.user.is_authenticated:
+                if request.user.is_customer:
+                    userPicture = request.user.customer
+                elif request.user.is_vendor:
+                    userPicture = request.user.vendor
+            user = request.user
+            userId = request.user.id
+            ref_code = generateRefCode
+            # print(ref_code, r)
+            # products = Product.objects.filter(available=True)
+            data = cartData(request)
+            cartItems = data['cartItems']
+            order = data['order']
+            items = data['items']
+            show = True
+            for group in request.user.groups.all():
+                print(group)
+                if 'Vendor' == str(group):
+                    show = False
+            # print(products.productimages)
+            # products = list(products)
+            print(cartItems)
+            print(response.data)
+            return Response(dict(data=response.data,show=show, id=userId, user=user,cartItems=cartItems,
+                                 userPicture=userPicture), template_name='shop/index.html')
+        return response
 
 
 class CategoriesViewSet(viewsets.ModelViewSet):
