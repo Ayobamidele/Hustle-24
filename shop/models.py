@@ -62,7 +62,7 @@ class Product(models.Model):
     brand = models.CharField(max_length=1000, null=True)
     discount_price = models.FloatField(blank=True, null=True)
     image = models.FileField()
-    productimages = models.ManyToManyField(ProductImage, )
+    productimages = models.ManyToManyField(ProductImage, blank=True)
     thumbnail = models.ImageField(upload_to='photo_path', blank=True, null=True)
     description = models.TextField(max_length=1000)
     stock = models.IntegerField(default=0)

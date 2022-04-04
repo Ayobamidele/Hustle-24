@@ -10,7 +10,9 @@
 		{% for product in data %}
 			<div class="product-card card" >
 				<div class="img-container">
-					<img class="card-img-top product-img" src={{product.image}} alt={{product.image}}>
+					<a href="{{product.link}}" class="">
+						<img class="card-img-top product-img" src={{product.image}} alt={{product.image}}>
+					</a>
 				</div>
 				<div class="d-flex border">
 					<div class="px-1 small col-9 text-left border-right" style="padding: 5px 0;">

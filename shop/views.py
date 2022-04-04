@@ -18,7 +18,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import renderers, viewsets
 from rest_framework.response import Response
 from .serializer import *
-
+from permissions import *
 # Create your views here.
 from django.contrib.auth import get_user_model
 from .decorators import *
@@ -37,7 +37,8 @@ def generate_ref_code():
 class ProductsViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer)
+    permission_classes = [ReadOnly, NotCreateAndIsAdminUser | IsOwner]
+    renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer,)
 
     def list(self, request, *args, **kwargs):
         response = super(ProductsViewSet, self).list(request, *args, **kwargs)

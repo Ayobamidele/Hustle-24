@@ -21,8 +21,7 @@ from rest_framework import routers
 from shop import views
 
 router = routers.DefaultRouter()
-router.register(r'home', views.ProductsViewSet, basename='home')
-router.register(r'Products', views.ProductsViewSet)
+router.register(r'home', views.ProductsViewSet)
 router.register(r'Categories', views.CategoriesViewSet)
 router.register(r'Product-Images', views.ProductImagesViewSet)
 
@@ -39,4 +38,4 @@ urlpatterns = [
     path('', include('carts.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+urlpatterns += router.urls

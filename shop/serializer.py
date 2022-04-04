@@ -4,17 +4,18 @@ from collections import OrderedDict
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
-    category = serializers.HyperlinkedRelatedField(many=True, view_name='category-detail',
-                                                   queryset=Category.objects.all())
+    # category = serializers.HyperlinkedRelatedField(many=True, view_name='category-detail',
+    #                                                queryset=Category.objects.all())
     link = serializers.HyperlinkedIdentityField(
-        view_name="product",
+        view_name="shop:product",
         lookup_field="title",
         lookup_url_kwarg="product"
     )
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('link','title','brand', 'price', 'discount_price', 'image','productimages',
+                    'description', 'stock')
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
