@@ -1,7 +1,9 @@
+from datetime import datetime
+
+from accounts.models import Customer, Vendor
 from django.db import models
 from shop.models import Product
-from accounts.models import Customer, Vendor
-from datetime import datetime
+
 now = datetime.now() # current date and time
 year = int(now.strftime("%Y"))+24
 

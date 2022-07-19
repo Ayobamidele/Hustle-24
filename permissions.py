@@ -1,6 +1,8 @@
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.permissions import *
 from rest_framework import permissions
+from rest_framework.authentication import (SessionAuthentication,
+                                           TokenAuthentication)
+from rest_framework.permissions import *
+
 
 class NotCreateAndIsAdminUser(permissions.IsAdminUser):
     def has_permission(self, request, view):

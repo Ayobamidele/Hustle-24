@@ -1,10 +1,11 @@
-from ast import arg
-from django.db import models
 import os
 import random
-from django.contrib.auth.models import AbstractUser
+from ast import arg
+
+from django.contrib.auth.models import AbstractUser, Group, User
+from django.db import models
 from django.db.models.signals import post_save
-from django.contrib.auth.models import User, Group
+
 # from watched_products.models import watch_list
 
 # Create your models here.

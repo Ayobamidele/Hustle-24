@@ -1,6 +1,7 @@
+from collections import OrderedDict
+
 from rest_framework import serializers
 from shop.models import *
-from collections import OrderedDict
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
@@ -14,7 +15,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('link','title','brand', 'price', 'discount_price', 'image','productimages',
+        fields = ('link', 'id', 'title', 'brand', 'price', 'discount_price', 'image','productimages',
                     'description', 'stock')
 
 

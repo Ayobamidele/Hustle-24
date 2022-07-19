@@ -1,6 +1,7 @@
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from django.contrib.auth.models import AnonymousUser
+
 
 def unauthenticated_user(view_func):
 	def wrapper_func(request, *args, **kwargs):

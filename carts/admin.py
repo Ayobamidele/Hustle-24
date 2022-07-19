@@ -1,6 +1,9 @@
 from django.contrib import admin
 
-from .models import Cart,Order,OrderItem,ShippingAddressCustomer,ShippingAddressOrder,ShippingPaymentCustomer,ShippingPaymentOrder,CartItem
+from .models import (Cart, CartItem, Order, OrderItem, ShippingAddressCustomer,
+                     ShippingAddressOrder, ShippingPaymentCustomer,
+                     ShippingPaymentOrder)
+
 # Register your models here.
 
 admin.site.register(Cart)

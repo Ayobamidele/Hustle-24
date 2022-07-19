@@ -1,32 +1,22 @@
-from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import get_object_or_404
-from django.forms import inlineformset_factory
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
-from django.contrib import messages
-from .decorators import *
-from .models import *
-from .utils import cookieCart, cartData, guestOrder
-
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.forms import inlineformset_factory
-from django.contrib.auth.forms import UserCreationForm
-
-from django.contrib.auth import authenticate, login, logout
-
-from django.contrib import messages
-
-from django.contrib.auth.decorators import login_required
 import datetime
-import random
 import json
 import os
-from accounts.models import *
+import random
+
 from accounts.forms import *
-from django.contrib.auth import get_user_model
+from accounts.models import *
+from django.contrib import messages
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.forms import inlineformset_factory
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .decorators import *
+from .models import *
+from .utils import cartData, cookieCart, guestOrder
+
 User = get_user_model()
 
 # Create your views here.
@@ -57,7 +47,6 @@ def cart(request):
 	return render(request, 'carts/cart.html', context)
 
 def updateItem(request):
-	print(request.body,22222)
 	data = json.loads(request.body)
 	productId = data['productId']
 	action = data['action']
@@ -69,7 +58,6 @@ def updateItem(request):
 	product = Product.objects.get(id=productId)
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-	print("came here", customer, product,order,orderItem)
 	if action == 'add':
 		orderItem.quantity = (orderItem.quantity + 1)
 		order.quantity = (order.quantity + 1)

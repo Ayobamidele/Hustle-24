@@ -1,6 +1,9 @@
 import json
-from .models import *
 import random
+
+from .models import *
+
+
 def generateRefCode():	
 	chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
 	randomstr = ''.join((random.choice(chars)) for x in range(10))

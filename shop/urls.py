@@ -1,13 +1,14 @@
-from django.urls import path, include
-from django.conf.urls.static import static
 from django.conf import settings
-from . import views
+from django.conf.urls.static import static
+from django.urls import include, path
 from rest_framework.urlpatterns import format_suffix_patterns
+
+from . import views
 
 app_name = 'shop'
 
 urlpatterns = [
-    path('home', views.ProductsViewSet.as_view({'get': 'list'}), name="home"),
+    path('', views.ProductsViewSet.as_view({'get': 'list', 'post': 'list', }), name="home"),
     # path('shop/<shop>', views.shop, name='shop'),
     path('product/<product>', views.productDetail, name='product'),
     path('<shop>/product/add', views.addProduct, name='addProduct'),

@@ -186,7 +186,7 @@
 															<ul class="order-preview justify-content-end">
 																{% for image in order.order.orderItems %}
 																	<li>
-																		<a href={% url 'product'  image.product.title %} title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top">
+																		<a href={% url 'shop:product'  image.product.title %} title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top">
 																			<img src={% static  image.product.image.url %} alt="Red Analog Magazine Rack">
 																		</a>
 																	</li>

@@ -1,7 +1,8 @@
-from django.db.models.signals import post_save
-from django.contrib.auth.models import Group
 from django.conf import settings
+from django.contrib.auth.models import Group
+from django.db.models.signals import post_save
 from shop.models import *
+
 from .models import *
 
 

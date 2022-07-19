@@ -1,30 +1,33 @@
+import datetime
 import email
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.forms import inlineformset_factory
-from django.contrib.auth.forms import UserCreationForm
+import json
 
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, get_user_model
-from django.contrib import messages
-
-from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.models import Group
-
+from carts.forms import *
+from carts.models import *
 from carts.utils import *
+from carts.utils import cartData, cookieCart, guestOrder
+from django.contrib import messages
+from django.contrib.auth import (authenticate, get_user_model, login, logout,
+                                 update_session_auth_hash)
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.forms import inlineformset_factory
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from shop.models import *
 
+from .decorators import *
+from .forms import *
 # Create your views here.
 from .models import *
-from .forms import *
-from .decorators import *
-from shop.models import *
-import json
-import datetime
-from carts.models import *
-from carts.forms import *
-from carts.utils import cookieCart, cartData, guestOrder
+
+# from django.contrib.auth.models import Group
+
+
 
 User = get_user_model()
 Now = datetime.now()
+
 
 @unauthenticated_user
 @with_usertype(allowed_roles=['Vendor','bami'])
@@ -129,12 +132,9 @@ def loginPage(request):
 			messages.info(request, 'Username OR password is incorrect')				
 	return render(request,'accounts/login.html', {'form': form })
 
-
-
 def logoutUser(request):
     logout(request)
     return redirect('login')
-
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Customer'])
@@ -322,3 +322,4 @@ def accountSettings(request):
             form.save()
     context = {"form": form}
     return render(request,'accounts/account_settings.html',context)
+	

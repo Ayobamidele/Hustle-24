@@ -1,4 +1,3 @@
-from .models import *
 from accounts.models import *
 
-	
+from .models import *

@@ -1,15 +1,17 @@
-from django.urls import path
-from . import views
-from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 
+from . import views
 
 urlpatterns = [
     path('accounts/signup/customer/', views.registerPageCustomer, name="customer_signup"),
     path('accounts/signup/vendor/', views.registerPageVendor, name="vendor_signup"),
-    path('login/', views.loginPage, name='login'),
+    
+    # path('login/', views.loginPage, name='login'),
+    path('login', views.login, name='login'),
+
     path('logout/', views.logoutUser, name='logout'),
 
     path('customer/<customer>', views.customerPage, name='customer'),

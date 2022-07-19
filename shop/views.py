@@ -1,28 +1,29 @@
+import ast
+import json
+import locale
+import re
 from dis import dis
-from .models import *
+
 from accounts.models import *
+from carts.models import *
 from carts.utils import *
-from django.shortcuts import render
-from django.http import JsonResponse
+# Create your views here.
+from django.contrib.auth import get_user_model
 # from django.forms import inlineformset_factory
 # from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth import authenticate, login, logout
 # from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from carts.models import *
-import locale
-import re
-import json
-import ast
-from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+from permissions import *
 from rest_framework import renderers, viewsets
 from rest_framework.response import Response
-from .serializer import *
-from permissions import *
-# Create your views here.
-from django.contrib.auth import get_user_model
+
 from .decorators import *
 from .forms import *
+from .models import *
+from .serializer import *
 
 locale.setlocale(locale.LC_ALL, '')
 deletedProductImages = set([])
@@ -42,10 +43,8 @@ class ProductsViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         response = super(ProductsViewSet, self).list(request, *args, **kwargs)
-        print(request.accepted_renderer.format)
         if request.accepted_renderer.format == 'html':
             userPicture = request.user
-            print(userPicture, request)
             if request.user.is_authenticated:
                 if request.user.is_customer:
                     userPicture = request.user.customer
@@ -53,25 +52,17 @@ class ProductsViewSet(viewsets.ModelViewSet):
                     userPicture = request.user.vendor
             user = request.user
             userId = request.user.id
-            ref_code = generateRefCode
-            # print(ref_code, r)
-            # products = Product.objects.filter(available=True)
             data = cartData(request)
             cartItems = data['cartItems']
             order = data['order']
             items = data['items']
             show = True
             for group in request.user.groups.all():
-                print(group)
                 if 'Vendor' == str(group):
                     show = False
-            # print(products.productimages)
-            # products = list(products)
-            print(cartItems)
-            print(response.data)
             return Response(dict(data=response.data,show=show, id=userId, user=user,cartItems=cartItems,
                                  userPicture=userPicture), template_name='shop/index.html')
-        return response
+        return Response(data)
 
 
 class CategoriesViewSet(viewsets.ModelViewSet):
@@ -82,54 +73,6 @@ class CategoriesViewSet(viewsets.ModelViewSet):
 class ProductImagesViewSet(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
-
-
-def home(request, category_slug=None):
-    userPicture = request.user
-    print(userPicture, request)
-    if request.user.is_authenticated:
-        if request.user.is_customer:
-            userPicture = request.user.customer
-        elif request.user.is_vendor:
-            userPicture = request.user.vendor
-    user = request.user
-    userId = request.user.id
-    ref_code = generateRefCode
-    # print(ref_code, r)
-    products = Product.objects.filter(available=True)
-    data = cartData(request)
-    cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
-    show = True
-    for group in request.user.groups.all():
-        print(group)
-        if 'Vendor' == str(group):
-            show = False
-    # print(products.productimages)
-    # products = list(products)
-    productsdict = []
-    for product in products:
-        title = product.title
-        price = product.price
-        pid = product.id
-        description = product.description
-        link = str(title)
-        image = product.image.url
-        productsdict.append(
-            {'title': title, 'price': price, 'description': description, 'link': link, 'image': image, 'id': pid})
-    # print(productsdict,cartItems)
-    # for product in productsdict:
-    print(cartItems)
-    context = {'productsdict': productsdict,
-               'show': show,
-               'id': userId,
-               'user': user,
-               'cartItems': cartItems,
-               'userPicture': userPicture
-               }
-    return render(request, 'shop/index.html', context)
-
 
 # @login_required(login_url='login')
 # @allowed_users(allowed_roles=['Vendor'])
