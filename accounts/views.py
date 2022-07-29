@@ -1,27 +1,19 @@
 import datetime
-import email
 import json
-
-from carts.forms import *
+from orders.forms import *
 from carts.models import *
 from carts.utils import *
-from carts.utils import cartData, cookieCart, guestOrder
 from django.contrib import messages
 from django.contrib.auth import (authenticate, get_user_model, login, logout,
                                  update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.forms import inlineformset_factory
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from shop.models import *
-
+from orders.models import *
 from .decorators import *
 from .forms import *
-# Create your views here.
 from .models import *
-
-# from django.contrib.auth.models import Group
+from django.http import JsonResponse
 
 
 
@@ -31,7 +23,7 @@ Now = datetime.now()
 
 @unauthenticated_user
 @with_usertype(allowed_roles=['Vendor','bami'])
-def registerPageCustomer(request):
+def registerCustomer(request):
 	form = CreateUserForm()
 	if request.method == "POST":
 		firstname = request.POST.get('firstname')
@@ -42,10 +34,10 @@ def registerPageCustomer(request):
 		if password:			
 			username = firstname + " " + lastname
 			new_user = User.objects.create_user(username= username,
-												email=email,
 												password=password,
 												first_name=firstname,
-												last_name = lastname
+												last_name=lastname,
+												email=email,
 												)
 			new_user.save()
 			messages.success(request, 'Account was created for ' + username)
@@ -54,27 +46,42 @@ def registerPageCustomer(request):
 	return render(request, 'accounts/register_customer.html', context)
 
 @with_usertype(allowed_roles=['Customer'])
-def registerPageVendor(request):
-	form = CreateUserForm()
-	if request.method == "POST":
-		firstname = request.POST.get('firstname')
-		lastname = request.POST.get('lastname')
-		email = request.POST.get('email')
-		password = request.POST.get('password')
-		print("Hello, ",request.POST,request.POST.get('password'))
-		if password:			
-			username = firstname + " " + lastname
-			new_user = User.objects.create_user(username= username,
-												email=email,
-												password=password,
-												first_name=firstname,
-												last_name = lastname,
-												is_vendor=True,
-												)
-			new_user.save()
-			messages.success(request,'Account and Shop was created for ' + username)
-			return redirect('login')
-	context = {'form': form}
+def registerVendor(request):
+	if request.user.is_customer and request.user.is_vendor == False:
+		print("heehheheh" , request.user.username,request.user.customer.id)
+		user = CustomerForm(request.POST, request.FILES,instance=request.user.customer)
+		user.is_vendor = True
+		user.save()
+		Vendor.objects.create(
+			user=request.user,
+			username=request.user.username,
+			email=request.user.email,
+			firstname=request.user.first_name,
+			lastname=request.user.last_name
+		)
+		return redirect(f'vendor/{request.user.username}')
+	else:
+		form = CreateUserForm()
+
+		if request.method == "POST":
+			firstname = request.POST.get('firstname')
+			lastname = request.POST.get('lastname')
+			email = request.POST.get('email')
+			password = request.POST.get('password')
+			print("Hello, ",request.POST,request.POST.get('password'))
+			if password:			
+				username = firstname + " " + lastname
+				new_user = User.objects.create_user(username= username,
+													email=email,
+													password=password,
+													first_name=firstname,
+													last_name = lastname,
+													is_vendor=True,
+													)
+				new_user.save()
+				messages.success(request,'Account and Shop was created for ' + username)
+				return redirect('login')
+		context = {'form': form}
 	return render(request, 'accounts/register_vendor.html', context)
 
 @unauthenticated_user
@@ -140,68 +147,61 @@ def logoutUser(request):
 @allowed_users(allowed_roles=['Customer'])
 def customerPage(request,customer):
 	customer = request.user.customer
-	if request.user.is_vendor:
-		vendor = request.user.vendor
-	userPicture = request.user
-	orders = []
+	vendor = request.user.vendor if request.user.is_vendor else ""
+	carts = []
 	data = cartData(request)
-	cartItems = data['cartItems']
-	customerAddresses = ShippingAddressCustomer.objects.filter(customer=customer)
-	customerPayments = ShippingPaymentCustomer.objects.filter(customer=customer)
-	print(customerPayments)
-	for payments in customerPayments:
-		print(payments.name_on_card)
-	orders1 = Order.objects.filter(customer=customer)
-	for order in orders1:
-		orderItems1 = order.orderitem_set.all()
-		order1 = { 'order':  
+	cart_data = data['cart_data']
+	cart_items = data['cart_items']
+	customerAddresses = ShippingAddress.objects.filter(customer=customer)
+	customerPayments = ShippingPayment.objects.filter(customer=customer)
+	customerCarts = Cart.objects.filter(customer=customer)
+	# print(customerPayments)
+	# for payments in customerPayments:
+	# 	print(payments.name_on_card)
+	for cart in customerCarts:
+		cart_details = {'cart':
 								{
-									'id' : order.ref_code,
-									'orderItems' : [] ,
-									'is_ordered' : order.is_ordered,
-									'quantity' : order.quantity,
-									'get_cart_items' : order.quantity,
-									'get_cart_total' : order.get_cart_total(),
+									'ref_code': cart.ref_code,
+									'cart_items': cart.get_cart_items(),
+									'is_ordered': cart.complete,
+									'quantity': cart.quantity,
+									'get_cart_items_total_quantity': cart.get_cart_items_total_quantity(),
+									'get_cart_total_price': cart.get_cart_total_price(),
 								}
-				}
-		print(order1)
-		for items in orderItems1:
-			order1.get('order').get('orderItems').append(items)
-		orders.append(order1)
-	orders.reverse()
-	if request.user.is_authenticated:
-		if request.user.is_customer:
-			userPicture = request.user.customer
-		elif request.user.is_vendor:
-			userPicture = request.user.vendor
-	form = CustomerForm(instance=customer)
+						}
+		carts.append(cart_details)
+	carts.reverse()
+	userPicture = request.user.customer.profile_pic.url
+	customerForm = CustomerForm(instance=customer)
 	passwordChangeForm = ChangeUserPasswordForm(instance=request.user)
-	ShippingAddressForm = ShippingAddressCustomerForm(instance=customer)
-	ShippingPaymentForm = ShippingPaymentCustomerForm()
-	username = (f"{str(form.instance.firstname)} {str(form.instance.lastname)}").title()
-	print(request.POST,form,passwordChangeForm)
+	shippingAddressForm = ShippingAddressForm(instance=customer)
+	shippingPaymentForm = ShippingPaymentForm()
+	pictureForm = ChangePictureForm()
+	username = (f"{customer.firstname} {customer.lastname}").title()
+	username = username if bool(username.strip()) else customer.username
+	print(request.POST,"Customer Page",  request.POST.get("form_type"),request.FILES)
 	if request.method == "POST" and request.POST.get("form_type") == 'accountSetting':
-		form = CustomerForm(request.POST, request.FILES, instance=customer)
-		if form.is_valid():
-			form.save()
+		customerForm = CustomerForm(request.POST, request.FILES, instance=customer)
+		if customerForm.is_valid():
+			customerForm.save()
 		if request.user.is_vendor:
-			form = VendorForm(request.POST, request.FILES, instance=vendor)
-			if form.is_valid():
-				form.save()
+			vendorForm = VendorForm(request.POST, request.FILES, instance=vendor)
+			if vendorForm.is_valid():
+				vendorForm.save()
 	elif request.method == "POST" and request.POST.get("form_type") == 'passwordChange':
 		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
 		if passwordChangeForm.is_valid():
 			passwordChangeForm.save()
 			update_session_auth_hash(request, request.user)
 	elif request.method == "POST" and request.POST.get("form_type") == 'AddressAdded':
-		ShippingAddressForm = ShippingAddressCustomerForm(request.POST, request.FILES,instance=customer)
+		shippingAddressForm = ShippingAddressForm(request.POST, request.FILES,instance=customer)
 		print(ShippingAddressForm,request.POST)
-		if ShippingAddressForm.is_valid():
+		if shippingAddressForm.is_valid():
 			print("erere")
 			for address in customerAddresses:
 				address.active = False
 				address.save()
-			new_address = ShippingAddressCustomer()
+			new_address = ShippingAddress()
 			new_address.customer = customer
 			new_address.address = ShippingAddressForm.cleaned_data['address']
 			new_address.city = ShippingAddressForm.cleaned_data['city']
@@ -211,14 +211,14 @@ def customerPage(request,customer):
 			new_address.save()
 			print(new_address)
 	elif request.method == "POST" and request.POST.get("form_type") == 'PaymentAdded':
-		ShippingPaymentForm = ShippingPaymentCustomerForm(request.POST, request.FILES,instance=customer)
-		if ShippingPaymentForm.is_valid():
+		shippingPaymentForm = ShippingPaymentForm(request.POST, request.FILES,instance=customer)
+		if shippingPaymentForm.is_valid():
 			print("ererepayment")
 			if customerPayments.exists():
 				for payment in customerPayments:
 					payment.active = False
 					payment.save()
-			new_payment = ShippingPaymentCustomer()
+			new_payment = ShippingPayment()
 			new_payment.customer = customer
 			new_payment.card_number = ShippingPaymentForm.cleaned_data['card_number']
 			new_payment.name_on_card = ShippingPaymentForm.cleaned_data['name_on_card']
@@ -232,7 +232,7 @@ def customerPage(request,customer):
 		for payment in customerPayments:
 			payment.active = False
 			payment.save()
-		deactivePayment = ShippingPaymentCustomer.objects.get(id=int(request.POST.get("paymentId")))
+		deactivePayment = ShippingPayment.objects.get(id=int(request.POST.get("paymentId")))
 		deactivePayment.active = True
 		deactivePayment.save()
 		print("Payment Activated!!!")
@@ -240,24 +240,33 @@ def customerPage(request,customer):
 		for address in customerAddresses:
 			address.active = False
 			address.save()
-		deactiveAddress = ShippingAddressCustomer.objects.get(id=int(request.POST.get("addressId")))
+		deactiveAddress = ShippingAddress.objects.get(id=int(request.POST.get("addressId")))
 		deactiveAddress.active = True
 		deactiveAddress.save()
 		print("Address Activated!!!")
+	elif request.method == "POST" and request.POST.get("form_type") == 'profilePicutureSetting':
+		print("Ready for Upload")
+		pictureForm = ChangePictureForm(request.POST, request.FILES,instance=customer)
+		if pictureForm.is_valid():
+			pictureForm.save()
+			update_session_auth_hash(request, request.user)
+		return JsonResponse( {	"message": "Image Uploaded",})
 	context = {	"customer": customer,
-				"form": form,
+				"customerForm": customerForm,
 				"passwordChangeForm": passwordChangeForm,
 				"username": username,
 				"userPicture": userPicture,
-				"orders": orders,
-				"totalOrders": len(orders),
+				"carts": carts,
+				'cart_data': cart_data,
+				"totalCarts": len(carts),
 				"totalAddress": len(customerAddresses),
 				"totalPayments": len(customerPayments),
 				"ShippingPaymentForm": ShippingPaymentForm,
 				"ShippingAddressForm": ShippingAddressForm,
 				"customerAddress" : customerAddresses,
 				"customerPayments": customerPayments,
-				"cartItems": cartItems,
+				"cartItems": cart_items,
+				"pictureForm": pictureForm,
 			  }
 	return render(request,'accounts/customer.html',context)
 
@@ -266,7 +275,7 @@ def customerPage(request,customer):
 def vendorPage(request,vendor):
 	vendor = request.user.vendor
 	userPicture = request.user
-	orders = OrderItem.objects.all()
+	# orders = OrderItem.objects.all()
 	products = Shop.objects.get(vendor=vendor.id).products.all()
 	productsId = [ product.id for product in products]
 	reviews = []

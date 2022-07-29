@@ -1,11 +1,7 @@
 import json
-
-from shop.models import WatchedProduct
-
-from .models import WatchList
+from .models import *
 from .utils import *
 
-# Create your views here.
 
 def update_watch_list(request):
 	customer = request.user.customer

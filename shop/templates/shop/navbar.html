@@ -14,7 +14,7 @@
 					<span class="icon icon-search" aria-hidden="true"></span>
 				</div>
 			</a>
-			<a href="{% url 'vendor_signup' %}" id="navSetupShop" class="signLinks invisible">
+			<a href="{% url 'accounts:vendor_signup' %}" id="navSetupShop" class="signLinks invisible">
 				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 					<p class="eyebrow">Set up Shop</p>
 					<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
@@ -22,12 +22,12 @@
 			</a>
 			{% if request.user.is_authenticated %}
 			{% else %}
-				<a href="{% url 'login' %}" class="signLinks">
+				<a href="{% url 'accounts:login' %}" class="signLinks">
 					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 						<small class="icon nav-link eyebrow">Sign In</small>
 					</div>
 				</a>
-				<a href="{% url 'customer_signup' %}" class="signLinks">
+				<a href="{% url 'accounts:customer_signup' %}" class="signLinks">
 					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 						<small class="icon nav-link eyebrow">Sign Up</small>
 					</div>
@@ -38,15 +38,15 @@
 				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 					<span class=" icon icon-shopping-cart" id="main-cart"></span>
 					<div>
-						<p id="cart-total" class="eyebrow text-truncate">{{ cartItems|intcomma }}</p>
+						<p id="cart-total" class="eyebrow text-truncate">{{ cart_data.quantity|intcomma }}</p>
 					</div>
 				</div>
 			</a>
 			
-			<a href="{% url 'customer' request.user %}" id="user">
+			<a href="{% url 'accounts:customer' request.user %}" id="user">
 				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
 					<div class="image-cropper d-flex">
-						<img class="profile-pic" src="{% static userPicture.profile_pic.url %}">
+						<img class="profile-pic" src="{% static userPicture %}">
 					</div>
 				</div>
 			</a>
@@ -85,7 +85,7 @@
 				<ul class="card-body menu">
 					{% if request.user.is_authenticated %}
 					<li class="py-1">
-						<a href="{% url 'logout' %}" class="" >
+						<a href="{% url 'accounts:logout' %}" class="" >
 							<div class="d-flex invert nav-link">
 								<p class="eyebrow text-center my-auto">Sign out</p>
 								<span class="icon icon-sign-out ml-auto" style="color: #63DE63;"></span>
@@ -95,7 +95,7 @@
 						
 						{% if request.user.is_vendor == True %}
 							<li class="py-1">
-								<a href="{% url 'vendor' request.user %}" class="">
+								<a href="{% url 'accounts:vendor' request.user %}" class="">
 									<div class="d-flex invert nav-link">
 										<p class="eyebrow text-center my-auto">Shop</p>
 										<span class="icon icon-store_mall_directory ml-auto" style="color: #63DE63;"></span>
@@ -105,18 +105,18 @@
 						{% endif %}
 							
 					{% else %}
-					<a href="{% url 'login' %}" class="">
+					<a href="{% url 'accounts:login' %}" class="">
 						<li class="py-1">
 							<small class="icon nav-link eyebrow invert">Sign In</small>
 						</li>
 					</a>
-					<a href="{% url 'customer_signup' %}" class="">
+					<a href="{% url 'accounts:customer_signup' %}" class="">
 						<li class="py-1">
 								<small class="icon nav-link eyebrow invert">Sign Up</small>
 						</li>
 					</a>
 					<li class="py-1">
-						<a href="{% url 'vendor_signup' %}" class="">
+						<a href="{% url 'accounts:vendor_signup' %}" class="">
 							<div class="d-flex invert nav-link">
 								<p class="eyebrow text-center my-auto">Set up Shop</p>
 								<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
@@ -134,7 +134,7 @@
 		<span class="icon icon-close col-sm-1 p-0" id="closeSetUpShop"></span>
 		<div class="col text-right d-flex justify-content-end">
 			<p class="eyebrow my-auto" style="font-size: 11px;">Want to sell something ?</p>
-			<a href="{% url 'vendor_signup' %}" class="btn btn-link btn-sm">
+			<a href="{% url 'accounts:vendor_signup' %}" class="btn btn-link btn-sm">
 				<small>Set up Shop</small>
 				<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
 			</a>
@@ -161,6 +161,24 @@
 
 		icon.addEventListener("click", () => {
 		  icon.classList.toggle("clicked");
+		});
+
+
+		const header = document.querySelector("nav");
+		let prev = window.pageYOffset; // 0 when page loads, otherwise stores previous 'current' value
+
+		window.addEventListener("scroll", function () {
+		let current = window.pageYOffset; // your current offset from the top of the document
+
+		// Add console.log(current, prev) here if you want to see how the offset changes, you'll notice that prev value is always smaller when you scroll down and bigger when you scroll up
+
+		if (prev < current) {
+			header.classList.add("disappear");
+		} else {
+			header.classList.remove("disappear");
+		}
+
+		prev = current; // Set current variable to prev variable so there's something to compare
 		});
 	</script>
 </nav>

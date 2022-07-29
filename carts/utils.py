@@ -1,6 +1,6 @@
 import json
 import random
-
+from shop.models import *
 from .models import *
 
 
@@ -16,47 +16,57 @@ def cookieCart(request):
 	except:
 		cart = {}
 		print('Cart:', cart)
-	items = []
-	order = {'get_cart_total': 0, 'get_cart_items': 0,'shipping': False}
-	cartItems = order['get_cart_items']
-	for i in cart:
+	cart_items = []
+	cart_data = {
+		'cart_total_quantity': 0,
+		'cart_items_quantity': 0,
+		'shipping': False,
+		'cart_total_price': 0,
+		}
+
+	for cart_item in cart:
 		try:
-			cartItems += cart[i]['quantity']
-			product = Product.objects.get(id=i)
-			total = (product.price * cart[i]['quantity'])
-			order['get_cart_total'] += total
-			order['get_cart_items'] += cart[i]['quantity']
+			cart_data['cart_total_quantity'] += cart[cart_item]['quantity']
+			product = Product.objects.get(id=cart_item)
+			product_image = ProductImage.objects.filter(product=cart_item)
+			total = (product.price * cart[cart_item]['quantity'])
+			cart_data['cart_total_price'] += total
+			cart_data['cart_items_quantitys'] += 1
 
 			item = {
 				'product':{
 					'id': product.id,
 					'title': product.title,
 					'price': product.price,
-					'image': product.image,
+					'image': product_image,
 					},
-				'quantity': cart[i]['quantity'],
+				'quantity': cart[cart_item]['quantity'],
 				'get_total': total,
 				}
-			items.append(item)
+			
+			cart_items.append(item)
 		except:
 			pass
-	return {'items': items , 'order': order, 'cartItems':cartItems}
+	return {'cart_items': cart_items ,'cart_data': cart_data}
 
 def cartData(request):
 	if request.user.is_authenticated and request.user.is_customer == True:
 		customer = request.user.customer
 		print("was here",customer, request.user.is_customer)
 		# the mess is here
-		order, created = Order.objects.get_or_create(customer=customer, complete=False)
-		items = order.orderitem_set.all()
-		cartItems = order.quantity
-		print(cartItems,order,"cartData")
+		cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+		cart.ref_code = cart.get_ref_code() if cart.ref_code == None else cart.ref_code
+		print(11111222, cart.ref_code)
+		cart_items = cart.get_cart_items()
+		totalCartItems = cart.quantity
+		cartTotalItems = cart_items.__len__()
+		cart_data = cart
+		# print(cartItems,order,"cartData")
 	else:
 		cookieData = cookieCart(request)
-		cartItems = cookieData['cartItems']
-		order = cookieData['order']
-		items = cookieData['items']
-	return {'items': items , 'order': order, 'cartItems':cartItems}
+		cart_items = cookieData['cart_items']
+		cart_data = cookieData['cart_data']
+	return {'cart_items': cart_items, 'cart_data': cart_data}
 
 def guestOrder(request, data):
 	# collects user form data

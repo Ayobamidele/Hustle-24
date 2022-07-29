@@ -110,3 +110,31 @@ function openCtyVendor(order, order2, order3) {
     element3.classList.toggle("show");
     
 }
+
+// $('form .autosubmit').on('change', function() {
+//     this.form.submit();
+//  });
+
+
+// document.getElementById("id_profile_pic").onchange = function() {
+//     document.getElementById("profilePicutureSetting").submit();
+// };
+
+// $('form .autosubmit').on('change', function() {
+// // e.preventDefault();
+// this.form.submit();
+// $.ajax({
+//     type: 'POST',
+//     url: "{% url 'accounts:customer' request.user %}",
+//     data: {
+//                 form_type: "profilePicutureSetting",
+//                 productqty: "wswstgvetuue",
+//                 csrfmiddlewaretoken: "{{csrf_token}}",
+//                 action: 'post'
+//             },
+//     success: function (json) {
+//     alert("Successful Upload")
+//     },
+//     error: function (xhr, errmsg, err) {}
+// });
+// })

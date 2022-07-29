@@ -2,12 +2,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-
 from . import views
 
+app_name = "accounts"
+
 urlpatterns = [
-    path('accounts/signup/customer/', views.registerPageCustomer, name="customer_signup"),
-    path('accounts/signup/vendor/', views.registerPageVendor, name="vendor_signup"),
+    path('accounts/signup/customer/', views.registerCustomer, name="customer_signup"),
+    path('accounts/signup/vendor/', views.registerVendor, name="vendor_signup"),
     
     # path('login/', views.loginPage, name='login'),
     path('login', views.login, name='login'),

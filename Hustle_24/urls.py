@@ -17,16 +17,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework import routers
+# from rest_framework import routers
 from shop import views as shop_views
 
 # from watched_products import views as watched_products_views
 
-router = routers.DefaultRouter()
-router.register(r'home', shop_views.ProductsViewSet)
-router.register(r'Categories', shop_views.CategoriesViewSet)
-router.register(r'Product-Images', shop_views.ProductImagesViewSet)
-router.register(r'Product-Images', shop_views.ProductImagesViewSet)
+# router = routers.DefaultRouter()
+# router.register(r'home', shop_views.ProductsViewSet)
+# router.register(r'Categories', shop_views.CategoriesViewSet)
+# router.register(r'Product-Images', shop_views.ProductImagesViewSet)
+# router.register(r'Product-Images', shop_views.ProductImagesViewSet)
 
 
 # Wire up our API using automatic URL routing.
@@ -36,11 +36,11 @@ urlpatterns = [
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('admin/', admin.site.urls),
-    path('', include('shop.urls')),
+    path('', include('shop.urls', namespace='shop')),
     # path('', include(('shop.urls', 'shop'))),
     path('', include('accounts.urls')),
     path('', include('carts.urls')),
     path('', include('watched_products.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += router.urls
+# urlpatterns += router.urls

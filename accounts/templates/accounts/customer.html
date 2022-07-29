@@ -8,15 +8,17 @@
 		<div class="row gutter-2 gutter-md-4 align-items-end">
 			<div class="col-md-6 text-center text-md-left">
 				<h1 class="mb-0 invert">{{username}}</h1>
-				<span class="text-muted invert">{{form.email.value}}</span>
+				<span class="text-muted invert">{{customerForm.email.value}}</span>
 			</div>
 			<div class="col-md-6 text-center text-md-right">
 				<!-- <a href="" class="btn btn-sm btn-outline-white invert">Change Picture</a> -->
 				<!-- <input  type="file"> -->
-				<form method="post">
-
+				<form id="profilePicutureSetting" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
 					<label class="btn btn-sm btn-outline-white invert">
-						<i class="fa fa-image"></i> Change Photo<input type="file" style="display: none;" name="profile-image" type="file" id="profile-image" accept=".jpg,.jpeg,.png,.gif">
+						<i class="fa fa-image"></i> Change Photo
+						{{ pictureForm.profile_pic }}
+						<!-- <input type="file" style="display: none;" name="profile-image" type="file" id="profile-image" accept=".jpg,.jpeg,.png,.gif"> -->
 					</label>
 
 					<!-- {% csrf_token %} -->
@@ -71,28 +73,28 @@
 											<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInput1">First Name</label>
-													{{form.firstname}}
+													{{customerForm.firstname}}
 												{% comment %} <input id="exampleInput1" type="text" class="form-control" placeholder="First name"> {% endcomment %}
 											</div>
 											</div>
 											<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInput2">Last Name</label>
-													{{form.lastname}}
+													{{customerForm.lastname}}
 												{% comment %} <input id="exampleInput2" type="text" class="form-control" placeholder="Last name"> {% endcomment %}
 											</div>
 											</div>
 											<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInput3">Username</label>
-													{{form.username}}
+													{{customerForm.username}}
 												{% comment %} <input id="exampleInput3" type="text" class="form-control" placeholder="Email"> {% endcomment %}
 											</div>
 											</div>
 											<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInput-6">Gender</label>
-												{{form.gender}}
+												{{customerForm.gender}}
 
 												{% comment %} <select id="exampleInput-6" class="custom-select custom-select-lg">
 												<option selected="">Open this select menu</option>
@@ -104,14 +106,14 @@
 											<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInput6">Telephone</label>
-												{{form.phone_number}}
+												{{customerForm.phone_number}}
 												{% comment %} <input id="exampleInput6" type="text" class="form-control" placeholder="Telephone"> {% endcomment %}
 											</div>
 											</div>
 											<div class="col-md-6">
 											<div class="form-group">
 												<label for="exampleInput7">Email</label>
-												{{form.email}}
+												{{customerForm.email}}
 												{% comment %} <input id="exampleInput7" type="text" class="form-control" placeholder="Email"> {% endcomment %}
 											</div>
 											</div>
@@ -515,4 +517,39 @@
 </div>
 
 <script src="{% static '/js/profile.js' %}"></script>
+
+<script type="text/javascript">
+	
+	
+
+
+
+	$('form .autosubmit').on('change', function() {
+		// e.preventDefault();
+		var form = $("#profilePicutureSetting")[0];
+		var form_data = new FormData(form);
+		// Appending the attached file to the form_data to access it from the server side
+		form_data.append('new_avatar', $("#id_profile_pic")[0].files[0]);
+		form_data.append('form_type', "profilePicutureSetting");
+		console.log(form)
+		console.log($("#profilePicutureSetting"))
+		$.ajax({
+			type: 'POST',
+			url: "{% url 'accounts:customer' request.user %}",
+			data: form_data,
+			cache: false,
+			processData: false,
+			contentType: false,
+
+			success: function (data){
+				console.log('Success');
+			},
+
+			error: function (){
+			console.log('Error');
+			}
+		});
+
+	})
+</script>
 {% endblock %}

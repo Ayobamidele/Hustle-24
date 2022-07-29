@@ -9,7 +9,8 @@ from .models import *
 GENDER = (
 			('Male', 'male'),
 			('Female', 'female')
-			)
+		)
+
 class CustomerForm(ModelForm):
 	class Meta:
 		model = Customer
@@ -73,3 +74,16 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         return user
+
+
+class ChangePictureForm(ModelForm):
+	class Meta:
+		model = Customer
+		fields = ['profile_pic']
+	
+	def __init__(self, *args, **kwargs):
+		super(ChangePictureForm, self).__init__(*args, **kwargs)
+		self.fields['profile_pic'].widget.attrs.update({'style': 'display: none;'})
+		for field in self.fields.keys():
+			self.fields[field].widget.attrs.update({'class': 'autosubmit'})
+

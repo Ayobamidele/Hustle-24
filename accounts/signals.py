@@ -9,25 +9,21 @@ from .models import *
 def profile(sender, instance, created, **kwargs):
 	if created:
 		if instance.is_vendor and instance.is_customer:
-			group = Group.objects.get(name='Vendor')
-			instance.groups.add(group)
-			group = Group.objects.get(name='Customer')
-			instance.groups.add(group)
-			user = str(instance.first_name  + " " +instance.last_name)
+			group = Group.objects.get_or_create(name='Vendor')
+			instance.groups.add(group[0].id)
+			group = Group.objects.get_or_create(name='Customer')
+			instance.groups.add(group[0].id)
+			user = str(instance.first_name  + " " +instance.last_name) if instance.user_name == None else instance.username
 			Customer.objects.create(user=instance,username=user, email=instance.email,firstname=instance.first_name,lastname=instance.last_name)
-			Vendor.objects.create(user=instance,username=user, email=instance.email,firstname=instance.first_name,lastname=instance.last_name)
-			print("Profile created!")
-		elif instance.is_vendor and instance.is_customer == False:
-			group = Group.objects.get(name='Vendor')
-			instance.groups.add(group)
-			user = str(instance.first_name  + " " +instance.last_name)
 			Vendor.objects.create(user=instance,username=user, email=instance.email,firstname=instance.first_name,lastname=instance.last_name)
 			print("Profile created!")
 		else:
-			group = Group.objects.get(name='Customer')
-			instance.groups.add(group)
-			user = str(instance.first_name  + " " +instance.last_name)
-			Customer.objects.create(user=instance,username=user, email=instance.email,firstname=instance.first_name,lastname=instance.last_name)
+			group = Group.objects.get_or_create(name='Customer')
+			instance.groups.add(group[0].id)
+			# user = str(instance.first_name  + " " +instance.last_name)
+			user = str(instance.first_name  + " " +instance.last_name) if instance.username == None else instance.username
+			Customer.objects.create(user=instance,username=user,
+				email=instance.email,firstname=instance.first_name,lastname=instance.last_name)
 			print("Profile created!")
 
 post_save.connect(profile,sender=User,dispatch_uid="profile")

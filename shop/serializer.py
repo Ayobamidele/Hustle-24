@@ -1,31 +1,32 @@
-from collections import OrderedDict
+# from collections import OrderedDict
 
-from rest_framework import serializers
-from shop.models import *
-
-
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
-    # category = serializers.HyperlinkedRelatedField(many=True, view_name='category-detail',
-    #                                                queryset=Category.objects.all())
-    link = serializers.HyperlinkedIdentityField(
-        view_name="shop:product",
-        lookup_field="title",
-        lookup_url_kwarg="product"
-    )
-
-    class Meta:
-        model = Product
-        fields = ('link', 'id', 'title', 'brand', 'price', 'discount_price', 'image','productimages',
-                    'description', 'stock')
+# # from rest_framework import serializers
+# from shop.models import *
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Category
-        fields = '__all__'
+# class ProductSerializer(serializers.HyperlinkedModelSerializer):
+#     # category = serializers.HyperlinkedRelatedField(many=True, view_name='category-detail',
+#     #                                                queryset=Category.objects.all())
+#     # link = serializers.HyperlinkedIdentityField(
+#     #     view_name="catalogue:product_detail",
+#     #     lookup_field="slug",
+#     #     # lookup_url_kwarg="product"
+#     # )
+
+#     class Meta:
+#         model = Product
+#         fields = '__all__'
+#         # fields = ('link', 'id', 'title', 'brand', 'price', 'discount_price', 'image','productimages',
+#         #             'description', 'stock')
 
 
-class ProductImageSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = '__all__'
+# class CategorySerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Category
+#         fields = '__all__'
+
+
+# class ProductImageSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = ProductImage
+#         fields = '__all__'
