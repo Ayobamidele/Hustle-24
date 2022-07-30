@@ -1,6 +1,6 @@
-# Hustle_24
+# Hustle-24
 
-E-commerce website for vendors.
+E-commerce website for Vendors and Customers.
 
 
 
@@ -11,7 +11,7 @@ Here are instructions in getting your code up and running on your own system.
 3. Latest releases
 
 ## Installations
-After cloning or downloading the repo I highly recommend creating a virtual environment to avoid any errors.
+After cloning or downloading the repo I highly recommend creating a virtual environment to avoid any errors. Also download from the main branch, other branches under the develop branch may give errors due to some features still under develpment. You will be updated when the branches under develop are finally ready to  be merged to the main branch.
 
 Use this command to clone:
 ```console
@@ -19,7 +19,7 @@ git clone https://github.com/Ayobamidele/hustle_24.git
 ```
 or
 
-use the link for download
+Use this link for download:
 ``` console
 https://github.com/Ayobamidele/hustle_24.git
 ```
@@ -32,16 +32,11 @@ To run the program you'll need to download some packages first. Run this command
 pip install -r requirements.txt
 ```
 ## Latest releases
-During the creation of this project python 3.10 was available but python 3.8 was used to avoid any issues with support. All version above 3.8 will work.
+During the creation of this project python 3.10 was available but python 3.8 was used to avoid any issues with support. All versions 3.+ should work.
 
 # Build and Test
-Testing the project is made easy with pytest and coverage package to ensure all functions are up and running to avoid by error and early detection.
+Testing the project is still in development using pytest and coverage package to ensure all functions are up and running to avoid by error and early detection. Testing will be released soon.
 
-Once all packages are installed Pytest should already be installed. to do a quick checkup run this command:
-
-```shell
-pytest
-```
 
 
 # Features
