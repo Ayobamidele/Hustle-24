@@ -1,0 +1,56 @@
+{% extends 'shop/main.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}	
+
+<div class="image image-overlay" style="background-image:url({% static '/images/pexels-allan-so-2622170.jpg' %})">
+</div>
+{% if form.non_field_errors %}
+<div class="alert alert-danger" role="alert">
+  {% for error in form.non_field_errors %}
+	{{ error }}
+  {% endfor %}
+</div>
+{% endif %}
+<div class="container">
+	<div class="row justify-content-center align-items-center vh-md-100">
+		<div class="col-md-10 col-lg-5">
+			<div class="accordion accordion-portal" id="accordionExample">
+				<div class="card">
+					<div class="card-header" id="headingOne">
+						<h2 class="mb-0 p-3 border-bottom">Sign In</h2>
+					</div>
+
+					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+						<form action="" method="POST">
+							<div class="card-body">
+								<div class="row mt-2">
+									{% csrf_token %}
+									<div class="form-group col-12">
+										<label for="username1">Username</label>
+										<input type="text" name="username" class="form-control" id="username1">
+									</div>
+									<div class="form-group col-12 mt-1">
+										<label for="password1">Password</label>
+										<input type="password"  name="password" class="form-control" id="password1">
+									</div>
+									<input type="hidden" name="customer" value="True" />
+									<div class="col-12 mt-2">
+										<input class="btn btn-block btn-primary" type="submit" value="sign In" style="box-shadow: none;box-shadow: none;width: 100%;padding: 11px 0 30px 0;" >
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class=" d-flex justify-content-center links col-12 my-3" style="padding: 5px 0;">
+							<small class="small">
+								Don't have an account ? <a href="{% url 'accounts:customer_signup' %}" class=" ml-2 eyebrow">Sign-Up</a>
+							</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

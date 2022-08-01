@@ -1,0 +1,184 @@
+{% load humanize %}
+{% load static %}
+
+<nav class=" navbar-expand-lg fixed-top p-0 ">
+	
+    <div class="navbar  d-flex">
+        <div class="navbar-header py-2 col-5">
+            <a href="{% url 'shop:home' %}" class="navbar-brand px-lg-2 px-1" ><img src="{% static '/images/h24.png' %}"></a>
+        </div>
+        <div class="navbar-brand ml-lg-5 order-lg-last order-0 py-lg-1 px-1 d-flex" href="#">
+
+			<a href="javascript:void(0);" style="padding: 0 8px;" class="" onclick="showsearch()">
+				<div class="order-lg-last order-0 d-flex align-items-start account ">
+					<span class="icon icon-search" aria-hidden="true"></span>
+				</div>
+			</a>
+			<a href="{% url 'accounts:vendor_signup' %}" id="navSetupShop" class="signLinks invisible">
+				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+					<p class="eyebrow">Set up Shop</p>
+					<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
+				</div>
+			</a>
+			{% if request.user.is_authenticated %}
+			{% else %}
+				<a href="{% url 'accounts:login' %}" class="signLinks">
+					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+						<small class="icon nav-link eyebrow">Sign In</small>
+					</div>
+				</a>
+				<a href="{% url 'accounts:customer_signup' %}" class="signLinks">
+					<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+						<small class="icon nav-link eyebrow">Sign Up</small>
+					</div>
+				</a>
+			{% endif %}
+			
+			<a href="{% url 'carts:cart' %}">
+				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+					<span class=" icon icon-shopping-cart" id="main-cart"></span>
+					<div>
+						<p id="cart-total" class="eyebrow text-truncate">{{ cart_data.quantity|intcomma }}</p>
+					</div>
+				</div>
+			</a>
+			
+			<a href="{% url 'accounts:customer' request.user %}" id="user">
+				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+					<div class="image-cropper d-flex">
+						<img class="profile-pic" src="{% static userPicture %}">
+					</div>
+				</div>
+			</a>
+			
+			
+			<a id="subMenu" class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+				<div class="order-lg-last order-0 d-flex align-items-start account px-lg-2 px-1">
+					<!-- <span class=" icon icon-menu"></span> -->
+					<div class="menu-container">
+						<div class="menu_icon">
+						<span class="one"></span>
+						<span class="two"></span>
+						<span class="three"></span>
+						</div>
+					</div>
+				</div>
+			</a>
+				
+		
+        </div>
+    </div>
+
+	<div class="shortsearch">
+		<div id="myLinks" class="mx-auto">
+			<div class="card-body d-flex">
+				<input type='search' name="search" class="form-control mr-1" value="" placeholder='Search for products shops or vendors' />
+				<button type="button" class="btn btn-default ml-1" datadismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+
+	
+	<div id="accordion2" role="tablist" style="background-color: #b7f73c; background-image: url({% static '/images/levi-stute-mFF39sOZSgM-unsplash.jpg' %});background-position: center;background-size: cover;">
+		<div class="card">
+			<div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion2">
+				<ul class="card-body menu">
+					{% if request.user.is_authenticated %}
+					<li class="py-1">
+						<a href="{% url 'accounts:logout' %}" class="" >
+							<div class="d-flex invert nav-link">
+								<p class="eyebrow text-center my-auto">Sign out</p>
+								<span class="icon icon-sign-out ml-auto" style="color: #63DE63;"></span>
+							</div>
+						</a>
+					</li>
+						
+						{% if request.user.is_vendor == True %}
+							<li class="py-1">
+								<a href="{% url 'accounts:vendor' request.user %}" class="">
+									<div class="d-flex invert nav-link">
+										<p class="eyebrow text-center my-auto">Shop</p>
+										<span class="icon icon-store_mall_directory ml-auto" style="color: #63DE63;"></span>
+									</div>		
+								</a>
+							</li>
+						{% endif %}
+							
+					{% else %}
+					<a href="{% url 'accounts:login' %}" class="">
+						<li class="py-1">
+							<small class="icon nav-link eyebrow invert">Sign In</small>
+						</li>
+					</a>
+					<a href="{% url 'accounts:customer_signup' %}" class="">
+						<li class="py-1">
+								<small class="icon nav-link eyebrow invert">Sign Up</small>
+						</li>
+					</a>
+					<li class="py-1">
+						<a href="{% url 'accounts:vendor_signup' %}" class="">
+							<div class="d-flex invert nav-link">
+								<p class="eyebrow text-center my-auto">Set up Shop</p>
+								<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
+							</div>
+						</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+		
+	
+	<div class=" navbar-body p-1 h6 my-0 bg-light d-flex" id="setUpShop">
+		<span class="icon icon-close col-sm-1 p-0" id="closeSetUpShop"></span>
+		<div class="col text-right d-flex justify-content-end">
+			<p class="eyebrow my-auto" style="font-size: 11px;">Want to sell something ?</p>
+			<a href="{% url 'accounts:vendor_signup' %}" class="btn btn-link btn-sm">
+				<small>Set up Shop</small>
+				<span class="icon icon-store_mall_directory" style="color: #63DE63;"></span>
+			</a>
+		</div>
+	</div>
+	<script>
+		var setUpShop = document.getElementById('setUpShop')
+		var navSetUpShop = document.getElementById('navSetupShop')
+		var closeSetUpShop = document.getElementById('closeSetUpShop')
+		var userProfile = document.getElementById('user')
+		if(user_is_vendor == 'True'){
+			setUpShop.remove()
+			navSetUpShop.remove()
+		}
+		if(user == 'AnonymousUser'){
+			userProfile.remove()
+		}
+		if(getCookie('shop') == 'true'){
+			setUpShop.remove()
+			navSetUpShop.classList.toggle("invisible");
+		}
+
+		let icon = document.querySelector(".menu_icon");
+
+		icon.addEventListener("click", () => {
+		  icon.classList.toggle("clicked");
+		});
+
+
+		const header = document.querySelector("nav");
+		let prev = window.pageYOffset; // 0 when page loads, otherwise stores previous 'current' value
+
+		window.addEventListener("scroll", function () {
+		let current = window.pageYOffset; // your current offset from the top of the document
+
+		// Add console.log(current, prev) here if you want to see how the offset changes, you'll notice that prev value is always smaller when you scroll down and bigger when you scroll up
+
+		if (prev < current) {
+			header.classList.add("disappear");
+		} else {
+			header.classList.remove("disappear");
+		}
+
+		prev = current; // Set current variable to prev variable so there's something to compare
+		});
+	</script>
+</nav>

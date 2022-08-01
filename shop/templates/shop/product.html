@@ -1,0 +1,79 @@
+{% extends 'shop/main.html' %}
+
+{% block content %}	
+	<section class="mb-5 ">
+		<div class="container">
+			<div class="row gutter-2 gutter-md-4 justify-content-between my-5">
+				<div class="col-lg-5 order-2">
+					<div class="sticky-top">					
+						<div class="row">
+							<div class="col-12">
+								<span class="item-brand">{{ store }}</span>
+								<h1 class="item-title">{{ product.title }}</h1>
+								<span class="item-price">${{ price }}</span>
+							</div>
+						</div>
+
+						<div class="row mb-4">
+							<div class="col-12">
+								<div class="product-price">
+									<p class="last-price py">Old Price: <span>$257.00</span></p>
+									<p class="new-price py">New Price: <span>$249.00 (5%)</span></p>
+								</div>							  
+							</div>
+						</div>
+
+						<div class="row">
+							<!-- <div class="col-md-8">
+								<a href="#!" class="btn btn-outline-dark my-2 my-sm-0 btn-block btn-lg">Add to Cart</a>
+							</div> -->
+							<div href="#" data-product={{product.id}} data-action="add" class="update-cart col-md-8">								
+								<span class="btn btn-outline-dark my-2 my-sm-0 btn-block btn-lg">
+									Add to Cart
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-6 order-1">
+					<div class="row gutter-3">
+						<div class="col-12">
+							<figure class="zoom" style="position: relative; overflow: hidden;">
+								<img class="zoom-img" src="{{ STATIC_URL }}{{mainimage}}" alt="Product">
+								<img role="presentation" alt="" src="{{ STATIC_URL }}/{{mainimage}}" class="zoomImg" style="position: absolute; top: -0.892727px; left: -167.6px; opacity: 0; width: 770px; height: 1041px; border: medium none; max-width: none; max-height: none;">
+							</figure>
+						</div>
+						{% for image in productsdict %}
+							<div class="col-12">
+								<figure class="zoom" style="position: relative; overflow: hidden;">
+
+									<img class="zoom-img" src="{{ STATIC_URL }}/{{image.image}}" alt="Product">
+									<img role="presentation" alt="" src="{{ STATIC_URL }}/{{image.image}}" class="zoomImg" style="position: absolute; top: -0.892727px; left: -167.6px; opacity: 0; width: 770px; height: 1041px; border: medium none; max-width: none; max-height: none;">
+
+
+								</figure>
+							</div>
+						{% endfor %}			
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<div class="tab">
+			<button class="btn tablinks active" onclick="openCity(event, 'London')">Description</button>
+			<!-- <button class="btn  tablinks" onclick="openCity(event, 'Paris')">Reviews</button> -->
+		</div>
+
+		<div id="London" class="tabcontent p-5" style="display: block">
+		<h3>Description</h3>
+		{{ product.description }}
+		</div>
+
+		<!-- <div id="Paris" class="tabcontent p-5">
+		<h3>Reviews</h3>
+		<p>Paris is the capital of France.</p>  -->
+		</div>
+	</section>
+
+{% endblock %}
