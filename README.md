@@ -24,13 +24,22 @@ Use this link for download:
 https://github.com/Ayobamidele/hustle_24.git
 ```
 
-You must have installed Python and Django to run the project and most importantly Pip for the next instruction.
+You must have installed Python and Django to run the project and most importantly Pip for the next instruction and as said earlier a virtual environment.
 
 ## Package dependencies
 To run the program you'll need to download some packages first. Run this command to install the packages in requirements.txt:
 ```shell
 pip install -r requirements.txt
 ```
+## Run Project
+
+Now run this command to run the project after succesfully installing the package dependencies.
+```shell
+python manage.py runserver
+```
+
+
+You should then be able to view the project from the browser using the link provided in the terminal
 ## Latest releases
 During the creation of this project python 3.10 was available but python 3.8 was used to avoid any issues with support. All versions 3.+ should work.
 
