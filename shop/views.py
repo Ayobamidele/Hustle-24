@@ -50,7 +50,7 @@ def home(request,category_slug=None):
 	data = cartData(request)
 	cart_data = data['cart_data']
 	cart_items = data['cart_items']
-	print(cart_data.ref_code,1111)
+	# print(cart_data.ref_code,1111)
 	show = True
 	for group in request.user.groups.all():
 		print(group)

@@ -45,7 +45,7 @@
 						<a class="nav-link dash" data-toggle="tab" href="#sidebar-1-5" role="tab" aria-controls="sidebar-1-5" aria-selected="false">Watchlist</a>
 						
 						{% if request.user.is_vendor %}	
-							<a class="nav-link dash eyebrow d-flex" style="border: 2px solid black;" href="{% url 'vendor' request.user %}" >
+							<a class="nav-link dash eyebrow d-flex" style="border: 2px solid black;" href="{% url 'accounts:vendor' request.user %}" >
 								<div class="action col-10 pl-0">Go To Shop</div>
 								<span class="icon icon-store_mall_directory col-2 fs-20"></span>
 							</a>

@@ -14,9 +14,7 @@
 				<h1 class="mb-0 invert">{{username}}</h1>
 				<span class="text-muted invert">{{form.email.value}}</span>
 			</div>
-			<!-- <div class="col-md-6 text-center text-md-right">
-				<a href="{% url 'logout' %}" class="btn btn-sm btn-outline-white invert">Sign out</a>
-			</div> -->
+		
 		</div>
 	</div>
 </section>
@@ -35,7 +33,7 @@
 						<a class="nav-link" data-toggle="tab" href="#sidebar-1-2" role="tab" aria-controls="sidebar-1-2" aria-selected="false">All</a>
 						<a class="nav-link" data-toggle="tab" href="#sidebar-1-3" role="tab" aria-controls="sidebar-1-3" aria-selected="false">Delivered Orders</a>
 						<a class="nav-link" data-toggle="tab" href="#sidebar-1-4" role="tab" aria-controls="sidebar-1-4" aria-selected="false">Products</a>
-						<a class="nav-link dash eyebrow d-flex" style="border: 2px solid black;" href="{% url 'customer' request.user %}" >
+						<a class="nav-link dash eyebrow d-flex" style="border: 2px solid black;" href="{% url 'accounts:customer' request.user %}" >
 							<div class="action col-10 pl-0">Back to profile</div>
 							<span class="icon icon-user col-2 fs-20"></span>
 						</a>	

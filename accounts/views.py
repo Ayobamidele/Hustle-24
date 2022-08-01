@@ -26,14 +26,16 @@ Now = datetime.now()
 def registerCustomer(request):
 	form = CreateUserForm()
 	if request.method == "POST":
+		form = CreateUserForm(request.POST)
 		firstname = request.POST.get('firstname')
 		lastname = request.POST.get('lastname')
+		username = request.POST.get('username')
 		email = request.POST.get('email')
 		password = request.POST.get('password')
-		print("Hello, ",request.POST,request.POST.get('password'))
+		print("Hello, ",request.POST,request.POST.get('password'), form.is_valid())
 		if password:			
-			username = firstname + " " + lastname
-			new_user = User.objects.create_user(username= username,
+			# username = firstname + " " + lastname
+			new_user = User.objects.create_user(username=username,
 												password=password,
 												first_name=firstname,
 												last_name=lastname,
@@ -41,7 +43,7 @@ def registerCustomer(request):
 												)
 			new_user.save()
 			messages.success(request, 'Account was created for ' + username)
-			return redirect('login')
+			return redirect('accounts:login')
 	context = {'form': form}
 	return render(request, 'accounts/register_customer.html', context)
 
@@ -49,8 +51,10 @@ def registerCustomer(request):
 def registerVendor(request):
 	if request.user.is_customer and request.user.is_vendor == False:
 		print("heehheheh" , request.user.username,request.user.customer.id)
-		user = CustomerForm(request.POST, request.FILES,instance=request.user.customer)
+		user = User.objects.get(id=request.user.id)
 		user.is_vendor = True
+		print(user)
+		print("hehhheh 2")
 		user.save()
 		Vendor.objects.create(
 			user=request.user,
@@ -59,7 +63,7 @@ def registerVendor(request):
 			firstname=request.user.first_name,
 			lastname=request.user.last_name
 		)
-		return redirect(f'vendor/{request.user.username}')
+		return redirect(f'/vendor/{request.user.username}')
 	else:
 		form = CreateUserForm()
 
@@ -141,9 +145,9 @@ def loginPage(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('login')
-
-@login_required(login_url='login')
+    return redirect('accounts:login')
+# vendor/bami
+@login_required(login_url='accounts:login')
 @allowed_users(allowed_roles=['Customer'])
 def customerPage(request,customer):
 	customer = request.user.customer
@@ -270,8 +274,8 @@ def customerPage(request,customer):
 			  }
 	return render(request,'accounts/customer.html',context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Vendor'])
+@login_required(login_url='accounts:login')
+@allowed_users(allowed_roles=['Vendor','Customer'])
 def vendorPage(request,vendor):
 	vendor = request.user.vendor
 	userPicture = request.user
@@ -280,20 +284,16 @@ def vendorPage(request,vendor):
 	productsId = [ product.id for product in products]
 	reviews = []
 	data = cartData(request)
-	cartItems = data['cartItems']
+	cart_items = data['cart_items']
 	for x in productsId:
 		z = ProductReview.objects.filter(product=x)
 		for a in z:
 			reviews.append(a)
 	order_list = set([])
-	deliveredcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=True)
-	allorderedcarts = Cart.objects.filter(vendor=vendor.id)
-	undeliveredcarts = Cart.objects.filter(vendor=vendor.id, completely_delivered=False)
-	if request.user.is_authenticated:
-		if request.user.is_customer:
-			userPicture = request.user.customer
-		elif request.user.is_vendor:
-			userPicture = request.user.vendor
+	deliveredcarts = Order.objects.filter(vendor=vendor.id)
+	allorderedcarts = Order.objects.filter(vendor=vendor.id)
+	undeliveredcarts = Order.objects.filter(vendor=vendor.id)
+	userPicture = request.user.customer.profile_pic.url
 	shop = Shop.objects.get(vendor=vendor).shopname
 	form = VendorForm(instance=vendor)
 	passwordChangeForm = ChangeUserPasswordForm(instance=request.user)
@@ -316,11 +316,11 @@ def vendorPage(request,vendor):
 				"username": username,"passwordChangeForm": passwordChangeForm,
 				"carts" : undeliveredcarts, "cart_total" : "make it js",
 				"allCarts": allorderedcarts, "deliveredcarts": deliveredcarts,
-				"products": products, "cartItems": cartItems,
+				"products": products, "cartItems": cart_items,
 	}
 	return render(request,'accounts/vendor.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='accounts:login')
 @allowed_users(allowed_roles=['Customer'])
 def accountSettings(request):
     customer = request.user.customer

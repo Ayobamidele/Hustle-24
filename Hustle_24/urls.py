@@ -38,9 +38,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('shop.urls', namespace='shop')),
     # path('', include(('shop.urls', 'shop'))),
-    path('', include('accounts.urls')),
-    path('', include('carts.urls')),
-    path('', include('watched_products.urls')),
+    path('', include('accounts.urls', namespace='accounts')),
+    path('', include('carts.urls', namespace='carts')),
+    path('', include('watched_products.urls', namespace='watched_products')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # urlpatterns += router.urls

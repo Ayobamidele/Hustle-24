@@ -36,13 +36,32 @@ class VendorForm(ModelForm):
 class CreateUserForm(UserCreationForm):
 	class Meta:
 		model = User
-		fields = ['first_name', 'last_name', 'email' , 'password1' , 'password2']
-	
+		fields = ['first_name', 'last_name', 'email' , 'username', 'password1' , 'password2']
+
 	def __init__(self, *args, **kwargs):
 		super(CreateUserForm, self).__init__(*args, **kwargs)
 		for field in self.fields.keys():
 			self.fields[field].widget.attrs.update({'class': 'form-control'})
 
+	# def clean_username(self):
+	# 	user_name = self.cleaned_data['username'].lower()
+	# 	r = Customer.objects.filter(username=user_name)
+	# 	if r.count():
+	# 		raise forms.ValidationError("Username already exists")
+	# 	return user_name
+
+	# def clean_password2(self):
+	# 	cd = self.cleaned_data
+	# 	if cd['password'][0] != cd['password2'][1]:
+	# 		raise forms.ValidationError('Passwords do not match.')
+	# 	return cd['password2']
+
+	# def clean_email(self):
+	# 	email = self.cleaned_data['email']
+	# 	if Customer.objects.filter(email=email).exists():
+	# 		raise forms.ValidationError(
+	# 			'Please use another Email, that is already taken')
+	# 	return email
 
 class ChangeUserPasswordForm(UserCreationForm):
 	class Meta:
