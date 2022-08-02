@@ -6,12 +6,109 @@ E-commerce website for Vendors and Customers.
 
 # Getting Started
 Here are instructions in getting your code up and running on your own system. 
-1. Installation
+1. Installation & Downloads
 2. Package dependencies
 3. Latest releases
 
-## Installations
-After cloning or downloading the repo I highly recommend creating a virtual environment to avoid any errors. Also download from the main branch, other branches under the develop branch may give errors due to some features still under develpment. You will be updated when the branches under develop are finally ready to  be merged to the main branch.
+## Installations & Downloads
+To run this project yolu woud need to Download and install varoius
+appications and packages
+
+##  Installing Virtual Studio code
+To download the application use the official  Virtual
+Studio code website and choose your operating system whether it be
+Windows, Mac or Linux. Once downloaded, please install.
+The link below:
+``` link
+https://code.visualstudio.com/download
+```
+## Downloading the Project
+There are two options for downloading this project from Github
+
+
+1. Download zip (This is way more easier trust me.)
+2. Clone
+
+
+## Download zip
+Follow this link for download:
+``` console
+https://github.com/Ayobamidele/Hustle-24/tree/main
+```
+Then follow these instructions:
+1. Navigate to the “<>Code” tab.
+
+2. Click on the “Code” button on the right. A dropdown should appear.
+
+3. In the “Clone” menu, under the “HTTPS” tab, click on “Download ZIP”
+
+## Clone
+To download the package use the official Git website and choose
+your operating system whether it be
+Windows, Mac or Linux.
+
+
+Use this link below:
+``` link
+https://git-scm.com/download/linux
+```
+
+
+## Install Git on Windows
+
+1. Navigate to the latest Git for Windows installer and download the latest version.
+2. Once the installer has started, follow the instructions as provided in the Git Setup wizard screen until the installation is complete.
+3. Open the windows command prompt (or Git Bash if you selected not to use the standard Git Windows Command Prompt during the Git installation).
+4. Type ```git version``` to verify Git was installed.
+
+Note: 
+```git-scm``` is a popular and recommended resource for downloading Git for Windows. The advantage of downloading Git from ```git-scm``` is that your download automatically starts with the latest version of Git included with the recommended command prompt, Git Bash . The download source is the same Git for Windows installer as referenced in the steps above.
+Install Git on Mac
+
+
+## Install Git on Mac
+
+Most versions of MacOS will already have Git installed, and you can activate it through the terminal with ```git version```. However, if you don't have Git installed for whatever reason, you can install the latest version of Git using one of several popular methods as listed below:
+
+
+## Install Git From an Installer
+If you get confused in the first instruction skip to Installing Git from Homebrew
+
+1. Navigate to the latest macOS Git Installer and download the 
+latest version.
+
+2. Once the installer has started, follow the instructions as 
+provided until the installation is complete.
+
+3. Open the command prompt "terminal" and type git version to 
+verify Git was installed.
+
+Note: ```git-scm``` is a popular and recommended resource for 
+downloading Git on a Mac. The advantage of downloading Git from 
+```git-scm``` is that your download automatically starts with the 
+latest version of Git. The download source is the same macOS Git Installer as referenced in the steps above.
+
+## Install Git from Homebrew
+
+Homebrew is a popular package manager for macOS. If you already have Homwbrew installed, you can follow the below steps to install Git and if not go to the official Homebrew and copy the command to install Homebrew:
+
+1. Open up a terminal window and install Git using the following 
+command: ```brew install git```.
+2. Once the command output has completed, you can verify the 
+installation by typing: git version.
+
+
+If not 
+
+
+
+
+
+
+
+
+
+Clone from the main branch, other branches under the develop branch may give errors due to some features still under develpment. You will be updated when the branches under develop are finally ready to  be merged to the main branch.
 
 Use this command to clone:
 ```console
@@ -26,6 +123,8 @@ https://github.com/Ayobamidele/hustle_24.git
 
 You must have installed Python and Django to run the project and most importantly Pip for the next instruction and as said earlier a virtual environment.
  Need help installing the above follow these instructions:
+
+
 
  ## Installing Python
 Need help installing Python, follow the instructions found in the link below:
@@ -44,6 +143,8 @@ Django 3.2 will be installed in the requirements.txt when the pip command in pac
 python -m pip install Django
 ```
 ## Creating a Virtual Environment
+After cloning or downloading the repo I highly recommend creating
+a virtual environment to avoid any errors.
 Follow the instructions found in the link below to create a virtual environment to run the project and install packages:
 ```shell
 https://gist.github.com/MichaelCurrin/3a4d14ba1763b4d6a1884f56a01412b7
