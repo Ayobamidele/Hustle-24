@@ -25,7 +25,31 @@ https://github.com/Ayobamidele/hustle_24.git
 ```
 
 You must have installed Python and Django to run the project and most importantly Pip for the next instruction and as said earlier a virtual environment.
+ Need help installing the above follow these instructions:
 
+ ## Installing Python
+Need help installing Python, follow the instructions found in the link below:
+ ```
+ https://github.com/PackeTsar/Install-Python
+ ```
+
+ ## Instlling Pip
+ Follow the instructions found in the link below to install pip:
+ ```shell
+ https://pip.pypa.io/en/stable/installation/
+ ```
+## Installing Django
+Django 3.2 will be installed in the requirements.txt when the pip command in package dependencies is run. If you want to install the latest version run this command
+```shell
+python -m pip install Django
+```
+## Creating a Virtual Environment
+Follow the instructions found in the link below to create a virtual environment to run the project and install packages:
+```shell
+https://gist.github.com/MichaelCurrin/3a4d14ba1763b4d6a1884f56a01412b7
+```
+
+After completing this part follow the next instructions.
 ## Package dependencies
 To run the program you'll need to download some packages first. Run this command to install the packages in requirements.txt:
 ```shell
