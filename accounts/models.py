@@ -5,7 +5,7 @@ from ast import arg
 from django.contrib.auth.models import AbstractUser, Group, User
 from django.db import models
 from django.db.models.signals import post_save
-
+from django.utils.translation import gettext_lazy as _
 # from watched_products.models import watch_list
 
 # Create your models here.
@@ -18,8 +18,15 @@ GENDER = (
 class User(AbstractUser):
 	is_customer = models.BooleanField(default=True)
 	is_vendor = models.BooleanField(default=False)
-	# phone_number = models.PhoneNumberField(max_length=20)
-	# gender = models.CharField(max_length=200, null=True, choices=GENDER)
+	email = models.EmailField(_('email address'), unique=True)
+	
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = ['username']
+	
+	def __str__(self):
+		return self.email
+
+
 
 def photo_path(self, filename):	
 	basefilename, file_extension= os.path.splitext(filename)
