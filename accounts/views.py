@@ -97,31 +97,31 @@ def loginPage(request):
 		if form.is_valid():
 			user =  authenticate(email=email, password=password)
 			print('here1', user.username)
-			try:
-				cart = json.loads(request.COOKIES['cart'])
-				customer = Customer.objects.get(user=user)
-				order, created = Order.objects.get_or_create(customer=customer, complete=False)
-				print(order)
-				print(cart)
-				cookieData = cookieCart(request)
-				items = cookieData['items']
-				for item in items:
-					productitem = Product.objects.get(id=item['product']['id'])
-					print('here3')
-					print(productitem,item['quantity'])
-					# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
-					orderI=OrderItem.objects.create(
-													order=order, 
-													product=productitem, 
-													quantity=item['quantity'], 
-												)
-					order.quantity += 1
-					order.save()
-					print('here4')
-					orderI.save()
-				request.COOKIES['cart'].clear()
-			except:
-				cart = {}
+			# try:
+			# 	cart = json.loads(request.COOKIES['cart'])
+			# 	customer = Customer.objects.get(user=user)
+			# 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
+			# 	print(order)
+			# 	print(cart)
+			# 	cookieData = cookieCart(request)
+			# 	items = cookieData['items']
+			# 	for item in items:
+			# 		productitem = Product.objects.get(id=item['product']['id'])
+			# 		print('here3')
+			# 		print(productitem,item['quantity'])
+			# 		# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
+			# 		orderI=OrderItem.objects.create(
+			# 										order=order, 
+			# 										product=productitem, 
+			# 										quantity=item['quantity'], 
+			# 									)
+			# 		order.quantity += 1
+			# 		order.save()
+			# 		print('here4')
+			# 		orderI.save()
+			# 	request.COOKIES['cart'].clear()
+			# except:
+			# 	cart = {}
 			if user:
 				login(request, user)
 				messages.success(request, "Logged In")
