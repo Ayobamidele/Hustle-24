@@ -29,21 +29,20 @@ def generateRefCode():
 
 
 def cart(request):
-	userPicture = request.user
+	userPicture = 'user.png'
 	if request.user.is_authenticated:
 		if request.user.is_customer:
-			userPicture = request.user.customer
+			userPicture = request.user.customer.profile_pic.url
 		elif request.user.is_vendor:
-			userPicture = request.user.vendor
+			userPicture = request.user.vendor.profile_pic.url
 	data = cartData(request)
-	cartItems = data['cartItems']
-	order = data['order']
-	items = data['items']
-	if request.user.is_authenticated:
-		total = cartItems
-	else:
-		total = order.get('get_cart_items')
-	context = {'items':items, 'order':order, 'cartItems':cartItems, 'total':total, 'userPicture':userPicture}
+	cart_data = data['cart_data']
+	cart_items = data['cart_items']
+	total_items = len(cart_items)
+	total_price = cart_data.get_cart_total_price if request.user.is_authenticated else cart_data.get('cart_total_price')
+	context = { 'total_price': total_price,'userPicture':userPicture,
+				'cart_items':cart_items, 'total_items': total_items,
+			  }
 	return render(request, 'carts/cart.html', context)
 
 def updateItem(request):

@@ -14,7 +14,7 @@ from .decorators import *
 from .forms import *
 from .models import *
 from django.http import JsonResponse
-
+from django.contrib.auth import views as auth_views
 
 
 User = get_user_model()
@@ -90,51 +90,43 @@ def registerVendor(request):
 
 @unauthenticated_user
 def loginPage(request):
-	form = LoginForm(request.POST or None)
+	form = AccountAuthenticationForm(request.POST or None)
 	if request.POST:
-		username = request.POST.get('username')
+		email = request.POST.get('email')
 		password = request.POST.get('password')
 		if form.is_valid():
-			user = form.login(request)
-			print('here1')
-			if user.is_vendor and user.is_customer == False:
-				#create customer for vendor
-				group = Group.objects.get(name='Customer')
-				user.groups.add(group)
-				try:
-					Customer.objects.create(user=user,username=username, email=user.email,firstname=user.first_name,lastname=user.last_name)
-				except:
-					user.is_customer = True
-					user.save()
-				print("Profile created!")
-			try:
-				cart = json.loads(request.COOKIES['cart'])
-				customer = Customer.objects.get(user=user)
-				order, created = Order.objects.get_or_create(customer=customer, complete=False)
-				print(order)
-				print(cart)
-				cookieData = cookieCart(request)
-				items = cookieData['items']
-				for item in items:
-					productitem = Product.objects.get(id=item['product']['id'])
-					print('here3')
-					print(productitem,item['quantity'])
-					# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
-					orderI=OrderItem.objects.create(
-													order=order, 
-													product=productitem, 
-													quantity=item['quantity'], 
-												)
-					order.quantity += 1
-					order.save()
-					print('here4')
-					orderI.save()
-				request.COOKIES['cart'].clear()
-			except:
-				cart = {}
-			login(request,user)
-			print('hopefully')
-			return redirect(f'/customer/{username}',)
+			user =  authenticate(email=email, password=password)
+			print('here1', user.username)
+			# try:
+			# 	cart = json.loads(request.COOKIES['cart'])
+			# 	customer = Customer.objects.get(user=user)
+			# 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
+			# 	print(order)
+			# 	print(cart)
+			# 	cookieData = cookieCart(request)
+			# 	items = cookieData['items']
+			# 	for item in items:
+			# 		productitem = Product.objects.get(id=item['product']['id'])
+			# 		print('here3')
+			# 		print(productitem,item['quantity'])
+			# 		# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
+			# 		orderI=OrderItem.objects.create(
+			# 										order=order, 
+			# 										product=productitem, 
+			# 										quantity=item['quantity'], 
+			# 									)
+			# 		order.quantity += 1
+			# 		order.save()
+			# 		print('here4')
+			# 		orderI.save()
+			# 	request.COOKIES['cart'].clear()
+			# except:
+			# 	cart = {}
+			if user:
+				login(request, user)
+				messages.success(request, "Logged In")
+				print('hopefully')
+				return redirect(f'/customer/{email}',)
 			# elif user.is_vendor:
 			# 	login(request,user)
 			# 	print('here3')
@@ -142,7 +134,7 @@ def loginPage(request):
 		else:
 			messages.info(request, 'Username OR password is incorrect')				
 	return render(request,'accounts/login.html', {'form': form })
-
+	
 def logoutUser(request):
     logout(request)
     return redirect('accounts:login')
