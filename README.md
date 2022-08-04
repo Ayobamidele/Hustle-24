@@ -43,7 +43,61 @@ Then follow these instructions:
 3. In the “Clone” menu, under the “HTTPS” tab, click on “Download ZIP”
 
 ## Clone
-To clone the project you would need to have installed Git 
+To clone the project you would need to have installed Git
+
+## Step 1: Install Git
+
+At the heart of GitHub is the open source *Version Control System* called Git. Git is responsible for everything that happens locally on your computer related to GitHub.
+
+Let's verify that Git is not already installed on your machine. Open **Terminal** if you are on a Mac or **PowerShell** if you are on a Windows machine and type:
+
+```bash
+git --version
+```
+
+After running the code in Terminal, you should see something like:
+
+```bash
+git version 2.22.0.windows.1
+```
+
+### Download and Install Git
+
+If you don't have Git installed, download and install the latest version of Git. at this link: [https://git-scm.com/downloads](https://git-scm.com/downloads)
+
+- If you are working on Windows, it is recommended to use Git Bash which is already installed with the Git package;
+- If you are working on a Mac or other Unix based system, you can use the built-in Terminal application.
+
+### Configure your username in Git
+
+Git uses a username to associate commits with an identity, that is, every time you upload your code to GitHub that git username will be used to identify you as the author of the code uploaded within the repository on GitHub .
+
+
+   
+
+    
+💡 The Git username is different from the GitHub username.
+
+
+   
+
+
+To configure your Git username for all your repositories on your computer, do:
+
+1. Open Git Bash.
+2. Set a Git username
+
+```bash
+git config --global user.name "Ada Lovelace"
+```
+
+1. Confirm that you've configured the username correctly in Git by typing:
+
+```bash
+git config --global user.name
+> Ada Lovelace
+```
+## Step 1: Cloning The Repo
 Then follow these instructions to use this command to clone:
 1. Follow this link:
 https://github.com/Ayobamidele/Hustle-24/tree/main
