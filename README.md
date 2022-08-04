@@ -43,100 +43,100 @@ Then follow these instructions:
 3. In the “Clone” menu, under the “HTTPS” tab, click on “Download ZIP”
 
 ## Clone
-To download the package use the official Git website and choose
-your operating system whether it be
-Windows, Mac or Linux.
+To clone the project you would need to have installed Git 
+Then follow these instructions to use this command to clone:
+1. Follow this link:
+https://github.com/Ayobamidele/Hustle-24/tree/main
+2. Navigate to the “<>Code” tab.
 
+3. Click on the “Code” button on the right. A dropdown should appear.
 
-Use this link below:
-``` link
-https://git-scm.com/download/linux
-```
+4. In the “Clone” menu, under the “HTTPS” tab, click on the copy
+clipboard icon
 
+5. Open your terminal and type theis command ```git clone``` 
 
-## Install Git on Windows
+6. Then paste into the termial and click enter. (It should then look like the command below)
 
-1. Navigate to the latest Git for Windows installer and download the latest version.
-2. Once the installer has started, follow the instructions as provided in the Git Setup wizard screen until the installation is complete.
-3. Open the windows command prompt (or Git Bash if you selected not to use the standard Git Windows Command Prompt during the Git installation).
-4. Type ```git version``` to verify Git was installed.
-
-Note: 
-```git-scm``` is a popular and recommended resource for downloading Git for Windows. The advantage of downloading Git from ```git-scm``` is that your download automatically starts with the latest version of Git included with the recommended command prompt, Git Bash . The download source is the same Git for Windows installer as referenced in the steps above.
-Install Git on Mac
-
-
-## Install Git on Mac
-
-Most versions of MacOS will already have Git installed, and you can activate it through the terminal with ```git version```. However, if you don't have Git installed for whatever reason, you can install the latest version of Git using one of several popular methods as listed below:
-
-
-## Install Git From an Installer
-If you get confused in the first instruction skip to Installing Git from Homebrew
-
-1. Navigate to the latest macOS Git Installer and download the 
-latest version.
-
-2. Once the installer has started, follow the instructions as 
-provided until the installation is complete.
-
-3. Open the command prompt "terminal" and type git version to 
-verify Git was installed.
-
-Note: ```git-scm``` is a popular and recommended resource for 
-downloading Git on a Mac. The advantage of downloading Git from 
-```git-scm``` is that your download automatically starts with the 
-latest version of Git. The download source is the same macOS Git Installer as referenced in the steps above.
-
-## Install Git from Homebrew
-
-Homebrew is a popular package manager for macOS. If you already have Homwbrew installed, you can follow the below steps to install Git and if not go to the official Homebrew and copy the command to install Homebrew:
-
-1. Open up a terminal window and install Git using the following 
-command: ```brew install git```.
-2. Once the command output has completed, you can verify the 
-installation by typing: git version.
-
-
-If not 
-
-
-
-
-
-
-
-
-
-Clone from the main branch, other branches under the develop branch may give errors due to some features still under develpment. You will be updated when the branches under develop are finally ready to  be merged to the main branch.
-
-Use this command to clone:
 ```console
-git clone https://github.com/Ayobamidele/hustle_24.git
+git clone https://github.com/Ayobamidele/Hustle-24.git
 ```
-or
 
-Use this link for download:
-``` console
-https://github.com/Ayobamidele/hustle_24.git
-```
 
 You must have installed Python and Django to run the project and most importantly Pip for the next instruction and as said earlier a virtual environment.
- Need help installing the above follow these instructions:
+
+
+ Need help with the installtion the follow the instructions below
 
 
 
  ## Installing Python
-Need help installing Python, follow the instructions found in the link below:
- ```
- https://github.com/PackeTsar/Install-Python
- ```
+Need help installing Python, follow the instructions below:
+## **Windows**
+1. If you have not yet installed Python on your Windows OS, then download and install the latest Python3 installer from [Python Downloads Page](https://www.python.org/downloads/)
+   - Make sure to check the box during installation which adds Python to PATH. Labeled something like **Add Python 3.X to PATH**
+
+2. Once Python is installed, you should be able to open a command window, type `python`, hit ENTER, and see a Python prompt opened. Type `quit()` to exit it. You should also be able to run the command `pip` and see its options. If both of these work, then you are ready to go.
+  - If you cannot run `python` or `pip` from a command prompt, you may need to add the Python installation directory path to the Windows PATH variable
+    - The easiest way to do this is to find the new shortcut for Python in your start menu, right-click on the shortcut, and find the folder path for the `python.exe` file
+      - For Python2, this will likely be something like `C:\Python27`
+      - For Python3, this will likely be something like `C:\Users\<USERNAME>\AppData\Local\Programs\Python\Python37`
+    - Open your Advanced System Settings window, navigate to the "Advanced" tab, and click the "Environment Variables" button
+    - Create a new system variable:
+      - Variable name: `PYTHON_HOME`
+      - Variable value: <your_python_installation_directory>
+    - Now modify the PATH system variable by appending the text `;%PYTHON_HOME%\;%PYTHON_HOME%;%PYTHON_HOME%\Scripts\` to the end of it.
+    - Close out your windows, open a command window and make sure you can run the commands `python` and `pip`
+
+## **MacOS** 
+MacOS comes with a native version of Python. As of this writing, it comes with a version of Python2, which has been deprecated. In order to use most modern Python applications, you need to install Python3. Python2 and Python3 can coexist on the same machine without problems, and for MacOS it is in fact necessary for this to happen, since MacOS continues to rely on Python2 for some functionality.
+
+There are a couple of ways we can install Python3 on your MacOS operating system:
+
+### Option 1: Install the official Python release
+1. Browse to the [Python Downloads Page](https://www.python.org/downloads/)
+2. Click on the "Download Python 3.x.x" button on the page
+3. Walk through the steps of the installer wizard to install Python3
+4. Once installed, the wizard will open a Finder window with some `.command` files in it
+    - Double-click the `Install Certificates.command` file and the `Update Shell Profile.command` file to run each of them
+    - Close the windows once they are finished
+6. Open your **Terminal** application and run the command `python3` to enter the Python interactive command line. Issue the command `quit()` to exit. Also make sure PIP (the Python package manager) is installed by issuing the command `pip3 -V`. It should display the current version of PIP as well as Python (which should be some release of Python3).
+7. You're all done. Python is installed and ready to use.
+
+### Option 2: Install with Homebrew
+[Homebrew](https://brew.sh/) is a MacOS Linux-like package manager. Walk through the below steps to install Homebrew and an updated Python interpreter along with it.
+
+1. Open your **Terminal** application and run: `xcode-select --install`. This will open a window. Click **'Get Xcode'** and install it from the app store.
+2. Install Homebrew. Run: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+   - You can also find this command on the [Homebrew website](https://brew.sh/)
+3. Install latest Python3 with `brew install python`
+4. Once Python is installed, you should be able to open your **Terminal** application, type `python3`, hit ENTER, and see a Python 3.X.X prompt opened. Type `quit()` to exit it. You should also be able to run the command `pip3` and see its options. If both of these work, then you are ready to go.
+  - Here are some additional resources on [Installing Python 3 on Mac OS X](https://docs.python-guide.org/starting/install3/osx/)
+
+## **Linux**
+- **Raspberry Pi OS** may need Python and PIP
+  - Install them: `sudo apt install -y python3-pip`
+- **Debian (Ubuntu)** distributions may need Python and PIP
+  - Update the list of available APT repos with `sudo apt update`
+  - Install Python and PIP: `sudo apt install -y python3-pip`
+- **RHEL (CentOS)** distributions usually need PIP
+  - Install the EPEL package: `sudo yum install -y epel-release`
+  - Install PIP: `sudo yum install -y python3-pip`
+
 
  ## Instlling Pip
- Follow the instructions found in the link below to install pip:
- ```shell
- https://pip.pypa.io/en/stable/installation/
+ Follow the instructions found below to install pip depending on your operating system:
+ ### **Linux/Mac**
+```terminal
+ $ python -m ensurepip --upgrade
  ```
+
+ ### **Windows**
+```terminal
+C:> py -m ensurepip --upgrade
+ ```
+
+
 ## Installing Django
 Django 3.2 will be installed in the requirements.txt when the pip command in package dependencies is run. If you want to install the latest version run this command
 ```shell
