@@ -27,25 +27,18 @@ def registerCustomer(request):
 	form = CreateUserForm()
 	if request.method == "POST":
 		form = CreateUserForm(request.POST)
-		firstname = request.POST.get('firstname')
-		lastname = request.POST.get('lastname')
 		username = request.POST.get('username')
 		email = request.POST.get('email')
-		password = request.POST.get('password')
+		password = request.POST.get('password1')
+		password_confirmation = request.POST.get('password2')
 		print("Hello, ",request.POST,request.POST.get('password'), form.is_valid())
-		if password:			
-			# username = firstname + " " + lastname
-			new_user = User.objects.create_user(username=username,
-												password=password,
-												first_name=firstname,
-												last_name=lastname,
-												email=email,
-												)
+		if password == password_confirmation:			
+			new_user = User.objects.create_user(username=username,password=password,email=email,)
 			new_user.save()
 			messages.success(request, 'Account was created for ' + username)
 			return redirect('accounts:login')
 	context = {'form': form}
-	return render(request, 'accounts/register_customer.html', context)
+	return render(request, 'accounts/index.html', context)
 
 @with_usertype(allowed_roles=['Customer'])
 def registerVendor(request):
@@ -133,7 +126,7 @@ def loginPage(request):
 			# 	return redirect(f'/vendor/{username}',)
 		else:
 			messages.info(request, 'Username OR password is incorrect')				
-	return render(request,'accounts/login.html', {'form': form })
+	return render(request,'accounts/signin.html', {'form': form })
 	
 def logoutUser(request):
     logout(request)
