@@ -37,13 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'shop',
+    
+    'rest_framework',
+    'mptt',
+    
     'carts',
     'accounts.apps.AccountsConfig',
-    # 'rest_framework',
     'watched_products',
-    'mptt',
     'orders',
+    'shop',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -78,13 +81,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Hustle_24.wsgi.application'
 
 # Rest_Framework
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.TokenAuthentication',
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated', )
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', )
+}
 
 
 # Database
