@@ -97,7 +97,7 @@ git config --global user.name "Ada Lovelace"
 git config --global user.name
 > Ada Lovelace
 ```
-## Step 1: Cloning The Repo
+## Step 2: Cloning The Repository
 Then follow these instructions to use this command to clone:
 1. Follow this link:
 https://github.com/Ayobamidele/Hustle-24/tree/main
