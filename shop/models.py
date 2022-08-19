@@ -14,35 +14,8 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from mptt.models import MPTTModel, TreeForeignKey
+# from mptt.models import MPTTModel, TreeForeignKey
 
-class Category(MPTTModel):
-    """
-    Category Table implimented with MPTT.
-    """
-
-    name = models.CharField(
-        verbose_name=_("Category Name"),
-        help_text=_("Required and unique"),
-        max_length=255,
-        unique=True,
-    )
-    slug = models.SlugField(verbose_name=_("Category safe URL"), max_length=255, unique=True)
-    parent = TreeForeignKey("self", on_delete=models.CASCADE, null=True, blank=True, related_name="children")
-    is_active = models.BooleanField(default=True)
-
-    class MPTTMeta:
-        order_insertion_by = ["name"]
-
-    class Meta:
-        verbose_name = _("Category")
-        verbose_name_plural = _("Categories")
-
-    def get_absolute_url(self):
-        return reverse("catalogue:category_list", args=[self.slug])
-
-    def __str__(self):
-        return self.name
 
 
 def photo_path(instance, filename):
@@ -52,6 +25,25 @@ def photo_path(instance, filename):
     return 'images/{basename}{randomstring}{ext}'.format(userid=instance.user.id, basename=basefilename,
                                                          randomstring=randomstr, ext=file_extension)
 
+class Category(models.Model):
+    """
+    """
+    name = models.CharField(
+        verbose_name=_("Category Name"),
+        help_text=_("Required and unique"),
+        max_length=255,
+        unique=True,
+    )
+    slug = models.SlugField(verbose_name=_("Category safe URL"), max_length=255, unique=True)
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+
+    def get_absolute_url(self):
+        return reverse("shop:category", args=[self.slug])
+
+    def __str__(self):
+        return self.name
 
 # class ProductType(models.Model):
 #     """
@@ -95,7 +87,7 @@ class Product(models.Model):
     """
 
     # product_type = models.ForeignKey(ProductType, on_delete=models.RESTRICT)
-    category = models.ForeignKey(Category, on_delete=models.RESTRICT)
+    category = models.ManyToManyField(Category, related_name='category', blank=True)
     title = models.CharField(
         verbose_name=_("title"),
         help_text=_("Required"),
@@ -142,9 +134,10 @@ class Product(models.Model):
         ordering = ("-created_at",)
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
-
+    
+    @property
     def get_absolute_url(self):
-        return reverse("catalogue:product_detail", args=[self.slug])
+        return reverse("shop:product", args=[self.id])
 
     def __str__(self):
         return self.title
@@ -179,16 +172,17 @@ class ProductImage(models.Model):
     """
 
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="product_image")
+        Product, on_delete=models.CASCADE, related_name="image", related_query_name='image',null=True, blank=True)
     image = models.ImageField(
         verbose_name=_("image"),
+
         help_text=_("Upload a product image"),
         upload_to="images/",
         default="images/default.png",
     )
     alt_text = models.CharField(
-        verbose_name=_("Alturnative text"),
-        help_text=_("Please add alturnative text"),
+        verbose_name=_("Alternative text"),
+        help_text=_("Please add alternative text"),
         max_length=255,
         null=True,
         blank=True,
@@ -204,10 +198,10 @@ class ProductImage(models.Model):
 
 class ProductReview(models.Model):
     product = models.ForeignKey(
-        Product, related_name='reviews', on_delete=models.CASCADE)
+        Product, on_delete=models.CASCADE, related_name='review', null=True, blank=True)
     customer = models.ForeignKey(
         to='accounts.Customer', related_name='reviews', on_delete=models.CASCADE)
-    content = models.TextField(blank=True, null=True)
+    content = models.TextField(blank=True)
     stars = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
@@ -221,3 +215,6 @@ class Shop(models.Model):
 
     def __str__(self):
         return self.shopname
+
+
+

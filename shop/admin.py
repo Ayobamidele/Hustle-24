@@ -11,8 +11,8 @@ from .models import (
     # ProductType,
 )
 
-admin.site.register(Category, MPTTModelAdmin)
-
+admin.site.register(Category)
+admin.site.register(ProductImage)
 admin.site.register(ProductSpecification)
 
 class ProductSpecificationInline(admin.TabularInline):
@@ -24,6 +24,10 @@ class ProductSpecificationInline(admin.TabularInline):
 #     inlines = [
 #         ProductSpecificationInline,
 #     ]
+
+
+# class CategoryInline(admin.TabularInline):
+#     model = Category
 
 
 class ProductImageInline(admin.TabularInline):
@@ -40,4 +44,5 @@ class ProductAdmin(admin.ModelAdmin):
         
         ProductSpecificationValueInline,
         ProductImageInline,
+        # CategoryInline,
     ]

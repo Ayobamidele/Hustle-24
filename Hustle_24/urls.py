@@ -29,7 +29,7 @@ from shop import views as shop_views
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('api/(?P<version>(v1|v2))/', include('api.urls', namespace='api')),
+    path('api/', include('api.urls', namespace='api')),
     path('', include('shop.urls', namespace='shop')),
     path('', include('accounts.urls', namespace='accounts')),
     path('', include('carts.urls', namespace='carts')),
