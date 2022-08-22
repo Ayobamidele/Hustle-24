@@ -23,7 +23,7 @@
 # /home/bami/snap/postman/182/Postman/files
 import requests
 # /home/bami/Documents/Bami/src/Hustle_24/static/3512318_White_Black.png
-url = 'http://127.0.0.1:8000/api/products/'
+url = 'http://127.0.0.1:8000/api/product-photo/'
 
 files=[
         ('image',('3512318_White_Black.png',open('static/3512318_White_Black.png','rb'),'image/png'))
@@ -46,7 +46,12 @@ data = {
                     }
                 ]
 }
-
+data = {
+    "image": "/home/bami/Documents/Bami/src/Hustle_24/static/3512318_White_Black.png",
+    "alt_text": "shoe (1)",
+    "is_feature": False,
+    "product": 1
+}
 
 response = requests.post(url, data=data)
 print(response, response)

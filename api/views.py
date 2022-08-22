@@ -59,24 +59,27 @@ class ProductImageView(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         created_by = request.user
-        serializer = self.serializer_class(data=request.data)
-        print(serializer.is_valid(), type(request.data.get('image')), type(request.data.get('alt_text')))
-        print(serializer.errors,222, dir(request.data.get('image')) )
         if type(request.data.get('image')) == UploadedFile: 
             pass
         elif type(request.data.get('image')) == str:
-            request.query_params._mutable = True
             post= request.data.copy()
-            url = "file:///" + post.get('image')
+            # url =  + post.get('image')
             # Remove url from the submitted data
-            post['image'] = ''
+            # post['image'] = url
             # Download data from url (requires `requests` module.  Can also be done with urllib)
-            post['image']= Image.open(urllib.request.urlopen(url))
-            request.data = post
-            print(request.data.get('image'))
+            post['image'] = UploadedFile(file=open(post['image'], 'rb'))
+            # print(UploadedFile(post['image']),0000)
+            # request.data.update(post)
             # Set icon field (ImageField) to binary file
             # validated_data['icon'] = UploadedFile(BytesIO(response), name='icon')
-        
+            dataT = {'image': post['image'],'alt_text': post['alt_text'], 'is_feature': post['is_feature'], 'product': post['product']}
+        serializer = self.serializer_class(data=dataT, context={"request": post})
+        print(request.data)
+        print(serializer.is_valid(), type(request.data.get('image')), request.data.get('image'))
+        print(serializer.errors,222)
+        serializer.save(image=post['image'])
+        print(serializer.data)
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         # if serializer.is_valid():
-        return Response(data={}, status=status.HTTP_400_BAD_REQUEST)
+        # return Response(data={}, status=status.HTTP_400_BAD_REQUEST)
 

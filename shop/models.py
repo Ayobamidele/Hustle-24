@@ -15,7 +15,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 # from mptt.models import MPTTModel, TreeForeignKey
-
+from django.core.files.temp import NamedTemporaryFile
+import requests
 
 
 def photo_path(instance, filename):
@@ -194,6 +195,12 @@ class ProductImage(models.Model):
     class Meta:
         verbose_name = _("Product Image")
         verbose_name_plural =_("Product Images")
+
+
+    def __str__(self):
+        return f"{self.image} - {self.product}"
+
+
 
 
 class ProductReview(models.Model):

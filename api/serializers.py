@@ -6,20 +6,58 @@ from shop.models import *
 from rest_flex_fields import FlexFieldsModelSerializer
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from drf_extra_fields.fields import Base64ImageField
+import urllib
+from django.core.files.base import ContentFile
+from PIL import Image
+from django.core.files.uploadedfile import UploadedFile
+import requests
+
 
 class ProductImageSerializer(serializers.ModelSerializer):
     # product = serializers.ReadOnlyField(required=False)
-    # image = serializers.ImageField(required=Fals)
+    image =  serializers.SerializerMethodField()
     
     class Meta:
         model = ProductImage
         # fields = '__all__'
         fields = ['alt_text', 'image', 'is_feature']
-        read_only_fields = ['id',]
+        read_only_fields = ['id']
         extra_kwargs = {
             'image': {'validators': []},
             'product': {'validators': []},
         }
+
+    # def validate_image(self, value):
+    #     """
+    #     Check that the blog post is about Django.
+    #     """
+    #     # if 'django' not in value.lower():
+    #         # raise serializers.ValidationError("Blog post is not about Django")
+    #     print(data,"Right here Q")
+    #     return value
+
+    # def validate(self, data):
+    #     CONTEXT_OBJ = self.context.get('request')
+    #     print(data,"Right here Q")
+
+    # def create(self, validated_data):
+    #     print(validated_data,123456)
+    #     data = self.context['request']
+    #     print(data.keys(), data.get('image'))
+    #     data_product = Product.objects.get(id=data.get('product'))
+    #     photo = ProductImage.objects.create(product=data_product, image=data.get('image'),alt_text=data.get('alt_text'), is_feature=data.get('is_feature'))
+    #     # photo.save()
+    #     print(photo)
+    #     return photo
+
+    def get_image(self, obj):
+        request = self.context.get('request')
+        print(obj)
+        try:
+            return obj.image.url
+        except Exception as e:
+            return obj
+
 
 class ProductReviewSerializer(FlexFieldsModelSerializer):
     class Meta:
