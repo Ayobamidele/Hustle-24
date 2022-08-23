@@ -24,11 +24,18 @@ class ListProductsView(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         created_by = request.user
-        serializer = self.serializer_class(data=request.data)
-        print(serializer.is_valid())
-        print(serializer.errors)
-        # if serializer.is_valid():
-        return Response(data={}, status=status.HTTP_400_BAD_REQUEST)
+        # image_data = request.data.pop('image')
+        # for instance in image_data:
+        #     instance['image'] = UploadedFile(file=open( instance['image'] , 'rb'))
+        # request.data.update((("image", image_data),))
+        serializer = self.serializer_class(data=request.data, context={"request": request})
+        # print(12345688, request.data)
+        # print(serializer.is_valid(), "ertreww")
+        # print(serializer.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         #     serializer.save(created_by=created_by)
         #     return Response(data=serializer.data, status=status.HTTP_201_CREATED)
@@ -52,6 +59,17 @@ class ListProductsView(viewsets.ModelViewSet):
 class CategoriesView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+
+class ReviewsView(viewsets.ModelViewSet):
+    queryset = ProductReview.objects.all()
+    serializer_class = ProductReviewSerializer
+
+
+class ProductSpecificationView(viewsets.ModelViewSet):
+    queryset = ProductSpecification.objects.all()
+    serializer_class = ProductSpecificationSerializer
 
 class ProductImageView(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()

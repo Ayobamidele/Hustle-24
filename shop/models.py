@@ -17,7 +17,7 @@ from django.utils.translation import gettext_lazy as _
 # from mptt.models import MPTTModel, TreeForeignKey
 from django.core.files.temp import NamedTemporaryFile
 import requests
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 def photo_path(instance, filename):
     basefilename, file_extension = os.path.splitext(filename)
@@ -64,22 +64,22 @@ class Category(models.Model):
 #         return self.name
 
 
-class ProductSpecification(models.Model):
-    """
-    The Product Specification Table contains product
-    specifiction or features for the product types.
-    """
+# class ProductSpecification(models.Model):
+#     """
+#     The Product Specification Table contains product
+#     specifiction or features for the product types.
+#     """
 
-    # product_type = models.ForeignKey(ProductType, on_delete=models.RESTRICT)
-    name = models.CharField(verbose_name=_(
-        "Name"), help_text=_("Required"), max_length=255)
+#     # product_type = models.ForeignKey(ProductType, on_delete=models.RESTRICT)
+#     name = models.CharField(verbose_name=_(
+#         "Name"), help_text=_("Required"), max_length=255)
 
-    class Meta:
-        verbose_name = _("Product Specification")
-        verbose_name_plural = _("Product Specifications")
+#     class Meta:
+#         verbose_name = _("Product Specification")
+#         verbose_name_plural = _("Product Specifications")
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 class Product(models.Model):
@@ -94,9 +94,9 @@ class Product(models.Model):
         help_text=_("Required"),
         max_length=255,
     )
-    stock = models.IntegerField(default=0)
+    stock = models.IntegerField(blank=False, null=False, validators = [MinValueValidator(0)])
     description = models.TextField(verbose_name=_(
-        "description"), help_text=_("Not Required"), blank=True)
+        "description"), help_text=_("Required"), blank=False, null=False)
     slug = models.SlugField(max_length=255)
     regular_price = models.DecimalField(
         verbose_name=_("Regular price"),
@@ -108,6 +108,7 @@ class Product(models.Model):
         },
         max_digits=5,
         decimal_places=2,
+        validators = [MinValueValidator(0.00)],
     )
     discount_price = models.DecimalField(
         verbose_name=_("Discount price"),
@@ -119,6 +120,7 @@ class Product(models.Model):
         },
         max_digits=5,
         decimal_places=2,
+        validators = [MinValueValidator(0.00)]
     )
     is_active = models.BooleanField(
         verbose_name=_("Product visibility"),
@@ -144,15 +146,22 @@ class Product(models.Model):
         return self.title
 
 
-class ProductSpecificationValue(models.Model):
+class ProductSpecification(models.Model):
     """
     The Product Specification Value table holds each of the
     products individual specification or bespoke features.
     """
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    specification = models.ForeignKey(
-        ProductSpecification, on_delete=models.RESTRICT)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='specification',
+        related_query_name='specification'
+    )
+    specification = models.CharField(
+        verbose_name=_("Name"),
+        help_text=_("Required"),
+        max_length=255)
     value = models.CharField(
         verbose_name=_("value"),
         help_text=_("Product specification value (maximum of 255 words"),
@@ -160,8 +169,8 @@ class ProductSpecificationValue(models.Model):
     )
 
     class Meta:
-        verbose_name = _("Product Specification Value")
-        verbose_name_plural = _("Product Specification Values")
+        verbose_name = _("Product Specification")
+        verbose_name_plural = _("Product Specifications")
 
     def __str__(self):
         return self.value
@@ -173,7 +182,7 @@ class ProductImage(models.Model):
     """
 
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="image", related_query_name='image',null=True, blank=True)
+        Product, on_delete=models.CASCADE, related_name="image", related_query_name='image')
     image = models.ImageField(
         verbose_name=_("image"),
 
@@ -185,8 +194,8 @@ class ProductImage(models.Model):
         verbose_name=_("Alternative text"),
         help_text=_("Please add alternative text"),
         max_length=255,
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
     )
     is_feature = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)

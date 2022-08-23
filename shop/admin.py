@@ -7,16 +7,16 @@ from .models import (
     Product,
     ProductImage,
     ProductSpecification,
-    ProductSpecificationValue,
+    # ProductSpecificationValue,
     # ProductType,
 )
 
 admin.site.register(Category)
 admin.site.register(ProductImage)
 admin.site.register(ProductSpecification)
-
-class ProductSpecificationInline(admin.TabularInline):
-    model = ProductSpecification
+# admin.site.register(ProductSpecificationValue)
+# class ProductSpecificationInline(admin.TabularInline):
+#     model = ProductSpecification
 
 
 # @admin.register(ProductType)
@@ -34,15 +34,15 @@ class ProductImageInline(admin.TabularInline):
     model = ProductImage
 
 
-class ProductSpecificationValueInline(admin.TabularInline):
-    model = ProductSpecificationValue
+class ProductSpecificationInline(admin.TabularInline):
+    model = ProductSpecification
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     inlines = [
         
-        ProductSpecificationValueInline,
+        ProductSpecificationInline,
         ProductImageInline,
         # CategoryInline,
     ]

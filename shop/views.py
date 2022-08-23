@@ -64,7 +64,7 @@ def home(request, category_slug=None):
 		pid = product.id
 		description = product.description
 		link = str(title)
-		image = product.image.filter(is_feature=True).first().image.url
+		image = product.image.first().image.url
 		productsdict.append({'title': title, 'price': price,
 							'description': description, 'link': link, 'image': image, 'id': pid})
 	context = {'data': productsdict,
