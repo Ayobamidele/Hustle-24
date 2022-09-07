@@ -1,6 +1,6 @@
 # Hustle_24
 
-E-commerce website for vendors to sell products to the world.
+E-commerce website for creating a community for vendors to sell products to the world and customers to get Great deals.
 
 
 # Functions
