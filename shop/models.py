@@ -18,6 +18,9 @@ from django.utils.translation import gettext_lazy as _
 from django.core.files.temp import NamedTemporaryFile
 import requests
 from django.core.validators import MaxValueValidator, MinValueValidator
+import uuid
+
+
 
 def photo_path(instance, filename):
     basefilename, file_extension = os.path.splitext(filename)
@@ -88,6 +91,7 @@ class Product(models.Model):
     """
 
     # product_type = models.ForeignKey(ProductType, on_delete=models.RESTRICT)
+    ref_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     category = models.ManyToManyField(Category, related_name='category', blank=True)
     title = models.CharField(
         verbose_name=_("title"),
@@ -133,14 +137,20 @@ class Product(models.Model):
     users_wishlist = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="user_wishlist", blank=True)
 
+
     class Meta:
         ordering = ("-created_at",)
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
     
     @property
+    def get_shop(self):
+        return self.shop.all().first()
+    
+    @property
     def get_absolute_url(self):
-        return reverse("shop:product", args=[self.id])
+        return reverse("shop:product", args=[self.get_shop, self.ref_code, self.title])
+
 
     def __str__(self):
         return self.title
@@ -182,7 +192,7 @@ class ProductImage(models.Model):
     """
 
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="image", related_query_name='image')
+        Product, on_delete=models.CASCADE, related_name="image", related_query_name='image',null=True, blank=True)
     image = models.ImageField(
         verbose_name=_("image"),
 
@@ -222,11 +232,13 @@ class ProductReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
 
+
+
 class Shop(models.Model):
     vendor = models.OneToOneField(
         to='accounts.Vendor', on_delete=models.CASCADE, null=True, related_name='+')
     shopname = models.CharField(max_length=200, null=True)
-    products = models.ManyToManyField(Product, )
+    products = models.ManyToManyField(Product, related_name="shop", related_query_name='shop' , blank=True)
     review = models.ManyToManyField(ProductReview, blank=True)
 
     def __str__(self):

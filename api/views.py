@@ -8,6 +8,8 @@ from django.core.files.uploadedfile import UploadedFile
 import requests
 import urllib
 from PIL import Image
+from rest_framework.permissions import *
+from .permissions import *
 
 
 
@@ -18,23 +20,17 @@ class ListProductsView(viewsets.ModelViewSet):
     # http_method_names = ['get',]
     queryset = Product.objects.all()
     serializer_class = ProductsSerializer
-    # parser_classes = (MultiPartParser, FormParser)
-    # permission_classes = [ReadOnly, NotCreateAndIsAdminUser | IsOwner]
+    # permission_classes = (IsAuthenticated,)
+    permission_classes = [ NotCreateAndIsAdminUser | IsOwnerOfShop]
+    print(dir(permission_classes))
     # renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer,)
 
     def create(self, request, *args, **kwargs):
         created_by = request.user
-        # image_data = request.data.pop('image')
-        # for instance in image_data:
-        #     instance['image'] = UploadedFile(file=open( instance['image'] , 'rb'))
-        # request.data.update((("image", image_data),))
         serializer = self.serializer_class(data=request.data, context={"request": request})
-        # print(12345688, request.data)
-        # print(serializer.is_valid(), "ertreww")
-        # print(serializer.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         #     serializer.save(created_by=created_by)
@@ -70,6 +66,14 @@ class ReviewsView(viewsets.ModelViewSet):
 class ProductSpecificationView(viewsets.ModelViewSet):
     queryset = ProductSpecification.objects.all()
     serializer_class = ProductSpecificationSerializer
+
+
+
+class ShopView(viewsets.ModelViewSet):
+    queryset = Shop.objects.all()
+    serializer_class = ShopSerializer
+
+
 
 class ProductImageView(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()

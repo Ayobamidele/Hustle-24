@@ -13,6 +13,19 @@ from django.core.files.uploadedfile import UploadedFile
 import requests
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
+from .relations import MultiplePKsHyperlinkedIdentityField
+
+
+
+
+
+
+class ShopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = '__all__'
+        read_only_fields = ['id']
+
 
 class ProductSpecificationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,7 +73,6 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         request = self.context.get('request')
-        print(obj)
         try:
             return obj.image.url
         except Exception as e:
@@ -103,24 +115,33 @@ class ProductsSerializer(serializers.ModelSerializer):
     image = ProductImageSerializer(many=True, required=True,allow_empty=False)
     # category=serializers.ListField(child=CategorySerializer(many=True, allow_null=True,))
     # category =serializers.PrimaryKeyRelatedField(many=True, allow_empty=False,queryset=Category.objects.all())
-    reviews = ProductReviewSerializer(many=True, read_only=True)
-    # image=serializers.SerializerMethodField()
-    link = serializers.HyperlinkedIdentityField(
-        view_name="shop:product",
-        lookup_field="id",
-        lookup_url_kwarg="product",
+    # reviews = ProductReviewSerializer(many=True, read_only=True)
+    # specification = ProductSpecificationSerializer(many=True,required=False)
+    # shop = ShopSerializer(required=False)
+    link = MultiplePKsHyperlinkedIdentityField(
+        view_name='shop:product',
+        # read_only=True,
+        # many=True,
+        lookup_fields=['get_shop', 'ref_code', 'title'],
+        lookup_url_kwargs=['shop', 'ref_code', 'title']
     )
+    # link = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Product
         read_only_fields = ['id']
         # fields = '__all__'
-        fields = (	'link', 'title', 'regular_price', 'discount_price',
+        fields = (	'link', 'ref_code','title', 'regular_price', 'discount_price',
                 	'description', 'stock', 'created_at', 'category', 'image',
-                    'reviews'	)
+                    )
         extra_kwargs = {
             'image': {'validators': []},
         }
+
+
+    # def get_link(self, obj):
+    #     print(self.context['request'].get_host())
+    #     return "http://" + self.context['request'].get_host() + obj.get_absolute_url
 
     def validate_image(self, value):
         # print(self.initial_data.get('image'),"Right here Q")

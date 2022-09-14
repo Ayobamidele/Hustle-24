@@ -63,7 +63,7 @@ def home(request, category_slug=None):
 		price = product.regular_price
 		pid = product.id
 		description = product.description
-		link = str(title)
+		link = product.get_absolute_url
 		image = product.image.first().image.url
 		productsdict.append({'title': title, 'price': price,
 							'description': description, 'link': link, 'image': image, 'id': pid})
@@ -77,20 +77,20 @@ def home(request, category_slug=None):
 	return render(request, 'shop/index.html', context)
 
 
-def productDetail(request, product):
-	userPicture = request.user
+def productDetail(request, title,ref_code,shop):
+	userPicture = 'user.png'
 	if request.user.is_authenticated:
 		if request.user.is_customer:
-			userPicture = request.user.customer
+			userPicture = request.user.customer.profile_pic.url
 		elif request.user.is_vendor:
-			userPicture = request.user.vendor
-	product = Product.objects.filter(id=product).get()
-	store = "suprise"
+			userPicture = request.user.vendor.profile_pic.url
+	product = Product.objects.filter(ref_code=ref_code).get()
+	store = request.user.vendor.storename
 	price = f'{product.regular_price:n}'
-	images = product.product_image.filter(is_feature=True).all()
-	mainimage = product.product_image.filter(is_feature=True).first().image.url
+	images = product.image.filter(is_feature=True).all()
+	mainimage = product.image.filter(is_feature=False).first().image.url
 	productsdict = []
-	print(product.description)
+	print(product.get_shop.vendor_id, Shop.objects.get(id=store.id).products.all())
 	data = cartData(request)
 	cart_data = data['cart_data']
 	cart_items = data['cart_items']

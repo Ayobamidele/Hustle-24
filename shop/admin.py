@@ -5,12 +5,14 @@ from mptt.admin import MPTTModelAdmin
 from .models import (
     Category,
     Product,
+    Shop,
     ProductImage,
     ProductSpecification,
     # ProductSpecificationValue,
     # ProductType,
 )
 
+admin.site.register(Shop)
 admin.site.register(Category)
 admin.site.register(ProductImage)
 admin.site.register(ProductSpecification)

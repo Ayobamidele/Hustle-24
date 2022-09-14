@@ -23,7 +23,31 @@
 # /home/bami/snap/postman/182/Postman/files
 import requests
 # /home/bami/Documents/Bami/src/Hustle_24/static/3512318_White_Black.png
-url = 'http://127.0.0.1:8000/api/product-photo/'
+
+        # \          SORRY            /
+        #  \                         /
+        #   \    This page does     /
+        #    ]   not exist yet.    [    ,'|
+        #    ]                     [   /  |
+        #    ]___               ___[ ,'   |
+        #    ]  ]\             /[  [ |:   |
+        #    ]  ] \           / [  [ |:   |
+        #    ]  ]  ]         [  [  [ |:   |
+        #    ]  ]  ]__     __[  [  [ |:   |
+        #    ]  ]  ] ]\ _ /[ [  [  [ |:   |
+        #    ]  ]  ] ] (#) [ [  [  [ :===='
+        #    ]  ]  ]_].nHn.[_[  [  [
+        #    ]  ]  ]  HHHHH. [  [  [
+        #    ]  ] /   `HH("N  \ [  [
+        #    ]__]/     HHH  "  \[__[
+        #    ]         NNN         [
+        #    ]         N/"         [
+        #    ]         N H         [
+        #   /          N            \
+        #  /           q,            \
+        # /                           \
+
+url = 'http://127.0.0.1:8000/api/Product-photos/'
 
 files=[
         ('image',('3512318_White_Black.png',open('static/3512318_White_Black.png','rb'),'image/png'))

@@ -85,18 +85,14 @@ WSGI_APPLICATION = 'Hustle_24.wsgi.application'
 # Rest_Framework
 REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    # ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
-    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.TokenAuthentication',
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # 'rest_framework.permissions.NotCreateAndIsAdminUser',
+    ],
     # 'DEFAULT_PERMISSION_CLASSES': (
         # 'rest_framework.permissions.IsAuthenticated', )
     'DEFAULT_RENDERER_CLASSES': [
