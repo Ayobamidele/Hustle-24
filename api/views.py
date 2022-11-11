@@ -22,7 +22,7 @@ class ListProductsView(viewsets.ModelViewSet):
     serializer_class = ProductsSerializer
     # permission_classes = (IsAuthenticated,)
     permission_classes = [ NotCreateAndIsAdminUser | IsOwnerOfShop]
-    print(dir(permission_classes))
+    # print(dir(permission_classes))
     # renderer_classes = (renderers.JSONRenderer, renderers.TemplateHTMLRenderer,)
 
     def create(self, request, *args, **kwargs):

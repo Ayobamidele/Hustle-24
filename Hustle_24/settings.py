@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import datetime
+import re
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,8 +25,10 @@ SECRET_KEY = 'django-insecure-nam74v@zgf8=0=zgt!q7=7d&=#%jvugqpbidqv6kl#8foorape
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# ALLOWED_HOSTS = ['a9ad-102-89-22-6.eu.ngrok.io']
+ALLOWED_HOSTS = [ '.ngrok.io', '127.0.0.1', '.telebit.io' ]
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['a9ad-102-89-22-6.eu.ngrok.io']
 
 # Application definition
 
@@ -40,16 +43,22 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'rest_framework.authtoken',
-    'mptt',
     'versatileimagefield',
-    
+    'crispy_forms',
+    # 'rest_hooks',
+
     'carts',
     'accounts.apps.AccountsConfig',
     'watched_products',
     'orders',
     'shop',
     'api',
+    'whatsapp_api',
 ]
+
+
+# HOOK_EVENTS = { }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -196,7 +205,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = 'images/'
 MEDIA_ROOT = Path.joinpath(BASE_DIR, 'static/images')
-
+# STATIC_ROOT = Path.joinpath(BASE_DIR, 'static')
 STATICFILES_DIRS =  [
     BASE_DIR / "static",
     BASE_DIR / "static"/ 'images',
@@ -215,4 +224,6 @@ AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = ['accounts.backend.EmailBackend']
 LOGIN_REDIRECT_URL = 'accounts:login'
 LOGIN_URL = "accounts:login"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

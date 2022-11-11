@@ -4,7 +4,6 @@ from unicodedata import category
 from rest_framework import serializers
 from shop.models import *
 from rest_flex_fields import FlexFieldsModelSerializer
-from versatileimagefield.serializers import VersatileImageFieldSerializer
 from drf_extra_fields.fields import Base64ImageField
 import urllib
 from django.core.files.base import ContentFile

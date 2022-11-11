@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 # from rest_framework import routers
 from shop import views as shop_views
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # from watched_products import views as watched_products_views
 
 
@@ -30,9 +30,13 @@ from shop import views as shop_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls', namespace='api')),
+    path('whatsapp_api/', include('whatsapp_api.urls', namespace='whatsapp_api')),
+
+
     path('', include('shop.urls', namespace='shop')),
     path('', include('accounts.urls', namespace='accounts')),
     path('', include('carts.urls', namespace='carts')),
     path('', include('watched_products.urls', namespace='watched_products')),
 ]
+urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
