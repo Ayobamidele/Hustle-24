@@ -16,31 +16,27 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 # from rest_framework import routers
 from shop import views as shop_views
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # from watched_products import views as watched_products_views
 
-# router = routers.DefaultRouter()
-# router.register(r'home', shop_views.ProductsViewSet)
-# router.register(r'Categories', shop_views.CategoriesViewSet)
-# router.register(r'Product-Images', shop_views.ProductImagesViewSet)
-# router.register(r'Product-Images', shop_views.ProductImagesViewSet)
+
 
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    # path('', include(router.urls)),
-    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
     path('admin/', admin.site.urls),
+    path('api/', include('api.urls', namespace='api')),
+    path('whatsapp_api/', include('whatsapp_api.urls', namespace='whatsapp_api')),
+
+
     path('', include('shop.urls', namespace='shop')),
-    # path('', include(('shop.urls', 'shop'))),
     path('', include('accounts.urls', namespace='accounts')),
     path('', include('carts.urls', namespace='carts')),
     path('', include('watched_products.urls', namespace='watched_products')),
 ]
+urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-# urlpatterns += router.urls

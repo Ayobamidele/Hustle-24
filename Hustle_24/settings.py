@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+import datetime
+import re
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,8 +25,10 @@ SECRET_KEY = 'django-insecure-nam74v@zgf8=0=zgt!q7=7d&=#%jvugqpbidqv6kl#8foorape
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# ALLOWED_HOSTS = ['a9ad-102-89-22-6.eu.ngrok.io']
+ALLOWED_HOSTS = [ '.ngrok.io', '127.0.0.1', '.telebit.io' ]
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['a9ad-102-89-22-6.eu.ngrok.io']
 
 # Application definition
 
@@ -37,14 +40,25 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'shop',
+    
+    'rest_framework',
+    'rest_framework.authtoken',
+    'versatileimagefield',
+    'crispy_forms',
+    # 'rest_hooks',
+
     'carts',
     'accounts.apps.AccountsConfig',
-    # 'rest_framework',
     'watched_products',
-    'mptt',
     'orders',
+    'shop',
+    'api',
+    'whatsapp_api',
 ]
+
+
+# HOOK_EVENTS = { }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,7 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'shop.context_processors.categories'
+                # 'shop.context_processors.categories'
             ],
         },
     },
@@ -78,12 +92,61 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Hustle_24.wsgi.application'
 
 # Rest_Framework
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.TokenAuthentication',
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated', )
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # 'rest_framework.permissions.NotCreateAndIsAdminUser',
+    ],
+    # 'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAuthenticated', )
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.AdminRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
+    ],
+}
+
+
+
+# JWT settings
+# JWT_AUTH = {
+#     'JWT_ENCODE_HANDLER':
+#     'rest_framework_jwt.utils.jwt_encode_handler',
+
+#     'JWT_DECODE_HANDLER':
+#     'rest_framework_jwt.utils.jwt_decode_handler',
+
+#     'JWT_PAYLOAD_HANDLER':
+#     'rest_framework_jwt.utils.jwt_payload_handler',
+
+#     'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+#     'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+
+#     'JWT_RESPONSE_PAYLOAD_HANDLER':
+#     'rest_framework_jwt.utils.jwt_response_payload_handler',
+
+#     'JWT_SECRET_KEY': SECRET_KEY,
+#     'JWT_GET_USER_SECRET_KEY': None,
+#     'JWT_PUBLIC_KEY': None,
+#     'JWT_PRIVATE_KEY': None,
+#     'JWT_ALGORITHM': 'HS256',
+#     'JWT_VERIFY': True,
+#     'JWT_VERIFY_EXPIRATION': True,
+#     'JWT_LEEWAY': 0,
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+#     'JWT_AUDIENCE': None,
+#     'JWT_ISSUER': None,
+
+#     'JWT_ALLOW_REFRESH': False,
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+
+#     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+#     'JWT_AUTH_COOKIE': None,
 # }
 
 
@@ -142,7 +205,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = 'images/'
 MEDIA_ROOT = Path.joinpath(BASE_DIR, 'static/images')
-
+# STATIC_ROOT = Path.joinpath(BASE_DIR, 'static')
 STATICFILES_DIRS =  [
     BASE_DIR / "static",
     BASE_DIR / "static"/ 'images',
@@ -158,7 +221,9 @@ STATICFILES_FINDERS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
-# AUTHENTICATION_BACKENDS = ['accounts.backend.EmailBackend']
+AUTHENTICATION_BACKENDS = ['accounts.backend.EmailBackend']
 LOGIN_REDIRECT_URL = 'accounts:login'
 LOGIN_URL = "accounts:login"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
