@@ -52,6 +52,7 @@ pycrypto==2.6.1
 Pygments==2.7.3
 PyJWT==1.7.1
 pyzmq==20.0.0
+python-magic==0.4.27
 python-magic-debian-bin==0.4.25
 requests==2.28.1
 requests-file==1.5.1
