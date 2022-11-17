@@ -88,43 +88,42 @@ def registerCustomer(request):
 
 @with_usertype(allowed_roles=['Customer'])
 def registerVendor(request):
-	if request.user.is_customer and request.user.is_vendor == False:
-		print("heehheheh" , request.user.username,request.user.customer.id)
-		user = User.objects.get(id=request.user.id)
-		user.is_vendor = True
-		print(user)
-		print("hehhheh 2")
-		user.save()
-		Vendor.objects.create(
-			user=request.user,
-			username=request.user.username,
-			email=request.user.email,
-			firstname=request.user.first_name,
-			lastname=request.user.last_name
-		)
-		return redirect(f'/vendor/{request.user.username}')
+	if request.user.is_anonymous:
+		return redirect('login')
 	else:
-		form = CreateUserForm()
-
-		if request.method == "POST":
-			firstname = request.POST.get('firstname')
-			lastname = request.POST.get('lastname')
-			email = request.POST.get('email')
-			password = request.POST.get('password')
-			print("Hello, ",request.POST,request.POST.get('password'))
-			if password:			
-				username = firstname + " " + lastname
-				new_user = User.objects.create_user(username= username,
-													email=email,
-													password=password,
-													first_name=firstname,
-													last_name = lastname,
-													is_vendor=True,
-													)
-				new_user.save()
-				messages.success(request,'Account and Shop was created for ' + username)
-				return redirect('login')
-		context = {'form': form}
+		if request.user.is_customer and request.user.is_vendor == False
+			user = User.objects.get(id=request.user.id)
+			user.is_vendor = True
+			user.save()
+			Vendor.objects.create(
+				user=request.user,
+				username=request.user.username,
+				email=request.user.email,
+				firstname=request.user.first_name,
+				lastname=request.user.last_name
+			)
+			return redirect(f'/vendor/{request.user.username}')
+		else:
+			form = CreateUserForm()
+			if request.method == "POST":
+				firstname = request.POST.get('firstname')
+				lastname = request.POST.get('lastname')
+				email = request.POST.get('email')
+				password = request.POST.get('password')
+				print("Hello, ",request.POST,request.POST.get('password'))
+				if password:			
+					username = firstname + " " + lastname
+					new_user = User.objects.create_user(username= username,
+														email=email,
+														password=password,
+														first_name=firstname,
+														last_name = lastname,
+														is_vendor=True,
+														)
+					new_user.save()
+					messages.success(request,'Account and Shop was created for ' + username)
+					return redirect('login')
+			context = {'form': form}
 	return render(request, 'accounts/register_vendor.html', context)
 
 @unauthenticated_user
