@@ -91,7 +91,7 @@ def registerVendor(request):
 	if request.user.is_anonymous:
 		return redirect('login')
 	else:
-		if request.user.is_customer and request.user.is_vendor == False
+		if request.user.is_customer and request.user.is_vendor == False:
 			user = User.objects.get(id=request.user.id)
 			user.is_vendor = True
 			user.save()
