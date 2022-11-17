@@ -2,7 +2,6 @@ appdirs==1.4.3
 asgiref==3.5.2
 asn1crypto==0.24.0
 attrs==21.4.0
-Automat==20.2.0
 backcall==0.2.0
 backports.zoneinfo==0.2.1
 bcrypt==3.1.7
@@ -22,8 +21,6 @@ django-debug-toolbar==3.4.0
 django-extensions==3.2.1
 django-filter==2.4.0
 django-js-asset==2.0.0
-django-mptt==0.13.4
-django-versatileimagefield==2.2
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.2.0
 drf-extra-fields==3.4.0
@@ -45,15 +42,11 @@ pdfkit==1.0.0
 pexpect==4.6.0
 pickleshare==0.7.5
 Pillow==7.0.0
-platformdirs==2.5.2
-prompt-toolkit==3.0.8
 psycopg2==2.9.5
 pycrypto==2.6.1
 Pygments==2.7.3
 PyJWT==1.7.1
 pyzmq==20.0.0
-python-magic==0.4.27
-python-magic-debian-bin==0.4.25
 requests==2.28.1
 requests-file==1.5.1
 simplejson==3.16.0
