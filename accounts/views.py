@@ -15,13 +15,11 @@ from .forms import *
 from .models import *
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import views as auth_views
-
-
-
-
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.forms import PasswordResetForm
 # from django.contrib.auth.models import User
+from django.conf import settings
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
@@ -46,8 +44,8 @@ def password_reset_request(request):
 					subject = "Password Reset Requested"
 					email_template_name = "accounts/password/password_reset_email.txt"
 					c = {
-					"email":user.email,
-					'domain':'127.0.0.1:8000',
+					"email": user.email,
+					'domain': get_current_site(request),
 					'site_name': 'Website',
 					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
 					"user": user,
@@ -56,12 +54,12 @@ def password_reset_request(request):
 					}
 					email = render_to_string(email_template_name, c)
 					try:
-						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
+						send_mail(subject, email, settings.EMAIL_HOST_USER , [user.email], fail_silently=False)
 					except BadHeaderError:
 						return HttpResponse('Invalid header found.')
 					return redirect("password_reset/done/")
 			else:
-				messages.info(request, 'Email Is Unknown')
+				messages.warning(request, 'Email does not exist!')
 	password_reset_form = PasswordResetForm()
 	return render(request=request, template_name="accounts/password/password_reset.html", context={"password_reset_form":password_reset_form})
 
@@ -89,7 +87,7 @@ def registerCustomer(request):
 @with_usertype(allowed_roles=['Customer'])
 def registerVendor(request):
 	if request.user.is_anonymous:
-		return redirect('login')
+		return redirect('accounts:login')
 	else:
 		if request.user.is_customer and request.user.is_vendor == False:
 			user = User.objects.get(id=request.user.id)
@@ -122,7 +120,7 @@ def registerVendor(request):
 														)
 					new_user.save()
 					messages.success(request,'Account and Shop was created for ' + username)
-					return redirect('login')
+					return redirect('accounts:login')
 			context = {'form': form}
 	return render(request, 'accounts/register_vendor.html', context)
 
