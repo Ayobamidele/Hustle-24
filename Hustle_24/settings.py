@@ -26,8 +26,11 @@ SECRET_KEY = 'django-insecure-nam74v@zgf8=0=zgt!q7=7d&=#%jvugqpbidqv6kl#8foorape
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 # ALLOWED_HOSTS = ['a9ad-102-89-22-6.eu.ngrok.io']
-ALLOWED_HOSTS = [ '.ngrok.io', '127.0.0.1', '.telebit.io' , '.railway.app', '.loclx.io' ]
-
+ALLOWED_HOSTS = [ '.ngrok.io', '127.0.0.1', '.telebit.io' , '.railway.app' , '.loclx.io' , '*' ]
+CSRF_TRUSTED_ORIGINS = [
+    'https://hustle-24-production.up.railway.app',
+    '*'
+]
 # ALLOWED_HOSTS = ['a9ad-102-89-22-6.eu.ngrok.io']
 
 # Application definition
