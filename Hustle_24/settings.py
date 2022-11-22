@@ -29,7 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = [ '.ngrok.io', '127.0.0.1', '.telebit.io' , '.railway.app' , '.loclx.io' , '*' ]
 CSRF_TRUSTED_ORIGINS = [
     'https://hustle-24-production.up.railway.app',
-    '*'
 ]
 # ALLOWED_HOSTS = ['a9ad-102-89-22-6.eu.ngrok.io']
 
