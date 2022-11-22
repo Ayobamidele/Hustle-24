@@ -9,7 +9,7 @@ from . import views
 app_name= 'whatsapp_api'
 
 urlpatterns = [
-    path('webhooks_receive_msg/', views.webhook,name="whatsapp_webhook"),
+    path('whatsapp_api/webhooks_receive_msg/', views.webhook,name="whatsapp_webhook"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

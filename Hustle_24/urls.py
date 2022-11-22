@@ -30,7 +30,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls', namespace='api')),
-    path('whatsapp_api/', include('whatsapp_api.urls', namespace='whatsapp_api')),
+    path('', include('whatsapp_api.urls', namespace='whatsapp_api')),
 
 
     path('', include('shop.urls', namespace='shop')),
