@@ -12,14 +12,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import inlineformset_factory
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from .decorators import *
 from .models import *
 from .utils import cartData, cookieCart, guestOrder
+from .cart import Cart
+from .forms import CartAddProductForm
+
+
+
 
 User = get_user_model()
 
-# Create your views here.
 
 
 def generateRefCode():	
@@ -35,11 +40,11 @@ def cart(request):
 			userPicture = request.user.customer.profile_pic.url
 		elif request.user.is_vendor:
 			userPicture = request.user.vendor.profile_pic.url
-	data = cartData(request)
-	cart_data = data['cart_data']
-	cart_items = data['cart_items']
-	total_items = len(cart_items)
-	total_price = cart_data.get_cart_total_price if request.user.is_authenticated else cart_data.get('cart_total_price')
+	cart = Cart(request)
+	cart_items = cart
+	# print(dir(cart_items.cart),cart_items.cart.get('2'))
+	total_items = cart.__len__()
+	total_price = cart.get_total_price
 	context = { 'total_price': total_price,'userPicture':userPicture,
 				'cart_items':cart_items, 'total_items': total_items,
 			  }
@@ -72,6 +77,43 @@ def updateItem(request):
 	if orderItem.quantity <= 0:
 		orderItem.delete()
 	return JsonResponse('Item was added', safe=False)
+
+
+@require_POST
+def addItem(request):
+	cart = Cart(request)
+	product_id = int(request.POST.get("id"))
+	product = get_object_or_404(Product, id=product_id)
+	proposed_update = cart.cart.get(str(product.id))['quantity'] + 1
+	updated_request = request.POST.copy()
+	updated_request.update({'quantity': proposed_update, "product": product})
+	form = CartAddProductForm(updated_request)
+	print(form.errors.as_json())
+	if form.is_valid():
+		cd = form.cleaned_data
+		cart.add(product=product,
+				quantity=cd['quantity'],
+				update_quantity=True
+				)
+	else:
+		if "product" in form.errors.as_json():
+			messages.warning(request,"Product doesn't exists")
+		elif "Quantity":
+			messages.warning(request,"Product max quantity available")
+    # max quantity available 
+    # min quantity - Shey you dey wine me ni
+	cartqty = cart.__len__()
+	response = JsonResponse({"qty": cartqty, "Success": True})
+	return response
+
+
+@require_POST
+def status(request):
+	cart = Cart(request)
+	cartqty = cart.__len__()
+	response = JsonResponse({"qty": cartqty, "Success": True})
+	return response
+
 
 def checkout(request):
 	userPicture = request.user

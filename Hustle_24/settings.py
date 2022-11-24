@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'crispy_forms',
+    'django_extensions',
     # 'rest_hooks',
 
     'carts',
@@ -180,11 +181,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
+
+
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -228,7 +234,7 @@ LOGIN_URL = "accounts:login"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
-# Email nRFgFHeDU7Rt
+# Email
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -237,4 +243,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ayobamideleewetuga@zohomail.com'
 EMAIL_HOST_PASSWORD = 'nRFgFHeDU7Rt'
+
+# Cart
+CART_SESSION_ID = 'cart'
+
 

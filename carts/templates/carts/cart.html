@@ -1,5 +1,7 @@
 {% extends 'shop/main.html' %}
+{% load static %}
 {% load humanize %}
+{% load debugger_tags %}
 {% block title %}Cart {{total_items|intcomma }}{% endblock %}
 {% block content %}	
 
@@ -40,14 +42,16 @@
 											<div class="row align-items-center">
 												<div class="col-12 col-lg-6">
 													<div class="media media-product">
-														<a href="#!"><img src=static/images/{{item.product.image}} alt="Image"></a>
+														<a href={{ item.product.get_absolute_url }}>
+														<img src={% static item.product.image.first.image.url %} alt="Image"></a>
+														<a href={{ item.product.get_absolute_url }}>
 														<div class="media-body">
 															<h5 class="media-title">{{ item.product.title }}</h5>
-														</div>
+														</div></a>
 													</div>
 												</div>
 												<div class="col-4 col-lg-2 text-center">
-													<span class="cart-item-price">${{ item.product.price|floatformat:2|intcomma }}</span>
+													<span class="cart-item-price">${{ item.product.regular_price|floatformat:2|intcomma }}</span>
 												</div>
 												<div class="col-4 col-lg-2 text-center">
 													<div class="counter">
@@ -57,7 +61,7 @@
 													</div>
 												</div>
 												<div class="col-4 col-lg-2 text-center">
-													<span class="cart-item-price">${{ item.get_total|floatformat:2|intcomma }}</span>
+													<span class="cart-item-price">${{ item.total_price|floatformat:2|intcomma }}</span>
 												</div>
 												<span data-action="removeAll" data-product={{item.product.id}}  class="update-cart icon icon-remove cart-item-close"></span>
 											</div>

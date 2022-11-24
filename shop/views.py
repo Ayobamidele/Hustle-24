@@ -85,7 +85,7 @@ def productDetail(request, title,ref_code,shop):
 		elif request.user.is_vendor:
 			userPicture = request.user.vendor.profile_pic.url
 	product = Product.objects.filter(ref_code=ref_code).get()
-	store = request.user.vendor.storename
+	store = product.get_shop
 	price = f'{product.regular_price:n}'
 	images = product.image.filter(is_feature=True).all()
 	mainimage = product.image.filter(is_feature=False).first().image.url
