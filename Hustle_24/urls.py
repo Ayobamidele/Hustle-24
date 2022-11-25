@@ -32,6 +32,7 @@ urlpatterns = [
     path('api/', include('api.urls', namespace='api')),
     path('', include('whatsapp_api.urls', namespace='whatsapp_api')),
 
+    path('', include('user_sessions.urls', namespace='user_sessions')),
 
     path('', include('shop.urls', namespace='shop')),
     path('', include('accounts.urls', namespace='accounts')),

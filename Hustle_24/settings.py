@@ -38,15 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sessions',
     
+    'user_sessions',
     'rest_framework',
     'rest_framework.authtoken',
     'crispy_forms',
     'django_extensions',
+    'geoip2',
     # 'rest_hooks',
 
     'carts',
@@ -65,6 +67,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'user_sessions.middleware.SessionMiddleware',
+
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -231,6 +236,7 @@ AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = ['accounts.backend.EmailBackend']
 LOGIN_REDIRECT_URL = 'accounts:login'
 LOGIN_URL = "accounts:login"
+LOGOUT_REDIRECT_URL = "shop:home"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
@@ -244,7 +250,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ayobamideleewetuga@zohomail.com'
 EMAIL_HOST_PASSWORD = 'nRFgFHeDU7Rt'
 
-# Cart
+# Session
 CART_SESSION_ID = 'cart'
-
-
+SESSION_ENGINE = 'user_sessions.backends.db'
+SILENCED_SYSTEM_CHECKS = ['admin.E410']
+GEOIP_PATH = Path.joinpath(BASE_DIR, 'geoip')
