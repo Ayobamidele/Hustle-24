@@ -84,7 +84,7 @@ def addItem(request):
 	cart = Cart(request)
 	product_id = int(request.POST.get("id"))
 	product = get_object_or_404(Product, id=product_id)
-	proposed_update = cart.cart.get(str(product.id))['quantity'] + 1
+	proposed_update = cart.cart[str(product_id)]['quantity'] + 1
 	updated_request = request.POST.copy()
 	updated_request.update({'quantity': proposed_update, "product": product})
 	form = CartAddProductForm(updated_request)
