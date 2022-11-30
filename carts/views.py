@@ -12,7 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import inlineformset_factory
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 
 from .decorators import *
 from .models import *
@@ -84,11 +84,22 @@ def addItem(request):
 	cart = Cart(request)
 	product_id = int(request.POST.get("id"))
 	product = get_object_or_404(Product, id=product_id)
-	proposed_update = cart.cart[str(product_id)]['quantity'] + 1
-	updated_request = request.POST.copy()
-	updated_request.update({'quantity': proposed_update, "product": product})
-	form = CartAddProductForm(updated_request)
-	print(form.errors.as_json())
+	a = messages.get_messages(request)._prepare_messages
+	storage = messages.get_messages(request)
+	storage.used = True
+	# print(list(storage._loaded_messages),dir(storage))
+	a = [str(item) for item in storage._loaded_messages]
+	print(a)
+	if cart.cart != {}:
+		proposed_update = cart.cart[str(product_id)]['quantity'] + 1
+		updated_request = request.POST.copy()
+		updated_request.update({'quantity': proposed_update, "product": product})
+		form = CartAddProductForm(updated_request)
+	else:
+		updated_request = request.POST.copy()
+		updated_request.update({'quantity': 1, "product": product})
+		form = CartAddProductForm(updated_request)
+	# print(form.errors.as_json(),form.errors,dir(form))
 	if form.is_valid():
 		cd = form.cleaned_data
 		cart.add(product=product,
@@ -261,3 +272,15 @@ def processOrder(request):
 		vendorsCart.save()
 		print("point 8")
 	return JsonResponse('Payment complete!', safe=False)
+
+
+@require_GET
+def send_messages(request):
+	storage = messages.get_messages(request)
+	storage.used = True
+	stringed_messages = [str(item) for item in storage._loaded_messages]
+	
+	response = JsonResponse({"messages": stringed_messages, "Success": True})
+
+	return response
+

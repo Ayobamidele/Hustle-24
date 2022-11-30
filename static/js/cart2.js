@@ -42,3 +42,31 @@ $.ajax({
 });
 
 
+function refresh() {
+    $.ajax({
+        url: 'cart/messages',
+        type: 'GET',
+        success: function(data) {
+            let messagesHtml = "";
+            for (var message of data.messages) {
+              messagesHtml += `<div class="alert alert-info alert-dismissible fade show mx-auto w-80" role="alert">
+              ${message}
+              <button type="button" class="close fs-16 text-dark h-100" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true" class="text-dark">&times;</span>
+              </button>
+          </div>`; // use your message html structure here
+            }
+            console.log(data)
+            let messagesContainer = document.getElementById("messagesContainer");
+            messagesContainer.innerHTML = messagesHtml;
+            setTimeout(refresh, 2500);
+        },
+        error: function (xhr, errmsg, err) {
+          console.log(err, errmsg, xhr)
+        }
+    });
+}
+
+$(function(){
+    refresh();
+});

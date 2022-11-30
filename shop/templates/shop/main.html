@@ -29,9 +29,12 @@
 			padding-top: 20px !important;
 		}
 	</style>
+	{% block extrascripts %}
 	<script>
+
 		var user = '{{request.user}}'
 		var user_is_vendor = '{{request.user.is_vendor}}'
+		var my_var_1 = 122
 
 		function getToken(name) {
 			let cookieValue = null;
@@ -86,12 +89,13 @@
 		console.log('cart:', cart)
 		console.log('watchlist:', watchlist)
 		
-	</script>	
+	</script>
+	{% endblock %}	
 </head>
 <body>
 	{% include 'shop/navbar.html' %}
-	
 	<div class="mb-5 sdiv mb-auto overflow-hidden" style="min-height: 100vh;">
+	<div id="messagesContainer"></div>
 		{% block content %}	
 
 
