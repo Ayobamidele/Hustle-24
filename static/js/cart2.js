@@ -59,7 +59,7 @@ function refresh() {
             console.log(data)
             let messagesContainer = document.getElementById("messagesContainer");
             messagesContainer.innerHTML = messagesHtml;
-            setTimeout(refresh, 2500);
+            setTimeout(refresh, 2530);
         },
         error: function (xhr, errmsg, err) {
           console.log(err, errmsg, xhr)
