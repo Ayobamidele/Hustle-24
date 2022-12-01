@@ -25,6 +25,15 @@ from .forms import CartAddProductForm
 
 User = get_user_model()
 
+@require_GET
+def send_messages(request):
+	storage = messages.get_messages(request)
+	storage.used = True
+	stringed_messages = [str(item) for item in storage._loaded_messages]
+	
+	response = JsonResponse({"messages": stringed_messages, "Success": True})
+
+	return response
 
 
 def generateRefCode():	
@@ -84,14 +93,12 @@ def addItem(request):
 	cart = Cart(request)
 	product_id = int(request.POST.get("id"))
 	product = get_object_or_404(Product, id=product_id)
-	a = messages.get_messages(request)._prepare_messages
-	storage = messages.get_messages(request)
-	storage.used = True
-	# print(list(storage._loaded_messages),dir(storage))
-	a = [str(item) for item in storage._loaded_messages]
-	print(a)
 	if cart.cart != {}:
-		proposed_update = cart.cart[str(product_id)]['quantity'] + 1
+		print(cart.cart)
+		if str(product_id) not in cart.cart.keys():
+			proposed_update = 1
+		else:
+			proposed_update = cart.cart[str(product_id)]['quantity'] + 1
 		updated_request = request.POST.copy()
 		updated_request.update({'quantity': proposed_update, "product": product})
 		form = CartAddProductForm(updated_request)
@@ -110,12 +117,41 @@ def addItem(request):
 		if "product" in form.errors.as_json():
 			messages.warning(request,"Product doesn't exists")
 		elif "Quantity":
-			messages.warning(request,"Product max quantity available")
+			messages.add_message(request, messages.INFO, "You have maxed the quantity available for this product")
     # max quantity available 
     # min quantity - Shey you dey wine me ni
 	cartqty = cart.__len__()
 	response = JsonResponse({"qty": cartqty, "Success": True})
 	return response
+
+
+@require_POST
+def removeItem(request):
+	cart = Cart(request)
+	product_id = int(request.POST.get("id"))
+	product = get_object_or_404(Product, id=product_id)
+	if str(product_id) in cart.cart.keys():
+		item = cart.cart[str(product_id)]
+		if item['quantity'] > 1:
+			proposed_update = cart.cart[str(product_id)]['quantity']-1
+			print(cart.cart[str(product_id)]['quantity']-1,proposed_update)
+			updated_request = request.POST.copy()
+			updated_request.update({'quantity': proposed_update, "product": product})
+			form = CartAddProductForm(updated_request)
+			if form.is_valid():
+				cd = form.cleaned_data
+				cart.minus(product=product,
+						quantity=cd['quantity'],
+						)
+			else:
+				messages.add_message(request, messages.WARNING, "Error wit quantity being removed")
+		else:
+			cart.remove(product)
+	cartqty = cart.__len__()
+	print(cart.cart)
+	response = JsonResponse({"qty": cartqty, "Success": True})
+	return response
+
 
 
 @require_POST
@@ -274,13 +310,4 @@ def processOrder(request):
 	return JsonResponse('Payment complete!', safe=False)
 
 
-@require_GET
-def send_messages(request):
-	storage = messages.get_messages(request)
-	storage.used = True
-	stringed_messages = [str(item) for item in storage._loaded_messages]
-	
-	response = JsonResponse({"messages": stringed_messages, "Success": True})
-
-	return response
 

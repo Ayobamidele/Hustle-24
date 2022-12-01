@@ -172,8 +172,11 @@ def loginPage(request):
 	return render(request,'accounts/signin.html', {'form': form })
 	
 def logoutUser(request):
-    logout(request)
-    return redirect('accounts:login')
+	messages.add_message(request, messages.INFO, '{0} logged out.'.format(request.user))
+	logout(request)
+	return redirect('accounts:login')
+
+	
 # vendor/bami
 @login_required(login_url='accounts:login')
 @allowed_users(allowed_roles=['Customer'])

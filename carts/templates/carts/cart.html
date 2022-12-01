@@ -55,9 +55,9 @@
 												</div>
 												<div class="col-4 col-lg-2 text-center">
 													<div class="counter">
-														<span data-action="remove" data-product={{item.product.id}} class="counter-minus icon-minus update-cart" field="qty-1"></span>
+														<span data-action="remove" data-product={{item.product.id}} class="counter-minus icon-minus update-cart cart-remove" field="qty-1"></span>
 														<input type="text" name="qty-1" class="counter-value " value='{{ item.quantity }}' min="1">
-														<span data-action="add" data-product={{item.product.id}} class="counter-plus icon-plus update-cart" field="qty-1"></span>
+														<span data-action="add" data-product={{item.product.id}} class="counter-plus icon-plus update-cart cart-add" field="qty-1"></span>
 													</div>
 												</div>
 												<div class="col-4 col-lg-2 text-center">
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 				{% else %}
-				<h1 class=" py-3 pb-3">Empty</h1>
+				<h1 class="mx-auto py-3 pb-3">Empty</h1>
 				{% endif %}
 				<div class="row justify-content-between">
 					<div class="col-md-6 col-lg-4 py-1">

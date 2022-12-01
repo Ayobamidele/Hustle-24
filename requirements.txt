@@ -65,3 +65,4 @@ wheel==0.38.4
 wrapt==1.14.1
 django-user-sessions @ git+https://github.com/jazzband/django-user-sessions.git@75a273be1ec4736f09b1feb238a305049884c725#egg=django-user-sessions
 geoip2==4.6.0
+django-jazzmin==2.6.0

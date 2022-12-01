@@ -1,6 +1,6 @@
-var updateBtns = document.querySelectorAll('.update-cart');
-var updateWatchlists = document.querySelectorAll('.update-watch-list');
-var cartTotal = document.getElementById("cart-total")
+// var updateBtns = document.querySelectorAll('.update-cart');
+// var updateWatchlists = document.querySelectorAll('.update-watch-list');
+// var cartTotal = document.getElementById("cart-total")
 
 let today = new Date()
 let sameDay = new Date(today)
