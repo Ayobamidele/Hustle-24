@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sessions',
     
-    'user_sessions',
+    # 'user_sessions',
     'rest_framework',
     'rest_framework.authtoken',
     'crispy_forms',
@@ -74,7 +74,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'user_sessions.middleware.SessionMiddleware',
+    # 'user_sessions.middleware.SessionMiddleware',
 
 
     'django.middleware.common.CommonMiddleware',
@@ -259,8 +259,8 @@ EMAIL_HOST_PASSWORD = 'nRFgFHeDU7Rt'
 
 # Session
 CART_SESSION_ID = 'cart'
-SESSION_ENGINE = 'user_sessions.backends.db'
-SILENCED_SYSTEM_CHECKS = ['admin.E410']
+# SESSION_ENGINE = 'user_sessions.backends.db'
+# SILENCED_SYSTEM_CHECKS = ['admin.E410']
 GEOIP_PATH = Path.joinpath(BASE_DIR, 'geoip')
 
 # Messages
