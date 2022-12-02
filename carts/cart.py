@@ -55,11 +55,11 @@ class Cart(object):
         self.save()
     
 
-    def minus(self, product, quantity=1):
+    def minus(self, product, quantity):
         product_id = str(product.id)
         if product_id in self.cart:
             self.cart[product_id]['quantity'] = quantity
-            self.save
+            self.save()
 
     def remove(self, product):
         """
@@ -87,4 +87,4 @@ class Cart(object):
     		print(item)
 
     def get_total_price(self):
-        return sum(item['regular_price'] * item['quantity'] for item in self.cart.values())
+        return sum(float(item['price']) * item['quantity'] for item in self.cart.values())

@@ -34,7 +34,8 @@
 
 		var user = '{{request.user}}'
 		var user_is_vendor = '{{request.user.is_vendor}}'
-		var my_var_1 = 122
+		var cart_url = "{% url 'carts:cart' %}"
+
 
 		function getToken(name) {
 			let cookieValue = null;

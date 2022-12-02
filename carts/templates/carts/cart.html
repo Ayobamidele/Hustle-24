@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% load debugger_tags %}
-{% block title %}Cart {{total_items|intcomma }}{% endblock %}
+{% block title %}Cart - {{total_items|intcomma }}{% endblock %}
 {% block content %}	
 
 <main style="padding: 24px 0 30px 0;">
@@ -13,7 +13,7 @@
 			<div class="row">
 				<div class="col text-center">
 					<h1 class="h1 border-bottom">Your Cart</h1>
-					<h4 class="h2 eyebrow">Items - {{total_items|intcomma}}</h4>
+					<h4 class="h2 eyebrow ">Items - <span id="cart-container-total">{{total_items|intcomma}}</span></h4>
 				</div>
 			</div>
 		</div>
@@ -23,7 +23,7 @@
 		<section class=" pt-3">
 			<div class="container">
 				{% if total_items > 0 %}
-					<div class=" py-3">
+					<div class="cart-item-container py-3">
 						<div class="row mb-0 d-none d-lg-flex">
 							<div class="col">
 								<div class="row pr-6">
@@ -56,12 +56,12 @@
 												<div class="col-4 col-lg-2 text-center">
 													<div class="counter">
 														<span data-action="remove" data-product={{item.product.id}} class="counter-minus icon-minus update-cart cart-remove" field="qty-1"></span>
-														<input type="text" name="qty-1" class="counter-value " value='{{ item.quantity }}' min="1">
+														<input type="text" name="qty-1" id="counter-value" class="counter-value " value='{{ item.quantity }}' min="1" disabled>
 														<span data-action="add" data-product={{item.product.id}} class="counter-plus icon-plus update-cart cart-add" field="qty-1"></span>
 													</div>
 												</div>
 												<div class="col-4 col-lg-2 text-center">
-													<span class="cart-item-price">${{ item.total_price|floatformat:2|intcomma }}</span>
+													<span class="cart-item-total-price">${{ item.total_price|floatformat:2|intcomma }}</span>
 												</div>
 												<span data-action="removeAll" data-product={{item.product.id}}  class="update-cart icon icon-remove cart-item-close"></span>
 											</div>
@@ -77,7 +77,7 @@
 					<div class="col-md-6 col-lg-4 py-1">
 						<div class="inline-block">
 							<span class="eyebrow">Total</span>
-							<h4 class="h2">${{total_price|floatformat:2|intcomma}}</h4>
+							<h4 class="h2" id="total_price">${{total_price|floatformat:2|intcomma}}</h4>
 						</div>
 					</div>
 					<div class="col-md-6 col-lg-4 py-1" id="checkoutBtn">

@@ -94,7 +94,6 @@ def addItem(request):
 	product_id = int(request.POST.get("id"))
 	product = get_object_or_404(Product, id=product_id)
 	if cart.cart != {}:
-		print(cart.cart)
 		if str(product_id) not in cart.cart.keys():
 			proposed_update = 1
 		else:
@@ -121,35 +120,55 @@ def addItem(request):
     # max quantity available 
     # min quantity - Shey you dey wine me ni
 	cartqty = cart.__len__()
-	response = JsonResponse({"qty": cartqty, "Success": True})
+	total_price = f"{(cart.cart[str(product_id)]['quantity'] * product.regular_price):n}" if type(cart.cart[str(product_id)]['quantity']) == int else False
+	updated_quantity = cart.cart[str(product_id)]['quantity'] if type(cart.cart[str(product_id)]['quantity']) == int else False
+	response = JsonResponse({"qty": cartqty, "prc": f"{cart.get_total_price():n}", "Success": True, "total_price": total_price, "updated_quantity": updated_quantity })
 	return response
 
 
 @require_POST
 def removeItem(request):
 	cart = Cart(request)
+	removeItem = False
 	product_id = int(request.POST.get("id"))
 	product = get_object_or_404(Product, id=product_id)
 	if str(product_id) in cart.cart.keys():
-		item = cart.cart[str(product_id)]
-		if item['quantity'] > 1:
-			proposed_update = cart.cart[str(product_id)]['quantity']-1
-			print(cart.cart[str(product_id)]['quantity']-1,proposed_update)
+		item = cart.cart[str(product_id)]['quantity']
+		if item > 1:
+			proposed_update = cart.cart[str(product_id)]['quantity'] - 1
 			updated_request = request.POST.copy()
 			updated_request.update({'quantity': proposed_update, "product": product})
 			form = CartAddProductForm(updated_request)
 			if form.is_valid():
 				cd = form.cleaned_data
 				cart.minus(product=product,
-						quantity=cd['quantity'],
-						)
+							quantity=cd['quantity'],)
 			else:
-				messages.add_message(request, messages.WARNING, "Error wit quantity being removed")
+				messages.add_message(request, messages.WARNING, "Error with quantity being removed!!!")
 		else:
 			cart.remove(product)
+			removeItem = True
+			print(cart.cart)
 	cartqty = cart.__len__()
-	print(cart.cart)
-	response = JsonResponse({"qty": cartqty, "Success": True})
+	try:
+		total_price = f"{(cart.cart[str(product_id)]['quantity'] * product.regular_price):n}" if type(cart.cart[str(product_id)]['quantity']) == int else False
+		updated_quantity = cart.cart[str(product_id)]['quantity'] if type(cart.cart[str(product_id)]['quantity']) == int else False
+	except Exception as e:
+		total_price = False
+		updated_quantity = False
+	response = JsonResponse({"qty": cartqty, "prc": f"{cart.get_total_price():n}", "removeItem": removeItem, "Success": True, "total_price": total_price, "updated_quantity": updated_quantity })
+	return response
+
+
+@require_POST
+def removeAllItems(request):
+	cart = Cart(request)
+	product_id = int(request.POST.get("id"))
+	product = get_object_or_404(Product, id=product_id)
+	if str(product_id) in cart.cart.keys():
+		cart.remove(product)
+	cartqty = cart.__len__()
+	response = JsonResponse({"qty": cartqty, "prc": f"{cart.get_total_price():n}", "Success": True })
 	return response
 
 
@@ -160,6 +179,13 @@ def status(request):
 	cartqty = cart.__len__()
 	response = JsonResponse({"qty": cartqty, "Success": True})
 	return response
+
+
+def cart_remove(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    cart.remove(product)
+    return redirect('cart:cart_detail')
 
 
 def checkout(request):

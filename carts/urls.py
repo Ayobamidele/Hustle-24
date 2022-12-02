@@ -11,6 +11,7 @@ urlpatterns = [
     path('cart/add', views.addItem,name="add"),
     path('cart/remove', views.removeItem,name="remove"),
     path('cart/status', views.status, name="status"),
+    path('cart/remove-all', views.removeAllItems, name="removeAll"),
 
     path('cart/messages', views.send_messages, name="messages"),
     path('cart/process-order', views.processOrder,name="process-order"),
