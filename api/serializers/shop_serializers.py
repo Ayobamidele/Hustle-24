@@ -12,7 +12,7 @@ from django.core.files.uploadedfile import UploadedFile
 import requests
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
-from .relations import MultiplePKsHyperlinkedIdentityField
+from api.relations import MultiplePKsHyperlinkedIdentityField
 
 
 

@@ -12,6 +12,29 @@ GENDER = (
 )
 
 
+class AnonymousUserForm(ModelForm):
+    class Meta:
+        model = AnonymousUsers
+        fields = ['email']
+
+    def __init__(self, *args, **kwargs):
+        super(AnonymousUserForm, self).__init__(*args, **kwargs)
+        for field in self.fields.keys():
+            self.fields[field].widget.attrs.update({'class': 'form-control '})
+
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username' , 'first_name' , 'last_name' , 'email']
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        for field in self.fields.keys():
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+            self.fields[field].required = False
+
+
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
@@ -22,6 +45,7 @@ class CustomerForm(ModelForm):
         super(CustomerForm, self).__init__(*args, **kwargs)
         for field in self.fields.keys():
             self.fields[field].widget.attrs.update({'class': 'form-control'})
+            self.fields[field].required = False
 
 
 class VendorForm(ModelForm):

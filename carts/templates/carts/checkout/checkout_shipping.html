@@ -1,0 +1,131 @@
+{% extends 'shop/main.html' %}
+{% load static %}
+{% load humanize %}
+{% load debugger_tags %}
+{% block content %}	
+
+	<section class="no-overflow pt-0">
+		<div class="container">
+	  		<div class="row gutter-4 justify-content-between">
+				<form id="regform" class="d-flex mx-auto" action="" method="POST" enctype="multipart/form-data">
+					<div id="reg"  class="row align-items-end mb-2 col-lg-8">
+						{% csrf_token %}	
+					
+						<div class="liga">
+						
+							<div class="form-group">
+								<div class="row align-items-end mb-2">
+							<div class="col-md-12">
+								<h2 class="h3 mb-0"><span class="text-muted">02.</span> Delivery Address</h2>
+							</div>
+						</div>
+						<div class="row gutter-1 mb-6">
+							<div class="form-group col-md-8">
+								<label for="address">Address</label>
+								<input type="text" class="form-control" id="address" name="address" placeholder="">
+							</div>
+							<div class="form-group col-md-4">
+								<label for="city">City</label>
+								<input type="text" class="form-control" id="city" name="city" placeholder="">
+							</div>
+							<div class="form-group col-md-4">
+								<label for="state">State</label>
+								<input type="text" class="form-control" id="state" name="state" placeholder="">
+							</div>
+							<div class="form-group col-md-4">
+								<label for="postcode">Zipcode</label>
+								<input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="">
+							</div>
+							<div class="form-group col-md-4">
+								<label for="country">Country</label>
+								<input type="text" class="form-control" id="country" name="country" placeholder="">
+							</div>
+						</div>
+							</div>
+						</div>
+
+					<!-- place order -->
+							<div class=" eyebrow">
+								<button class="btn btn-primary my-2" type="submit">Send Verification</button>
+							</div>
+					</div>
+
+					<aside class="col-lg-4" id="orderDetails">
+						<div class="row">
+
+							<!-- Authentication -->
+							
+							<!-- order preview -->
+							<div class="col-12">
+								<div class="card card-data bg-light">
+									<div class="card-header py-2 px-3">
+										<div class="row align-items-center p-2">
+											<div class="col">
+												<h3 class="fs-18 mb-0">Your Cart</h3>
+											</div>
+											<div class="col text-right">
+												<a href="{% url 'carts:cart' %}" class="underline eyebrow">Edit</a>
+											</div>
+										</div>
+									</div>
+									<div class="card-body">
+										<ul class="list-group list-group-line">
+											{% for item in cart_items %}
+												<li class="list-group-item d-flex justify-content-between text-dark align-items-center">
+												<img class="checkout-cart-item" src={% static item.product.image.first.image.url %} alt="Image">
+												<span class="text-center p-1">{{ item.product.title }}</span>
+												<span style="color: #63DE63;"class="p-1">x{{ item.quantity }}</span>
+												<span>${{ item.total_price|floatformat:2|intcomma }}</span>
+												</li>
+											{% endfor %}
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<!-- order summary -->
+							<div class="col-12 mt-1">
+								<div class="card card-data bg-light">
+									<div class="card-header py-2 px-3">
+										<div class="row align-items-center p-2">
+											<div class="col">
+												<h3 class="fs-18 mb-0">Order Summary</h3>
+											</div>
+										</div>
+									</div>
+									
+									<div class="card-body">
+										<ul class="list-group list-group-minimal">
+											<li class="list-group-item d-flex justify-content-between align-items-center py-1">
+												Subtotal
+												<span>${{cart_items.get_total_price}}</span>
+											</li>
+											<li class="list-group-item d-flex justify-content-between align-items-center py-1">
+												Shipping<span>${{ shipping.cost }}</span>
+											</li>
+											<li class="list-group-item d-flex justify-content-between align-items-center py-1">
+											Discount
+											<span>-{{order.discount}}%</span>
+											</li>
+										</ul>
+									</div>
+									<div class="card-footer py-1">
+										<ul class="list-group list-group-minimal">
+											<li class="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
+												Total<span>${{order.cost}}</span>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							
+
+						</div>
+					</aside>
+				</form>
+			</div>
+		</div>
+	</section>
+		
+{% endblock %}

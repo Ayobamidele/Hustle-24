@@ -219,10 +219,17 @@ def customerPage(request,customer):
 		customerForm = CustomerForm(request.POST, request.FILES, instance=customer)
 		if customerForm.is_valid():
 			customerForm.save()
-		if request.user.is_vendor:
-			vendorForm = VendorForm(request.POST, request.FILES, instance=vendor)
-			if vendorForm.is_valid():
-				vendorForm.save()
+			updated_request = request.POST.copy()
+			updated_request.update({'first_name': request.POST['firstname'], "last_name": request.POST['lastname']})
+			userForm = UserForm(updated_request, request.FILES, instance=request.user)
+			if userForm.is_valid():
+				userForm.save()
+
+			if request.user.is_vendor:
+				vendorForm = VendorForm(request.POST, request.FILES, instance=vendor)
+				if vendorForm.is_valid():
+					vendorForm.save()
+
 	elif request.method == "POST" and request.POST.get("form_type") == 'passwordChange':
 		passwordChangeForm = ChangeUserPasswordForm(request.POST, request.FILES,instance=request.user)
 		if passwordChangeForm.is_valid():

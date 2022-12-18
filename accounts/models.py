@@ -2,7 +2,7 @@ import os
 import random
 from ast import arg
 
-from django.contrib.auth.models import AbstractUser, Group, User
+from django.contrib.auth.models import AbstractUser, Group, User, BaseUserManager
 from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _
@@ -15,17 +15,52 @@ GENDER = (
 			('Female', 'female')
 			)
 
+class MyAccountManager(BaseUserManager):
+    def create_user(self, username, email, password):
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            username=username,
+            is_customer=True,
+            is_vendor=False
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, email, password):
+        user = self.create_user(
+            email=self.normalize_email(Email_Address),
+            password=password,
+            username=username,
+        )
+        user.is_admin = True
+        user.is_active=True
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+
+
+
 class User(AbstractUser):
 	is_customer = models.BooleanField(default=True)
 	is_vendor = models.BooleanField(default=False)
 	email = models.EmailField(_('email address'), unique=True)
-	
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['username']
-	
-	def __str__(self):
-		return self.email
+	objects = MyAccountManager()
 
+	def __str__(self):
+		return str(self.email)
+
+	def has_perm(self, perm, obj=None):
+		return self.is_superuser
+
+	def has_module_perms(self, app_label):
+		return self.is_superuser
 
 
 def photo_path(self, filename):	
@@ -64,6 +99,10 @@ class Vendor(models.Model):
 	
 	def __str__(self):
 		return str(self.firstname + " " + self.lastname)
+
+class AnonymousUsers(models.Model):
+	email = models.EmailField(max_length=254,)
+	date_created = models.DateTimeField(auto_now_add=True, null=True)
 
 
 class WatchGroup(models.Model):

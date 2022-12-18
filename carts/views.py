@@ -5,6 +5,7 @@ import random
 
 from accounts.forms import *
 from accounts.models import *
+from orders.forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
@@ -19,7 +20,6 @@ from .models import *
 from .utils import cartData, cookieCart, guestOrder
 from .cart import Cart
 from .forms import CartAddProductForm
-
 
 
 
@@ -41,7 +41,6 @@ def generateRefCode():
 	randomstr = ''.join((random.choice(chars)) for x in range(10))
 	return randomstr
 
-
 def cart(request):
 	userPicture = 'user.png'
 	if request.user.is_authenticated:
@@ -58,34 +57,6 @@ def cart(request):
 				'cart_items':cart_items, 'total_items': total_items,
 			  }
 	return render(request, 'carts/cart.html', context)
-
-def updateItem(request):
-	data = json.loads(request.body)
-	productId = data['productId']
-	action = data['action']
-	
-	print('Action:', action)
-	print('Product:', productId)
-	
-	customer = request.user.customer
-	product = Product.objects.get(id=productId)
-	order, created = Order.objects.get_or_create(customer=customer, complete=False)
-	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-	if action == 'add':
-		orderItem.quantity = (orderItem.quantity + 1)
-		order.quantity = (order.quantity + 1)
-	elif action == 'remove':
-		orderItem.quantity = (orderItem.quantity - 1)
-		order.quantity = (order.quantity - 1)
-	orderItem.save()
-	order.save()
-	if action == 'removeAll':
-		order.quantity = (order.quantity - orderItem.quantity)
-		orderItem.delete()
-		order.save()
-	if orderItem.quantity <= 0:
-		orderItem.delete()
-	return JsonResponse('Item was added', safe=False)
 
 
 @require_POST
@@ -181,158 +152,198 @@ def status(request):
 	return response
 
 
-def cart_remove(request, product_id):
-    cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
-    cart.remove(product)
-    return redirect('cart:cart_detail')
-
-
-def checkout(request):
-	userPicture = request.user
-	if request.user.is_authenticated:
-		if request.user.is_customer:
-			userPicture = request.user.customer
-		elif request.user.is_vendor:
-			userPicture = request.user.vendor
-	data = cartData(request)
-	cartItems = data['cartItems']
-	order = data['order']
-	items = data['items']
-	if request.user.is_authenticated:
-		display_register = False
-		form = CreateUserForm()
+def checkout_authentication(request):
+	if request.method == "POST":
+		print(request.POST)
+		form = AnonymousUserForm(request.POST)
+		if form.is_valid():
+			AnonymousUsers.objects.create(email=request.POST.get('email'))
+			return redirect('carts:checkout_location')
 	else:
-		display_register = True
-		form = CreateUserForm()
-	context = {'items':items, 'order':order,
-				'cartItems':cartItems,
+		userPicture = 'user.png'
+		if request.user.is_authenticated:
+			if request.user.is_customer:
+				userPicture = request.user.customer
+			elif request.user.is_vendor:
+				userPicture = request.user.vendor
+		cart = Cart(request)
+		cart_items = cart
+		form = AnonymousUserForm()
+		print(form)
+		display_register = False if request.user.is_authenticated else True
+		shipping = { "cost": 25, }
+		order = { "discount": 0, "cost": sum( [shipping['cost'] , cart.get_total_price(),]) , "complete": True }
+	context = {
+				'cart_items':cart_items,
 				'display_register':display_register,
-				'regform': form,
+				'form': form,
+				'shipping': shipping,
+				'order': order,
 				'userPicture': userPicture
 			}
-	return render(request, 'carts/checkout.html', context)
+	return render(request, 'carts/checkout/checkout_authentication.html', context)
 
-def processOrder(request):
-	transaction_id = datetime.datetime.now().timestamp()
-	if request.user.is_authenticated:
-		customer = request.user.customer
-		cusorder, created = Order.objects.get_or_create(complete=False,customer=customer)
-		cusorder.complete=True
-		cusorder.is_ordered=True
-		cusorder.ref_code=generateRefCode()
-		orderIdv = cusorder.ref_code
-		cusorder.save()
-		orderItems = cusorder.orderitem_set.all()
-		for orderItem in orderItems:
-			orderItem.is_ordered=True
-			orderItem.save()
+def checkout_location(request):
+	if request.method == "POST":
+		print(request.POST)
 	else:
-		cookieData = cookieCart(request)
-		cartItems = cookieData['cartItems']
-		order = cookieData['order']
-		items = cookieData['items']
-		userData = json.loads(request.body)['form']
-		print(cookieCart)
-		print(cartItems)
-		print(order)
-		print(items)
-		print(userData)
-		print(items)
-		# Create user
-		print(userData)
-		username = userData['first_name'] + " " + userData['last_name']
-		password = userData['password']
-		print(username ,password)
-		new_user = User.objects.create_user(username= username,
-											email=userData['email'],
-											password=password,
-											first_name=userData['first_name'],
-											last_name=userData['last_name']
-											)
-		new_user.save()
-		messages.success(request, 'Account was created for ' + username)
-		print(new_user.id)
-		customer = Customer.objects.get(user=new_user.id)
-		print("here")
-		cusorder = Order.objects.create(
-											customer=customer,
-											complete=True,
-											is_ordered=True,
-											quantity=order['get_cart_items'],
-											ref_code=generateRefCode()
-											)
-		print('here2')
-		cusorder.save()
-		orderIdv = cusorder.ref_code
-		print(cusorder)
-		for item in items:
-			productitem = Product.objects.get(id=item['product']['id'])
-			print('here3')
-			print(productitem,cusorder,item['quantity'])
-			orderI=OrderItem.objects.create(
-											order=cusorder, 
-											product=productitem, 
-											quantity=item['quantity'], 
-											is_ordered=True,
-										)
-			print('here4')
-			orderI.save()
-		"""
-	Pass in order
-	Get a order
-	Get all vendors involved
-	Arrange the order by vendor Id
-	"""
-	order = cusorder
-	print(order)
-	orderItems = order.get_cart_items()
-	print(orderItems)
-	allVendors = []
-	allVendorsId = set([])
-	sortedAllVendors = {}
-	print(allVendors,allVendorsId,sortedAllVendors)
-	for orderItem in orderItems:
-		vendorId = orderItem.product.shop_set.first().vendor_id
-		allVendorsId.add(vendorId)
-		allVendors.append({ vendorId : [orderItem] })
-	print("point 1")
-	for id in allVendorsId:
-		sortedAllVendors[id] = []
-	print("point 2")
-	def addOrder(orderId):
-		for order in allVendors:
-			if orderId in order.keys():
-				for x in order[orderId]:
-					sortedAllVendors[orderId].append(x)
-	print("point 3")
-	for order in allVendorsId:
-		addOrder(order)
-	print("point 4")
-	for cartkey in sortedAllVendors:
-		vendorUser = Vendor.objects.get(id=cartkey)
-		vendorsCart = Cart.objects.create()
-		vendorsCart.vendor = vendorUser
-		print(vendorsCart.vendor)
-		vendorsCart.order = cusorder
-		print("point 5",vendorsCart)
-		for orderedProducts in sortedAllVendors[cartkey]:
-			vendorsCart.totalprice += orderedProducts.get_total()
-			print(vendorsCart.totalprice)
-			productitem = Product.objects.get(id=orderedProducts.product.id)
-			vendorsCart.products.add(productitem)
-			orderedProduct = CartItem.objects.create(
-											cart=vendorsCart, 
-											product=productitem, 
-											quantity=orderedProducts.quantity, 
-											is_ordered=True,
-										)
-			orderedProduct.save()
-			vendorsCart.quantity += orderedProducts.quantity
-			print("point 6")
-		print("point 7",vendorsCart)
-		vendorsCart.save()
-		print("point 8")
+		userPicture = 'user.png'
+		if request.user.is_authenticated:
+			if request.user.is_customer:
+				userPicture = request.user.customer
+			elif request.user.is_vendor:
+				userPicture = request.user.vendor
+		cart = Cart(request)
+		cart_items = cart
+		form = ShippingAddressForm()
+		print(form)
+		display_register = False if request.user.is_authenticated else True
+		shipping = { "cost": 25, }
+		order = { "discount": 0, "cost": sum( [shipping['cost'] , cart.get_total_price(),]) , "complete": True }
+	context = {
+				'cart_items':cart_items,
+				'display_register':display_register,
+				'form': form,
+				'shipping': shipping,
+				'order': order,
+				'userPicture': userPicture
+			}
+	return render(request, 'carts/checkout/checkout_shipping.html', context)
+
+
+
+
+@require_POST
+def processOrder(request):
+	if request.user.is_authenticated:
+		print("Got Here Authenticated!")
+		# customer = request.user.customer
+		# cusorder, created = Order.objects.get_or_create(complete=False,customer=customer)
+		# cusorder.complete = True
+		# cusorder.is_ordered = True
+		# cusorder.ref_code = generateRefCode()
+		# orderIdv = cusorder.ref_code
+		# cusorder.save()
+		# orderItems = cusorder.orderitem_set.all()
+		# for orderItem in orderItems:
+		# 	orderItem.is_ordered=True
+		# 	orderItem.save()
+	else:
+		print("Got Here Unauthenticated!")
+		# 1. Get form data, user info, delivery, payment
+		# 2. Get cart data
+		# 3. Create anonymous user account
+		# 4. Create Order for the vendor's item
+		# 5. Process Payment
+
+
+
+
+	# 	cookieData = cookieCart(request)
+	# 	cartItems = cookieData['cartItems']
+	# 	order = cookieData['order']
+	# 	items = cookieData['items']
+	# 	userData = json.loads(request.body)['form']
+	# 	print(cookieCart)
+	# 	print(cartItems)
+	# 	print(order)
+	# 	print(items)
+	# 	print(userData)
+	# 	print(items)
+	# 	# Create user
+	# 	print(userData)
+	# 	username = userData['first_name'] + " " + userData['last_name']
+	# 	password = userData['password']
+	# 	print(username ,password)
+	# 	new_user = User.objects.create_user(username= username,
+	# 										email=userData['email'],
+	# 										password=password,
+	# 										first_name=userData['first_name'],
+	# 										last_name=userData['last_name']
+	# 										)
+	# 	new_user.save()
+	# 	messages.success(request, 'Account was created for ' + username)
+	# 	print(new_user.id)
+	# 	customer = Customer.objects.get(user=new_user.id)
+	# 	print("here")
+	# 	cusorder = Order.objects.create(
+	# 										customer=customer,
+	# 										complete=True,
+	# 										is_ordered=True,
+	# 										quantity=order['get_cart_items'],
+	# 										ref_code=generateRefCode()
+	# 										)
+	# 	print('here2')
+	# 	cusorder.save()
+	# 	orderIdv = cusorder.ref_code
+	# 	print(cusorder)
+	# 	for item in items:
+	# 		productitem = Product.objects.get(id=item['product']['id'])
+	# 		print('here3')
+	# 		print(productitem,cusorder,item['quantity'])
+	# 		orderI=OrderItem.objects.create(
+	# 										order=cusorder, 
+	# 										product=productitem, 
+	# 										quantity=item['quantity'], 
+	# 										is_ordered=True,
+	# 									)
+	# 		print('here4')
+	# 		orderI.save()
+	# 	"""
+	# Pass in order
+	# Get a order
+	# Get all vendors involved
+	# Arrange the order by vendor Id
+	# """
+	# order = cusorder
+	# print(order)
+	# orderItems = order.get_cart_items()
+	# print(orderItems)
+	# allVendors = []
+	# allVendorsId = set([])
+	# sortedAllVendors = {}
+	# print(allVendors,allVendorsId,sortedAllVendors)
+	# for orderItem in orderItems:
+	# 	vendorId = orderItem.product.shop_set.first().vendor_id
+	# 	allVendorsId.add(vendorId)
+	# 	allVendors.append({ vendorId : [orderItem] })
+	# print("point 1")
+	# for id in allVendorsId:
+	# 	sortedAllVendors[id] = []
+	# print("point 2")
+	# def addOrder(orderId):
+	# 	for order in allVendors:
+	# 		if orderId in order.keys():
+	# 			for x in order[orderId]:
+	# 				sortedAllVendors[orderId].append(x)
+	# print("point 3")
+	# for order in allVendorsId:
+	# 	addOrder(order)
+	# print("point 4")
+	# for cartkey in sortedAllVendors:
+	# 	vendorUser = Vendor.objects.get(id=cartkey)
+	# 	vendorsCart = Cart.objects.create()
+	# 	vendorsCart.vendor = vendorUser
+	# 	print(vendorsCart.vendor)
+	# 	vendorsCart.order = cusorder
+	# 	print("point 5",vendorsCart)
+	# 	for orderedProducts in sortedAllVendors[cartkey]:
+	# 		vendorsCart.totalprice += orderedProducts.get_total()
+	# 		print(vendorsCart.totalprice)
+	# 		productitem = Product.objects.get(id=orderedProducts.product.id)
+	# 		vendorsCart.products.add(productitem)
+	# 		orderedProduct = CartItem.objects.create(
+	# 										cart=vendorsCart, 
+	# 										product=productitem, 
+	# 										quantity=orderedProducts.quantity, 
+	# 										is_ordered=True,
+	# 									)
+	# 		orderedProduct.save()
+	# 		vendorsCart.quantity += orderedProducts.quantity
+	# 		print("point 6")
+	# 	print("point 7",vendorsCart)
+	# 	vendorsCart.save()
+	# 	print("point 8")
 	return JsonResponse('Payment complete!', safe=False)
 
 

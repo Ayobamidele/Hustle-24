@@ -1163,3 +1163,19 @@ box-sizing: unset;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
+
+
+
+.checkout-cart-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+

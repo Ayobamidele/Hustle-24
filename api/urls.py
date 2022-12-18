@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import *
 from rest_framework import routers
-from rest_framework.authtoken.views import obtain_auth_token
+# from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt import views as jwt_views
 
 
@@ -14,9 +14,12 @@ router.register(r'Product-photos', ProductImageView)
 router.register(r'Reviews', ReviewsView)
 router.register(r'Shop', ShopView)
 router.register(r'Specifications', ProductSpecificationView)
+# router.register(r'Registration', RegistrationView)
+
 
 urlpatterns = [
 	path('', include(router.urls)),
+	path('sign-up/', RegistrationView.as_view(), name='register'),
 	path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]

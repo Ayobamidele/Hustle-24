@@ -1,6 +1,8 @@
-from rest_framework import generics,viewsets,status
+from rest_framework import generics,viewsets,status,views
 from shop.models import Product
-from .serializers import *
+from accounts.models import User
+from .serializers.account_serializers import *
+from .serializers.shop_serializers import *
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -10,6 +12,31 @@ import urllib
 from PIL import Image
 from rest_framework.permissions import *
 from .permissions import *
+from rest_framework.permissions import IsAuthenticated
+
+
+User = get_user_model()
+
+class RegistrationView(views.APIView):
+    # queryset = User.objects.all()
+    # serializer_class = RegistrationSerializer
+    permission_classes = (IsNotAuthenticated | AdminAuthenticationPermission,)
+    # permission_classes = (IsAuthenticated,)
+
+
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
+
+    # def post(self, request, *args, **kwargs):
+    #     created_by = request.user
+    #     serializer = self.serializer_class(data=request.data, context={"request": request})
+    #     print(serializer , serializer.is_valid())
+    #     # if serializer.is_valid():
+    #     #     serializer.save()
+    #     #     return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
