@@ -8,8 +8,8 @@ from . import views
 app_name = "accounts"
 
 urlpatterns = [
-    path('accounts/signup/customer/', views.registerCustomer, name="customer_signup"),
-    path('accounts/signup/vendor/', views.registerVendor, name="vendor_signup"),
+    path('register', views.registerCustomer, name="register"),
+    path('register/vendor/', views.registerVendor, name="register-vendor"),
     
     path('login/', views.loginPage, name='login'),
     # path('login/', views.LoginView.as_view(), name='login'),

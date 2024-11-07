@@ -2,8 +2,8 @@
 {% load static %}
 {% block title %}{{username}}{% endblock %}
 {% block content %}	
-<link rel="stylesheet" href="{% static '/css/style.css' %}">
-<section class="hero hero-small bg-blac text-white parallax" style="background-image: url({% static  customer.profile_pic.url %});background-position: center;background-repeat: no-repeat;background-size: cover;position: relative;">
+{% comment %} <link rel="stylesheet" href="{% static '/css/style.css' %}"> {% endcomment %}
+<section class="hero hero-small bg-blac text-white parallax" style="background-image: url({% static customer.profile_pic.url %});background-position: center;background-repeat: no-repeat;background-size: cover;position: relative;">
 	<div class="container">
 		<div class="row gutter-2 gutter-md-4 align-items-end">
 			<div class="col-md-6 text-center text-md-left">
@@ -189,7 +189,7 @@
 																{% for image in order.order.orderItems %}
 																	<li>
 																		<a href={% url 'shop:product'  image.product.title %} title="Red Analog Magazine Rack" data-toggle="tooltip" data-placement="top">
-																			<img src={% static  image.product.image.url %} alt="Red Analog Magazine Rack">
+																			<img src={% static image.product.image.url %} alt="Red Analog Magazine Rack">
 																		</a>
 																	</li>
 																{% endfor %}	
@@ -518,38 +518,41 @@
 
 <script src="{% static '/js/profile.js' %}"></script>
 
-<script src="{% static '/js/jquery-3.6.0.min.js' %}" type="text/javascript">
-	
-	
-
-
-
-	$('form .autosubmit').on('change', function() {
-		// e.preventDefault();
-		var form = $("#profilePicutureSetting")[0];
-		var form_data = new FormData(form);
-		// Appending the attached file to the form_data to access it from the server side
-		form_data.append('new_avatar', $("#id_profile_pic")[0].files[0]);
-		form_data.append('form_type', "profilePicutureSetting");
-		console.log(form)
-		console.log($("#profilePicutureSetting"))
-		$.ajax({
-			type: 'POST',
-			url: "{% url 'accounts:customer' request.user %}",
-			data: form_data,
-			cache: false,
-			processData: false,
-			contentType: false,
-
-			success: function (data){
-				console.log('Success');
-			},
-
-			error: function (){
-			console.log('Error');
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function () {
+	  // Select the form and the input element
+	  var form = document.getElementById('profilePicutureSetting');
+	  var inputFile = document.getElementById('id_profile_pic');
+  
+	  // Add an event listener for when the input file changes
+	  document.querySelector('form .autosubmit').addEventListener('change', function () {
+		var formData = new FormData(form);
+  
+		// Append the selected file to the formData object
+		formData.append('new_avatar', inputFile.files[0]);
+		formData.append('form_type', 'profilePicutureSetting');
+  
+		// Create the request
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', "{% url 'accounts:customer' request.user %}", true);
+  
+		// Set up the request
+		xhr.onreadystatechange = function () {
+		  if (xhr.readyState === XMLHttpRequest.DONE) {
+			if (xhr.status === 200) {
+			  console.log('Success');
+			  // Reload the page on success
+			  window.location.reload();
+			} else {
+			  console.log('Error');
 			}
-		});
-
-	})
-</script>
+		  }
+		};
+  
+		// Send the form data to the server
+		xhr.send(formData);
+	  });
+	});
+  </script>
+  
 {% endblock %}

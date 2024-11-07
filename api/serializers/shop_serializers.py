@@ -1,4 +1,3 @@
-from os import ctermid
 from typing_extensions import Required
 from unicodedata import category
 from rest_framework import serializers

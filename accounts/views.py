@@ -5,7 +5,7 @@ from carts.models import *
 from carts.utils import *
 from django.contrib import messages
 from django.contrib.auth import (authenticate, get_user_model, login, logout,
-                                 update_session_auth_hash)
+								 update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from shop.models import *
@@ -76,11 +76,19 @@ def registerCustomer(request):
 		password = request.POST.get('password1')
 		password_confirmation = request.POST.get('password2')
 		print("Hello, ",request.POST,request.POST.get('password'), form.is_valid())
-		if password == password_confirmation:			
-			new_user = User.objects.create_user(username=username,password=password,email=email,)
+		if form.is_valid():
+			# Here, you would save the user or perform other actions
+			new_user = User.objects.create_user(username=username,password=password,email=email)
 			new_user.save()
 			messages.success(request, 'Account was created for ' + username)
 			return redirect('accounts:login')
+		else:
+			# If form is not valid, add errors to the message framework
+			for field, errors in form.errors.items():
+				for error in errors:
+					messages.error(request, f"Error in {field}: {error}")
+					print(error)
+			return render(request, 'accounts/index.html', {'form': form})
 	context = {'form': form}
 	return render(request, 'accounts/index.html', context)
 
@@ -133,40 +141,11 @@ def loginPage(request):
 		if form.is_valid():
 			user =  authenticate(email=email, password=password)
 			print('here1', user.username)
-			# try:
-			# 	cart = json.loads(request.COOKIES['cart'])
-			# 	customer = Customer.objects.get(user=user)
-			# 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
-			# 	print(order)
-			# 	print(cart)
-			# 	cookieData = cookieCart(request)
-			# 	items = cookieData['items']
-			# 	for item in items:
-			# 		productitem = Product.objects.get(id=item['product']['id'])
-			# 		print('here3')
-			# 		print(productitem,item['quantity'])
-			# 		# oI= OrderItem.objects.create(order=cusorder,product=product,quantity=item['quantity'],is_ordered=True,)
-			# 		orderI=OrderItem.objects.create(
-			# 										order=order, 
-			# 										product=productitem, 
-			# 										quantity=item['quantity'], 
-			# 									)
-			# 		order.quantity += 1
-			# 		order.save()
-			# 		print('here4')
-			# 		orderI.save()
-			# 	request.COOKIES['cart'].clear()
-			# except:
-			# 	cart = {}
 			if user:
 				login(request, user)
 				messages.success(request, "Logged In")
 				print('hopefully')
 				return redirect(f'/customer/{email}',)
-			# elif user.is_vendor:
-			# 	login(request,user)
-			# 	print('here3')
-			# 	return redirect(f'/vendor/{username}',)
 		else:
 			messages.info(request, 'Username OR password is incorrect')				
 	return render(request,'accounts/signin.html', {'form': form })
@@ -361,12 +340,12 @@ def vendorPage(request,vendor):
 @login_required(login_url='accounts:login')
 @allowed_users(allowed_roles=['Customer'])
 def accountSettings(request):
-    customer = request.user.customer
-    form = CustomerForm(instance=customer)
-    if request.method == "POST":
-        form = CustomerForm(request.POST, request.FILES, instance=customer)
-        if form.is_valid():
-            form.save()
-    context = {"form": form}
-    return render(request,'accounts/account_settings.html',context)
+	customer = request.user.customer
+	form = CustomerForm(instance=customer)
+	if request.method == "POST":
+		form = CustomerForm(request.POST, request.FILES, instance=customer)
+		if form.is_valid():
+			form.save()
+	context = {"form": form}
+	return render(request,'accounts/account_settings.html',context)
 	

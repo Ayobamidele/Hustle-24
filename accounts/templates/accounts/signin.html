@@ -1,29 +1,51 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Create an account</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">   
-  </head>
-  <body>
-    <div class="page page_login">
-      <form class="form" method="POST">
-        {% csrf_token %}
-        <div class="form__container">
-          <div class="logo"><a href="{% url 'shop:home' %}"><img class="logo__pic" src="{% static 'images/favicon_io/android-chrome-192x192.png' %}" width="80"></a></div>
-          <div class="fieldset">
-            <div class="field">{{ form.email }}</div>
-            <div class="field">{{ form.password }}</div>
-          </div><button type="submit" class="btn">Sign in</button>
-          <div class="text">Can’t remember your password? <a href="{% url 'accounts:password_reset' %}">Recover it</a>.</div>
-        </div>
-        <div class="form__footer">Don't Have an Account? <a href="{% url 'accounts:customer_signup' %}">Create it</a>.</div>
-      </form>
-      <div class="about"></div>
-    </div>
-  </body>
+	<head>
+		<meta charset="utf-8" />
+		<title>Create an account</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=no"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css?family=Karla:400,700&amp;display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="{% static 'css/app.css' %}" />
+	</head>
+	<body>
+		<div class="page page_login">
+			<form class="form" method="POST">
+				{% csrf_token %}
+				<div class="form__container">
+					<div class="logo">
+						<a href="{% url 'shop:home' %}"
+							><img
+								class="logo__pic"
+								src="{% static 'images/favicon_io/android-chrome-192x192.png' %}"
+								width="80"
+						/></a>
+					</div>
+					<div class="fieldset">
+						<div class="field">{{ form.email }}</div>
+						<div class="field">{{ form.password }}</div>
+					</div>
+					<button type="submit" class="btn">Sign in</button>
+					<div class="text">
+						Can’t remember your password?
+						<a href="{% url 'accounts:password_reset' %}"
+							>Recover it</a
+						>.
+					</div>
+				</div>
+				<div class="form__footer">
+					Don't Have an Account?
+					<a href="{% url 'accounts:register' %}">Create it</a>.
+				</div>
+			</form>
+			<div class="about"></div>
+		</div>
+	</body>
 </html>

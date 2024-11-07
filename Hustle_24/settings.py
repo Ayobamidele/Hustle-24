@@ -62,9 +62,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'watched_products',
     'orders',
-    'shop',
-    'api',
-    'whatsapp_api',
+    'shop'
 ]
 
 
